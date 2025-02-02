@@ -41,11 +41,13 @@
                 <table id="storesTable" class="table table-striped table-hover table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
-                            <th>Distance (km)</th>
-                            <th>Action</th>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Nama</th>
+                            <th>Tipe</th>
+                            <th>Jarak (km)</th>
+                            <th>Deskripsi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -103,27 +105,68 @@
                 searching: false,
                 pageLength: 5,
                 columns: [{
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1; // Nomor urut
+                        }
+                    },
+                    {
+                        data: 'image',
+                        render: function(data) {
+                            if (data) {
+                                return `<img src="/storage/objek/${data}" alt="" class="w-100 rounded" style="width: 50px; height: 50px; object-fit: cover;">`;
+                            } else {
+                                return '<i>No Image</i>';
+                            }
+                        }
+                    },
+                    {
                         data: 'name'
                     },
                     {
-                        data: 'latitude'
+                        data: 'tipe',
+                        render: function(data) {
+                            let typeLabel;
+                            switch (data) {
+                                case '1':
+                                    typeLabel = 'Hotel';
+                                    break;
+                                case '2':
+                                    typeLabel = 'Restaurant';
+                                    break;
+                                case '3':
+                                    typeLabel = 'Attraction';
+                                    break;
+                                default:
+                                    typeLabel = 'Other';
+                                    break;
+                            }
+                            return typeLabel;
+                        }
                     },
                     {
-                        data: 'longitude'
+                        data: 'distance',
+                        render: function(data) {
+                            return `${data.toFixed(2)} km`; // Format jarak dengan dua angka desimal
+                        }
                     },
                     {
-                        data: 'distance'
+                        data: 'description',
+                        render: function(data) {
+                            return data.length > 50 ? data.substring(0, 50) + '...' :
+                                data; // Deskripsi singkat
+                        }
                     },
                     {
                         data: null,
                         render: function(data) {
                             const route = `/objects/${data.id}`;
                             return `
-                        <button class="btn btn-primary btn-sm" 
-                            onclick="getRoute('${defaultLat}', '${defaultLng}', '${data.latitude}', '${data.longitude}', '${data.name}', '${data.tipe}')">
-                            Get Route
-                        </button>
-                        <a href="${route}" class="btn btn-success btn-sm">Detail</a>`;
+                    <button class="btn btn-primary btn-sm" 
+                        onclick="getRoute('${defaultLat}', '${defaultLng}', '${data.latitude}', '${data.longitude}', '${data.name}', '${data.tipe}')">
+                        Get Route
+                    </button>
+                    <a href="${route}" class="btn btn-success btn-sm">Detail</a>`;
                         }
                     }
                 ]

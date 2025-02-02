@@ -163,7 +163,7 @@ class AuthController extends Controller
         $type = $request->input('type', ''); // Filter by type
 
         $query = "
-        SELECT id, name, latitude, longitude, tipe,
+        SELECT id, name, latitude, longitude, tipe, image, description,
             (6371 * ACOS(
                 COS(RADIANS(?)) 
                 * COS(RADIANS(latitude)) 
