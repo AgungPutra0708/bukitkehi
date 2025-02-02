@@ -5,24 +5,24 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>Create Facility</h3>
+                <h3>Tambah Fasilitas</h3>
                 <div class="row">
                     <div class="col-md-12">
                         <form action="{{ route('admin.facility.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="">Photo Facility</label>
+                                <label for="">Foto Fasilitas</label>
                                 <input type="file" class="form-control" name="image" required accept="image/*">
                             </div>
                             <div class="form-group">
-                                <label for="">Name</label>
+                                <label for="">Nama</label>
                                 <input type="text" class="form-control" name="name" required>
                             </div>
                             <div class="form-group">
-                                <label for="">Description</label>
+                                <label for="">Deskripsi</label>
                                 <textarea name="description" id="" cols="30" rows="10" class="form-control" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
                 </div>

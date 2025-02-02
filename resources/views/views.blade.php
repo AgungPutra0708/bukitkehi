@@ -9,11 +9,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Views</h1>
+                    <h1 class="mb-3">Tampilan</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Views</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tampilan</li>
                         </ul>
                     </nav>
                 </div>
@@ -39,22 +39,22 @@
                     <div id="sceneList">
                         <ul class="scenes">
                             <a href="javascript:void(0)" class="scene" data-id="0-tampak-1">
-                                <li class="text">View 1</li>
+                                <li class="text">Tampilan 1</li>
                             </a>
                             <a href="javascript:void(0)" class="scene" data-id="1-tampak-2">
-                                <li class="text">View 2</li>
+                                <li class="text">Tampilan 2</li>
                             </a>
                             <a href="javascript:void(0)" class="scene" data-id="2-tampak-3">
-                                <li class="text">View 3</li>
+                                <li class="text">Tampilan 3</li>
                             </a>
                             <a href="javascript:void(0)" class="scene" data-id="3-tampak-4">
-                                <li class="text">View 4</li>
+                                <li class="text">Tampilan 4</li>
                             </a>
                             <a href="javascript:void(0)" class="scene" data-id="4-tampak-5">
-                                <li class="text">View 5</li>
+                                <li class="text">Tampilan 5</li>
                             </a>
                             <a href="javascript:void(0)" class="scene" data-id="5-tampak-6">
-                                <li class="text">View 6</li>
+                                <li class="text">Tampilan 6</li>
                             </a>
                         </ul>
                     </div>

@@ -12,8 +12,8 @@
                     <h1 class="mb-3">{{ $objects->name }}</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Objek Detail</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li> 
+                            <li class="breadcrumb-item active" aria-current="page"> Detail Objek</li>
                         </ul>
                     </nav>
                 </div>
@@ -60,8 +60,8 @@
                                 <h4 class="">All Menu</h4>
                                 <ul class="sidebar-category">
                                     <li><a href="{{ route('landing.destination') }}">Wahana</a></li>
-                                    <li><a href="{{ route('landing.gallery') }}">Gallery</a></li>
-                                    <li><a href="{{ route('landing.product') }}">Product</a></li>
+                                    <li><a href="{{ route('landing.gallery') }}">Galeri</a></li>
+                                    <li><a href="{{ route('landing.product') }}">Produk</a></li>
                                     <li class="active"><a href="{{ route('landing.objects') }}">Objek</a></li>
                                     <li><a href="{{ route('landing.news') }}">Artikel</a></li>
                                 </ul>

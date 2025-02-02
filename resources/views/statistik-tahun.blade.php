@@ -11,7 +11,7 @@
                     <h1 class="mb-3 text-white">Statistik {{ $tahun }}</h1> <!-- Ubah warna teks -->
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="text-light">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#" class="text-light">Beranda</a></li>
                             <!-- Ubah warna teks -->
                             <li class="breadcrumb-item active" aria-current="page"><span class="text-light">Statistik</span>
                             </li> <!-- Ubah warna teks -->
@@ -72,7 +72,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <h5 class="card-title">Report Penghasilan
+                                <h5 class="card-title">Laporan Penghasilan
                                     {{ $tahun ?? 'Tidak ada data' }}</h5> <!-- Tampilkan tahun yang benar -->
                             </div>
                             @foreach ($income as $detail)

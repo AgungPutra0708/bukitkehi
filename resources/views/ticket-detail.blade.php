@@ -6,7 +6,7 @@
     <div class="breadcrumb-outer">
         <div class="container">
             <div class="breadcrumb-content text-center">
-                <h1 class="mb-3">Detail Ticket</h1>
+                <h1 class="mb-3">Detail Tiket</h1>
                 <nav aria-label="breadcrumb" class="d-block">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('ticket.show', ['name' => $ticket->name]) }}">Ticket</a></li>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="description mb-2">
-                    <h4>Description</h4>
+                    <h4>Deskripsi</h4>
                     {!! $ticket->description !!}
                 </div>
                 <div class="description mb-2 text-center">

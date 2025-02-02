@@ -10,11 +10,11 @@
                     <div class="cover-content text-center text-md-start">
                         <div class="author-detail mb-2">
                             <a href="{{ route('landing.news') }}"
-                                class="tag white bg-theme py-1 px-3 me-2 rounded">#News&Artikel</a>
+                                class="tag white bg-theme py-1 px-3 me-2 rounded">#Berita&Artikel</a>
                         </div>
                         <h1>{{ $news->title }}</h1>
                         <div class="author-detail d-flex align-items-center">
-                            <span class="me-3"><a href="post-list-1.html"><i class="fa fa-clock"></i> Posted On :
+                            <span class="me-3"><a href="post-list-1.html"><i class="fa fa-clock"></i>Diposting Pada :
                                     {{ $news->created_at->format('d F Y') }}</a></span>
                             <span class="me-3"><a href="post-list-1.html"><i class="fa fa-user"></i>
                                     {{ $news->author }}</a></span>

@@ -5,18 +5,18 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>Product</h3>
-                <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Create</a>
+                <h3>Produk</h3>
+                <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Tambah</a>
                 <div class="table-responsive">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Price</th>
+                                <th>Foto</th>
+                                <th>Nama</th>
+                                <th>Harga</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,8 +28,8 @@
                                     <td>{{ $product->price }}</td>
                                     <td>{{ $product->status }}</td>
                                     <td>
-                                        <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-warning">Edit</a>
-                                        <a href="{{ route('admin.product.destroy', $product->id) }}" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-warning">Ubah</a>
+                                        <a href="{{ route('admin.product.destroy', $product->id) }}" class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach

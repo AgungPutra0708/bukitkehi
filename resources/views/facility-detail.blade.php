@@ -12,8 +12,8 @@
                     <h1 class="mb-3">{{ $facility->name }}</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Facility Detail</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Detail Fasilitas</li>
                         </ul>
                     </nav>
                 </div>
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="description mb-2">
-                                <h4>Description</h4>
+                                <h4>Deskripsi</h4>
                                 <p>{!! $facility->description !!}</p>
                             </div>
                         </div>
@@ -58,12 +58,12 @@
                         <div class="list-sidebar">
 
                             <div class="sidebar-item mb-4">
-                                <h4 class="">All Menu</h4>
+                                <h4 class="">Semua Menu</h4>
                                 <ul class="sidebar-category">
                                     <li><a href="{{ route('landing.destination') }}">Wahana</a></li>
-                                    <li><a href="{{ route('landing.gallery') }}">Gallery</a></li>
-                                    <li><a href="{{ route('landing.product') }}">Product</a></li>
-                                    <li class="active"><a href="{{ route('landing.facility') }}">Facility</a></li>
+                                    <li><a href="{{ route('landing.gallery') }}">Galeri</a></li>
+                                    <li><a href="{{ route('landing.product') }}">Produk</a></li>
+                                    <li class="active"><a href="{{ route('landing.facility') }}">Fasilitas</a></li>
                                     <li><a href="{{ route('landing.news') }}">Artikel</a></li>
                                 </ul>
                             </div>

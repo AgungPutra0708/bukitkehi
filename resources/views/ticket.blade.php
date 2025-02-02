@@ -8,11 +8,11 @@
     <div class="breadcrumb-outer">
         <div class="container">
             <div class="breadcrumb-content text-center">
-                <h1 class="mb-3">Harga Dan Pemesanan Ticket</h1>
+                <h1 class="mb-3">Harga Dan Pemesanan Tiket</h1>
                 <nav aria-label="breadcrumb" class="d-block">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Ticket</li>
+                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tiket</li>
                     </ul>
                 </nav>
             </div>
@@ -49,11 +49,11 @@
                             <div class="col-lg-3 col-md-3">
                                 <div class="trend-content text-md-end text-center">
                                     <div class="trend-price my-2">
-                                        <span class="mb-0">From</span>
+                                        <span class="mb-0">Dari</span>
                                         <h3 class="mb-0">Rp. {{ number_format($ticket->price, 0, ',', '.') }}</h3>
-                                        <small>Per Adult</small>
+                                        <small>Per Dewasa</small>
                                     </div>
-                                    <a href="{{ route('checkout', $ticket->id) }}" class="nir-btn">Checkout</a>
+                                    <a href="{{ route('checkout', $ticket->id) }}" class="nir-btn">Check-out</a>
                                 </div>
                             </div>
                         </div>

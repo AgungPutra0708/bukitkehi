@@ -12,8 +12,8 @@
                     <h1 class="mb-3">{{ $destination->name }}</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Wahana Detail</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Detail Wahana</li>
                         </ul>
                     </nav>
                 </div>
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="description mb-2">
-                                <h4>Description</h4>
+                                <h4>Deskripsi</h4>
                                 {!! $destination->content !!}
                             </div>
                         </div>
@@ -62,12 +62,12 @@
                         <div class="list-sidebar">
 
                             <div class="sidebar-item mb-4">
-                                <h4 class="">All Menu</h4>
+                                <h4 class="">Semua Menu</h4>
                                 <ul class="sidebar-category">
                                     <li class="active"><a href="{{ route('landing.destination') }}">Wahana</a></li>
-                                    <li><a href="{{ route('landing.gallery') }}">Gallery</a></li>
-                                    <li><a href="{{ route('landing.product') }}">Product</a></li>
-                                    <li><a href="{{ route('landing.facility') }}">Facility</a></li>
+                                    <li><a href="{{ route('landing.gallery') }}">Galeri</a></li>
+                                    <li><a href="{{ route('landing.product') }}">Produk</a></li>
+                                    <li><a href="{{ route('landing.facility') }}">Fasilitas</a></li>
                                     <li><a href="{{ route('landing.news') }}">Artikel</a></li>
                                 </ul>
                             </div>

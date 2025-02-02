@@ -9,7 +9,7 @@
                         <h1 class="mb-3">Produk Kami</h1>
                         <nav aria-label="breadcrumb" class="d-block">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Produk Kami</li>
                             </ul>
                         </nav>
@@ -36,7 +36,7 @@
                                 <div class="trend-meta bg-theme white px-3 py-2 rounded">
                                     <div class="entry-author">
                                         <i class="icon-sale"></i>
-                                        <span class="fw-bold">Sale</span>
+                                        <span class="fw-bold">Penjualan</span>
                                     </div>
                                 </div>
                                 <h5 class="theme mb-1"><i class="flaticon-location-pin"></i> Produk</h5>

@@ -6,10 +6,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Payment Information</h4>
+                        <h4>Informasi Pembayaran</h4>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Tambah Payment Information
+                            Tambah Informasi Pembayaran
                         </button>
 
                         <!-- Modal -->
@@ -18,7 +18,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Payment Information</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Informasi Pembayaran</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -26,22 +26,22 @@
                                         <form action="{{ route('admin.payment.information.store') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="bank_name">Bank Name</label>
+                                                <label for="bank_name">Nama Bank</label>
                                                 <input type="text" class="form-control" id="bank_name" name="bank_name"
                                                     required>
                                             </div>
                                             <div class="form-group">
-                                                <label for="bank_account_number">Bank Account Number</label>
+                                                <label for="bank_account_number">Nomor Akun Bank</label>
                                                 <input type="text" class="form-control" id="bank_account_number"
                                                     name="bank_account_number" required>
                                             </div>
                                             <div class="form-group">
-                                                <label for="bank_account_name">Bank Account Name</label>
+                                                <label for="bank_account_name">Nama Akun Bank</label>
                                                 <input type="text" class="form-control" id="bank_account_name"
                                                     name="bank_account_name" required>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                             </div>
                                         </form>
                                     </div>
@@ -53,10 +53,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Bank Name</th>
-                                        <th>Bank Account Number</th>
-                                        <th>Bank Account Name</th>
-                                        <th>Action</th>
+                                        <th>Nama Bank</th>
+                                        <th>Nomor Akun Bank</th>
+                                        <th>Nama Akun Bank</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,7 +70,7 @@
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#editPaymentInformationModal{{ $paymentInfo->id }}">
-                                                    Edit Payment Information
+                                                    Ubah Informasi Pembayaran
                                                 </button>
 
                                                 <!-- Modal -->
@@ -83,7 +83,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
                                                                     id="editPaymentInformationModalLabel{{ $paymentInfo->id }}">
-                                                                    Edit Payment Information
+                                                                    Ubah Informasi Pembayaran
                                                                 </h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
@@ -94,7 +94,7 @@
                                                                     method="POST">
                                                                     @csrf
                                                                     <div class="form-group">
-                                                                        <label for="bank_name">Bank Name</label>
+                                                                        <label for="bank_name">Nama Bank</label>
                                                                         <input type="text" class="form-control"
                                                                             id="bank_name" name="bank_name"
                                                                             value="{{ $paymentInfo->bank_name }}" required>
@@ -102,8 +102,7 @@
                                                                             value="{{ $paymentInfo->id }}">
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="bank_account_number">Bank Account
-                                                                            Number</label>
+                                                                        <label for="bank_account_number">Nomor Akun Bank</label>
                                                                         <input type="text" class="form-control"
                                                                             id="bank_account_number"
                                                                             name="bank_account_number"
@@ -111,8 +110,7 @@
                                                                             required>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="bank_account_name">Bank Account
-                                                                            Name</label>
+                                                                        <label for="bank_account_name">Nama Akun Bank</label>
                                                                         <input type="text" class="form-control"
                                                                             id="bank_account_name" name="bank_account_name"
                                                                             value="{{ $paymentInfo->bank_account_name }}"
@@ -120,9 +118,8 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-primary">Save
-                                                                            changes</button>
+                                                                            data-bs-dismiss="modal">Tutup</button>
+                                                                        <button type="button" class="btn btn-primary">Simpan Perubahan</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -130,7 +127,7 @@
                                                     </div>
                                                 </div>
                                                 <a href="{{ route('admin.payment.information.destroy', $paymentInfo->id) }}"
-                                                    class="btn btn-danger">Delete</a>
+                                                    class="btn btn-danger">Hapus</a>
                                             </td>
                                         </tr>
                                     @endforeach

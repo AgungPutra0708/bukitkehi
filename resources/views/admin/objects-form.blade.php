@@ -5,7 +5,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>{{ isset($objectData) ? 'Update' : 'Create' }} Objek Pendukung</h3>
+                <h3>{{ isset($objectData) ? 'Ubah' : 'Tambah' }} Objek Pendukung</h3>
                 <div class="row">
                     <div class="col-md-12">
                         <form
@@ -13,13 +13,13 @@
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="">Photo Objek</label>
+                                <label for="">Foto Objek</label>
                                 <img src="{{ isset($objectData) ? asset('storage/objek/' . $objectData->image) : '' }}"
                                     alt="" style="object-fit: cover; max-width: 150px; height: 100px;">
                                 <input type="file" class="form-control" name="image" required accept="image/*">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Name*</label>
+                                <label for="">Nama*</label>
                                 <input type="text" class="form-control" name="name"
                                     value="{{ isset($objectData) ? $objectData->name : '' }}" required>
                                 <input type="hidden" class="form-control" name="id"
@@ -27,7 +27,7 @@
                                     value="{{ isset($objectData) ? $objectData->id : '' }}">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Type*</label>
+                                <label for="">Tipe*</label>
                                 <select name="type" class="form-control" required>
                                     <option value="1"
                                         {{ isset($objectData) ? ($objectData->type == '1' ? 'selected' : '') : '' }}>Hotel
@@ -41,25 +41,25 @@
                                 </select>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Latitude*</label>
+                                <label for="">Lintang*</label>
                                 <input type="text" class="form-control" name="latitude"
                                     value="{{ isset($objectData) ? $objectData->latitude : '' }}" required>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Longitude*</label>
+                                <label for="">Garis Bujur*</label>
                                 <input type="text" class="form-control" name="longitude"
                                     value="{{ isset($objectData) ? $objectData->longitude : '' }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="">Address*</label>
+                                <label for="">Alamat*</label>
                                 <textarea name="address" id="" cols="30" rows="3" class="form-control" required>{{ isset($objectData) ? $objectData->address : '' }}</textarea>
                             </div>
                             <div class="form-group" id="description">
-                                <label for="">Description</label>
+                                <label for="">Deskripsi</label>
                                 <textarea name="description" id="editor" cols="30" rows="10" class="form-control"
                                     style="overflow:scroll; max-height:300px">{{ isset($objectData) ? $objectData->description : '' }}</textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
                 </div>

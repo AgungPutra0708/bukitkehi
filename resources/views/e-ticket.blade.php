@@ -20,19 +20,19 @@
                                 @if ($order->status == 'accepted')
                                 <div class="title-content ms-md-3">
                                     <h3 class="mb-1 white">{{ $order->ticket->name }}</h3>
-                                    <p class="mb-0 white">Thank You. Your booking order is confirmed now.</p>
+                                    <p class="mb-0 white">Terima kasih. Pesanan pemesanan Anda dikonfirmasi sekarang.</p>
                                 </div>
                                 @else
-                                    <h3 class="mb-1 white">Your booking order is {{ $order->status }}.</h3>
+                                    <h3 class="mb-1 white">Pesanan pemesanan Anda adalah {{ $order->status }}.</h3>
                                 @endif
                             </div>
                             <div class="travellers-info mb-4">
                                 <table>
                                     <thead>
-                                        <th>Order Number</th>
-                                        <th>Date</th>
+                                        <th>Nomor Pemesanan</th>
+                                        <th>Tanggal</th>
                                         <th>Total</th>
-                                        <th>Payment Method</th>
+                                        <th>Metode Pembayaran</th>
                                         <th>Status</th>
                                     </thead>
                                     <tbody>
@@ -40,7 +40,7 @@
                                             <td class="theme2">{{ $order->code }}</td>
                                             <td class="theme2">{{ $order->ticket_date }}</td>
                                             <td class="theme2">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                                            <td class="theme2">Bank Transfer</td>
+                                            <td class="theme2">Transfer Bank </td>
                                             <td class="theme2">
                                                 @if ($order->status == 'accepted')
                                                     <span class="badge bg-success">{{ $order->status }}</span>
@@ -55,35 +55,35 @@
                                 </table>
                             </div>
                             <div class="travellers-info mb-4">
-                                <h4>Traveler Information</h4>
+                                <h4>Informasi Wisatawan</h4>
                                 <table>
                                     <tr>
-                                        <td>Booking Number</td>
+                                        <td>Nomor Pemesanan</td>
                                         <td>{{ $order->code }}</td>
                                     </tr>
                                     <tr>
-                                        <td>First Name</td>
+                                        <td>Nama Pertama</td>
                                         <td>{{ $order->user->name }}</td>
                                     </tr>
                                    
                                     <tr>
-                                        <td>Email Address</td>
+                                        <td>Alamat Email</td>
                                         <td>{{ $order->user->email }}</td>
                                     </tr>
                                     <tr>
-                                        <td>QR Code</td> <!-- Ubah label dari Barcode menjadi QR Code -->
+                                        <td>Kode QR</td> <!-- Ubah label dari Barcode menjadi QR Code -->
                                         <td>
                                             @if ($qrcode)
                                             <img src="data:image/png;base64,{{ $qrcode }}" alt="QR Code" style="width: 200px; height: 100px;"/>
                                             @else
-                                                <p>QR code tidak tersedia.</p>
+                                                <p>Kode QR tidak tersedia.</p>
                                             @endif
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="booking-border mb-4">
-                                <h4 class="border-b pb-2 mb-2">Ticket {{ $order->ticket->name }}</h4>
+                                <h4 class="border-b pb-2 mb-2">Tiket {{ $order->ticket->name }}</h4>
                                 
                             </div>
                             
@@ -95,35 +95,35 @@
                     <div class="sidebar-sticky">
                         <div class="list-sidebar">
                             <div class="sidebar-item bordernone bg-white rounded box-shadow overflow-hidden p-3 mb-4">
-                                <h4>Need Booking Help?</h4>
+                                <h4>Butuh Bantuan Pemesanan?</h4>
                                 <div class="sidebar-module-inner">
-                                    <p class="mb-2">Paid was hill sir high 24/7. For him precaution any advantages dissimilar.</p>
+                                    <p class="mb-2">Pembayaran tinggi 24/7 Untuk Tindakan Pencegahan dan keuntungan berbeda.</p>
                                     <ul class="help-list">
-                                        <li class="border-b pb-1 mb-1"><span class="font-weight-bold">Hotline</span>: +475 15 123 21</li>
+                                        <li class="border-b pb-1 mb-1"><span class="font-weight-bold">Saluran Berita</span>: +475 15 123 21</li>
                                         <li class="border-b pb-1 mb-1"><span class="font-weight-bold">Email</span>: support@Yatriiworld.com</li>
-                                        <li><span class="font-weight-bold">Livechat</span>: Yatriiworld (Skype)</li>
+                                        <li><span class="font-weight-bold">Obrolan Langsung</span>: Yatriiworld (Skype)</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="sidebar-item bg-white rounded box-shadow overflow-hidden p-3 mb-4">
-                                <h4>Why booking with us?</h4>
+                                <h4>Mengapa memesan dengan kami?</h4>
                                 <div class="sidebar-module-inner">
                                     <ul class="featured-list-sm">
                                         <li class="border-b pb-2 mb-2">
-                                            <h6 class="mb-0">No Booking Charges</h6>
-                                            We don't charge you an extra fee for booking a hotel room with us
+                                            <h6 class="mb-0">Tanpa Biaya Pemesanan</h6>
+                                            Kami tidak membebankan biaya tambahan kepada Anda untuk memesan kamar hotel bersama kami
                                         </li>
                                         <li class="border-b pb-2 mb-2">
-                                            <h6 class="mb-0">No Cancellation Sees</h6>
-                                            We don't charge you a cancellation or modification fee in case plans change
+                                            <h6 class="mb-0">Tidak Ada Pembatalan yang Dilihat</h6>
+                                            Kami tidak membebankan biaya pembatalan atau modifikasi kepada Anda jika rencana berubah
                                         </li>
                                         <li class="border-b pb-2 mb-2">
-                                            <h6 class="mb-0">Instant Confirmation</h6>
-                                            Instant booking confirmation whether booking online or via the telephone
+                                            <h6 class="mb-0">Konfirmasi Instan</h6>
+                                            Konfirmasi pemesanan instan baik pemesanan online atau melalui telepon
                                         </li>
                                         <li>
-                                            <h6 class="mb-0">Flexible Booking</h6>
-                                            You can book up to a whole year in advance or right up until the moment of your stay
+                                            <h6 class="mb-0">Pemesanan Fleksibel</h6>
+                                            Anda dapat memesan hingga satu tahun penuh sebelumnya atau hingga saat Anda menginap
                                         </li>
                                     </ul>
                                 </div>

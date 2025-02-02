@@ -9,11 +9,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Wahana List</h1>
+                    <h1 class="mb-3">Daftar Wahana</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Wahana Lists</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Daftar Wahana</li>
                         </ul>
                     </nav>
                 </div>
@@ -27,8 +27,8 @@
     <section class="trending pb-0 pt-6">
         <div class="container">
             <div class="section-title mb-6 w-50 mx-auto text-center">
-                <h4 class="mb-1 theme1">Top Wahana</h4>
-                <h2 class="mb-1">Explore <span class="theme">Top Wahana</span></h2>
+                <h4 class="mb-1 theme1">Wahana Unggulan</h4>
+                <h2 class="mb-1">Jelajahi <span class="theme">Wahana Unggulan</span></h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
             </div>
             <div class="row align-items-center">

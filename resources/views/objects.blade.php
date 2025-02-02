@@ -12,7 +12,7 @@
                     <h1 class="mb-3">Objek Pendukung</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Objek Pendukung</li>
                         </ul>
                     </nav>
@@ -28,9 +28,9 @@
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <label for="typeFilter">Filter by Type:</label>
+                    <label for="typeFilter">Filter Berdasarkan Jenis:</label>
                     <select id="typeFilter" class="form-control">
-                        <option value="" selected>All</option>
+                        <option value="" selected>Semua</option>
                         <option value="1">Hotel</option>
                         <option value="2">Restoran/Wisata Kuliner</option>
                         <option value="3">Tempat Wisata Lainnya</option>
@@ -42,10 +42,10 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Name</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
-                            <th>Distance (km)</th>
-                            <th>Action</th>
+                            <th>Lintang</th>
+                            <th>Garis Bujur</th>
+                            <th>Jarak (km)</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -121,7 +121,7 @@
                             return `
                         <button class="btn btn-primary btn-sm" 
                             onclick="getRoute('${defaultLat}', '${defaultLng}', '${data.latitude}', '${data.longitude}', '${data.name}', '${data.tipe}')">
-                            Get Route
+                            Rute
                         </button>
                         <a href="${route}" class="btn btn-success btn-sm">Detail</a>`;
                         }

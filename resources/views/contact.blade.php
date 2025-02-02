@@ -6,11 +6,11 @@
             <div class="breadcrumb-outer">
                 <div class="container">
                     <div class="breadcrumb-content text-center">
-                        <h1 class="mb-3">Contact Us</h1>
+                        <h1 class="mb-3">Kontak Kami</h1>
                         <nav aria-label="breadcrumb" class="d-block">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+                                <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Kontak Kami</li>
                             </ul>
                         </nav>
                     </div>
@@ -28,7 +28,7 @@
                         <div class="col-lg-10 col-offset-lg-1 mx-auto">
                             <div class="contact-info bg-white">
                                 <div class="contact-info-title text-center mb-4 px-5">
-                                    <h3 class="mb-1">INFORMATION ABOUT US</h3>
+                                    <h3 class="mb-1">INFORMASI TENTANG KAMI</h3>
                                     <p class="mb-0">Sagittis posuere id nam quis vestibulum vestibulum a facilisi at elit hendrerit scelerisque sodales nam dis orci.</p>
                                 </div>
                                 <div class="contact-info-content row mb-1">
@@ -38,7 +38,7 @@
                                                 <i class="fa fa-map-marker-alt theme"></i>
                                             </div>
                                             <div class="info-content">
-                                                <h3>Office Location</h3>
+                                                <h3>Lokasi Kantor</h3>
                                                 <p class="m-0">Alamat : Jl. Raya Pakong Desa Kertagena Dajah Kec.Kadur Kab.Pamekasan, Desa Kertagenah Dajah, Kecamatan Kadur, Kabupaten Pamekasan, Provinsi Jawa Timur, Indonesia, 69355.</p>
                                             </div>
                                         </div>
@@ -49,7 +49,7 @@
                                                 <i class="fa fa-phone theme"></i>
                                             </div>
                                             <div class="info-content">
-                                                <h3>Phone Number</h3>
+                                                <h3>Nomor Telepon</h3>
                                                 <p class="m-0">Whatsapp : 085231065084</p>
                                                
                                             </div>
@@ -61,7 +61,7 @@
                                                 <i class="fa fa-envelope theme"></i>
                                             </div>
                                             <div class="info-content ps-4">
-                                                <h3>Email Address</h3>
+                                                <h3>Alamat Email</h3>
                                                 <p class="m-0">pemdeskertagenadajah@gmail.com</p>
                                              
                                             </div>

@@ -9,7 +9,7 @@
                 <h1 class="mb-3">Sejarah</h1>
                 <nav aria-label="breadcrumb" class="d-block">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Sejarah</li>
                     </ul>
                 </nav>

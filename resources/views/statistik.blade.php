@@ -9,7 +9,7 @@
                     <h1 class="mb-3 text-white">Statistik</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="text-light">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#" class="text-light">Beranda</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><span class="text-light">Statistik</span>
                             </li>
                         </ul>
