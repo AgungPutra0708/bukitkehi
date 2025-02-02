@@ -11,7 +11,7 @@
     <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>Login || Wisata Bukit Kehi Pamekasan</title>
+    <title>Masuk || Wisata Bukit Kehi Pamekasan</title>
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -50,7 +50,7 @@
             <div class="logo">
                 <a href="{{ route('index') }}">Wisata Bukit Kehi Pamekasan</a>
             </div>
-            <p class="auth-description">Please sign-in to your account and continue to the dashboard.</p>
+            <p class="auth-description">Silakan masuk ke akun Anda dan lanjutkan ke dasbor.</p>
             @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -73,9 +73,9 @@
             <form action="{{ route('loginPost') }}" method="post">
                 @csrf
                 <div class="auth-credentials m-b-xxl">
-                    <label for="signInEmail" class="form-label">Email address</label>
+                    <label for="signInEmail" class="form-label">Alamat Email</label>
                     <input type="email" name="email" class="form-control m-b-md" id="signInEmail" aria-describedby="signInEmail"
-                        placeholder="example@gmail.com">
+                        placeholder="contoh@gmail.com">
 
                     <label for="signInPassword" class="form-label">Password</label>
                     <input type="password" name="password" class="form-control" id="signInPassword" aria-describedby="signInPassword"
@@ -83,8 +83,8 @@
                 </div>
 
                 <div class="auth-submit">
-                    <button class="btn btn-primary" type="submit">Login</button>
-                    <a href="{{ route('register') }}" class="auth-forgot-password float-end">Register</a>
+                    <button class="btn btn-primary" type="submit">Masuk</button>
+                    <a href="{{ route('register') }}" class="auth-forgot-password float-end">Daftar</a>
                 </div>
             </form>
             

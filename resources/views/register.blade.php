@@ -11,7 +11,7 @@
     <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>Register || Wisata Bukit Kehi Pamekasan</title>
+    <title>Daftar || Wisata Bukit Kehi Pamekasan</title>
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -45,7 +45,7 @@
             <div class="logo">
                 <a href="{{ route('index') }}">Wisata Bukit Kehi Pamekasan</a>
             </div>
-            <p class="auth-description">Register to continue to the dashboard.</p>
+            <p class="auth-description">Daftar untuk melanjutkan ke dashboard.</p>
             @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -54,9 +54,9 @@
             <form action="{{ route('registerPost') }}" method="post">
                 @csrf
                 <div class="auth-credentials m-b-xxl">
-                    <label for="signInEmail" class="form-label">Name</label>
+                    <label for="signInEmail" class="form-label">Nama</label>
                     <input type="text" name="name" class="form-control m-b-md" id="signInEmail" aria-describedby="signInEmail"
-                        placeholder="Name">
+                        placeholder="Nama">
 
                     <label for="signInPassword" class="form-label">Email</label>
                     <input type="email" name="email" class="form-control" id="email" aria-describedby="email"
@@ -66,14 +66,14 @@
                     <input type="password" name="password" class="form-control" id="signInPassword" aria-describedby="signInPassword"
                         placeholder="Password">
 
-                    <label for="signInPassword" class="form-label">Confirm Password</label>
+                    <label for="signInPassword" class="form-label">Konfirmasi Password</label>
                     <input type="password" name="password_confirmation" class="form-control" id="signInPassword" aria-describedby="signInPassword"
-                        placeholder="Confirm Password">
+                        placeholder="Konfirmasi Password">
                 </div>
 
                 <div class="auth-submit">
-                    <button class="btn btn-primary" type="submit">Register</button>
-                    <a href="{{ route('login') }}" class="auth-forgot-password float-end">Login</a>
+                    <button class="btn btn-primary" type="submit">Daftar</button>
+                    <a href="{{ route('login') }}" class="auth-forgot-password float-end">Masuk</a>
                 </div>
             </form>
             

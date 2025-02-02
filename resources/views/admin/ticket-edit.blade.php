@@ -5,24 +5,24 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>Edit Ticket</h3>
+                <h3>Ubah Ticket</h3>
                 <div class="row">
                     <div class="col-md-12">
                         <form action="{{ route('admin.ticket.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="">Photo Ticket</label>
+                                <label for="">Foto Ticket</label>
                                 <input type="hidden" name="id" value="{{ $ticket->id }}">
                                 <input type="file" class="form-control" name="photo" accept="image/*"
                                     value="{{ $ticket->photo }}">
                             </div>
                             <div class="form-group">
-                                <label for="">Name</label>
+                                <label for="">Nama</label>
                                 <input type="text" class="form-control" name="name" required
                                     value="{{ $ticket->name }}">
                             </div>
                             <div class="form-group">
-                                <label for="">Price</label>
+                                <label for="">Harga</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">RP</span>
@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="">Type Tiket</label>
+                                <label for="">Tipe Tiket</label>
                                 <select name="type_ticket" id="" class="form-control">
                                     <option value="0" {{ $ticket->type == '0' ? 'selected' : '' }}>Tiket Terusan
                                     </option>
@@ -49,11 +49,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="">Description</label>
+                                <label for="">Deskripsi</label>
                                 <textarea name="description" id="editor" cols="30" rows="10" class="form-control" required
                                     style="overflow:scroll; max-height:300px">{{ $ticket->description }}</textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
                 </div>

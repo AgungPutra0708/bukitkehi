@@ -16,7 +16,7 @@
                                 <h1 class="mb-2"><a href="tour-single.html" class="white">Temukan Destinasi Wisata Terbaik di Bukit Kehi Pamekasan</a>
                                 </h1>
                                 <p class="white mb-4">"Temukan Petualangan Baru Bersama Kami"</p>
-                                <a href="{{ route('landing.destination') }}" class="nir-btn">Discover More</a>
+                                <a href="{{ route('landing.destination') }}" class="nir-btn">Temukan Lebih Banyak</a>
                             </div>
                             <div class="dot-overlay"></div>
                         </div>
@@ -51,7 +51,7 @@
                                 <h1 class="mb-2"><a href="tour-single.html" class="white">Temukan Petualangan Baru Bersama Kami</a>
                                 </h1>
                                 <p class="white mb-4">"Temukan Petualangan Baru Bersama Kami"</p>
-                                <a href="{{ route('landing.destination') }}" class="nir-btn">Discover More</a>
+                                <a href="{{ route('landing.destination') }}" class="nir-btn">Temukan Lebih Banyak</a>
                             </div>
                             <div class="dot-overlay"></div>
                         </div>
@@ -71,7 +71,7 @@
         <div class="container">
 
             <div class="section-title mb-6 w-50 mx-auto text-center">
-                <h4 class="mb-1 theme1">Core Features</h4>
+                <h4 class="mb-1 theme1">Fitur Utama</h4>
                 <h2 class="mb-1">Temukan <span class="theme">Kesempurnaan Perjalanan</span></h2>
                 <p>"Temukan Petualangan Baru Bersama Kami"</p>
             </div>
@@ -86,10 +86,10 @@
                                     <div class="why-us-icon mb-1">
                                         <i class="icon-flag theme"></i>
                                     </div>
-                                    <h4><a>Tell Us What You want To Do</a></h4>
+                                    <h4><a>Beritahu Kami Apa yang Ingin Anda Lakukan</a></h4>
                                     <p class="mb-2">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
                                         officia.</p>
-                                    <p class="mb-0 theme">100+ Reviews</p>
+                                    <p class="mb-0 theme">100+ Ulasan</p>
                                 </div>
                             </div>
                         </div>
@@ -99,10 +99,10 @@
                                     <div class="why-us-icon mb-1">
                                         <i class="icon-location-pin theme"></i>
                                     </div>
-                                    <h4><a>Share Your Travel Locations</a></h4>
+                                    <h4><a>Bagikan lokasi perjalanan anda</a></h4>
                                     <p class="mb-2">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
                                         officia.</p>
-                                    <p class="mb-0 theme">100+ Reviews</p>
+                                    <p class="mb-0 theme">100+ Ulasan</p>
                                 </div>
                             </div>
                         </div>
@@ -112,10 +112,10 @@
                                     <div class="why-us-icon mb-1">
                                         <i class="icon-directions theme"></i>
                                     </div>
-                                    <h4><a>Share Your Travel Preference</a></h4>
+                                    <h4><a>Bagikan Preferensi Perjalanan Anda</a></h4>
                                     <p class="mb-2">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
                                         officia.</p>
-                                    <p class="mb-0 theme">100+ Reviews</p>
+                                    <p class="mb-0 theme">100+ Ulasan</p>
                                 </div>
                             </div>
                         </div>
@@ -125,10 +125,10 @@
                                     <div class="why-us-icon mb-1">
                                         <i class="icon-compass theme"></i>
                                     </div>
-                                    <h4><a>Here 100% Trusted Tour Agency</a></h4>
+                                    <h4><a>Di Sini 100% Agen Tur Terpercaya</a></h4>
                                     <p class="mb-2">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
                                         officia.</p>
-                                    <p class="mb-0 theme">100+ Reviews</p>
+                                    <p class="mb-0 theme">100+ Ulasan</p>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                 <div class="row d-flex align-items-center justify-content-between">
                     <div class="col-lg-6 ps-4">
                         <div class="about-content text-center text-lg-start">
-                            <h4 class="theme d-inline-block mb-0">Get To Know Us</h4>
+                            <h4 class="theme d-inline-block mb-0">Lebih kenal dengan kami</h4>
                             <h2 class="border-b mb-2 pb-1">Pesona Wisata Bukit Kehi Pamekasan</h2>
                             <p class="border-b mb-2 pb-2">Cikal bakal nama "Bukit Kehi" berasal dari gagasan brilian
                                 Kepala Desa Kertagena, Hj. Zainani, yang memiliki visi untuk mengubah lahan kosong tersebut
@@ -214,8 +214,8 @@
     <section class="trending pb-3 pt-0">
         <div class="container">
             <div class="section-title mb-6 w-50 mx-auto text-center">
-                <h4 class="mb-1 theme1">Top Destinations</h4>
-                <h2 class="mb-1">Explore <span class="theme">Top Destinations</span></h2>
+                <h4 class="mb-1 theme1">Destinasi Unggulan</h4>
+                <h2 class="mb-1">Jelajahi <span class="theme">Destinasi Unggulan</span></h2>
                 <p>Temukan destinasi wisata terbaik di Bukit Kehi Pamekasan</p>
             </div>
             <div class="row align-items-center">
@@ -249,8 +249,8 @@
             <div class="row align-items-center justify-content-between mb-6 ">
                 <div class="col-lg-7">
                     <div class="section-title text-center text-lg-start">
-                        <h4 class="mb-1 theme1">Top Pick</h4>
-                        <h2 class="mb-1">Best <span class="theme">Tour Ticket Packages</span></h2>
+                        <h4 class="mb-1 theme1">Pilihan Teratas</h4>
+                        <h2 class="mb-1">Paket <span class="theme">Tiket Wisata Terbaik </span></h2>
                         <p>Temukan Paket Wisata Terbaik di Bukit Kehi Pamekasan</p>
                             labore.</p>
                     </div>
@@ -277,7 +277,7 @@
                                     <div class="entry-meta">
                                         <div class="entry-author d-flex align-items-center">
                                             <p class="mb-0"><span class="theme fw-bold fs-5">Rp.
-                                                    {{ number_format($ticket->price, 2) }}</span> | Per person</p>
+                                                    {{ number_format($ticket->price, 2) }}</span> | Per orang</p>
                                         </div>
                                     </div>
                                 </div>
@@ -295,7 +295,7 @@
 
             <div class="section-title mb-6 w-75 mx-auto text-center">
                 <h4 class="mb-1 theme1">Aparatur</h4>
-                <h2 class="mb-1">Meet Our <span class="theme">Excellent Aparatur</span></h2>
+                <h2 class="mb-1">Temui <span class="theme">Aparatur Terbaik Kami</span></h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
             </div>
             <div class="team-main">
@@ -324,8 +324,8 @@
     <section class="trending recent-articles pb-6 pt-5">
         <div class="container">
             <div class="section-title mb-6 w-75 mx-auto text-center">
-                <h4 class="mb-1 theme1">Our Blogs Offers</h4>
-                <h2 class="mb-1">Recent <span class="theme">Articles & Posts</span></h2>
+                <h4 class="mb-1 theme1">Penawaran Blog Kami</h4>
+                <h2 class="mb-1">Artikel <span class="theme">& Postingan Terbaru </span></h2>
                 <p>Temukan Berita Terbaru Tentang Wisata Bukit Kehi Pamekasan</p>
             </div>
             <div class="recent-articles-inner">

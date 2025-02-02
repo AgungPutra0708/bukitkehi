@@ -6,21 +6,21 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Income</h4>
+                        <h4>Penghasilan</h4>
                     </div>
                     <div class="card-body">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Tambah Income
+                            Tambah Penghasilan
                         </button>
                         <a href="{{ route('admin.income.export-excel') }}" class="btn btn-success">
-                            <i class="fa fa-download"></i> Download Format Excel
+                            <i class="fa fa-download"></i> Unduh Format Excel
                         </a>
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Income</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Penghasilan</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -56,7 +56,7 @@
                                                     required accept=".xlsx,.xls">
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                             </div>
                                         </form>
                                     </div>
@@ -70,7 +70,7 @@
                                         <th>Tahun</th>
                                         <th>Bulan</th>
                                         <th>Name</th>
-                                        <th>Amount</th>
+                                        <th>Jumlah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -115,7 +115,7 @@
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#editModal{{ $income->id }}">
-                                                    Edit
+                                                    Ubah
                                                 </button>
 
                                                 <!-- Modal for Edit -->
@@ -125,7 +125,7 @@
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
-                                                                    id="editModalLabel{{ $income->id }}">Edit Income</h5>
+                                                                    id="editModalLabel{{ $income->id }}">Ubah Penghasilan</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -154,14 +154,14 @@
                                                                             value="{{ $income->tahun }}" readonly>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="name">Name</label>
+                                                                        <label for="name">Nama</label>
                                                                         <input type="text" class="form-control"
                                                                             id="name" name="name" required
                                                                             value="{{ $income->type == 'fasilitas' ? $income->fasilitas->name ?? 'N/A' : $income->tiket->name ?? 'N/A' }}"
                                                                             readonly>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="amount">Amount</label>
+                                                                        <label for="amount">Jumlah</label>
                                                                         <input type="text" class="form-control"
                                                                             id="amount" name="amount" required
                                                                             value="{{ number_format($income->amount, 0, ',', '.') }}"
@@ -170,7 +170,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="submit"
-                                                                            class="btn btn-primary">Save changes</button>
+                                                                            class="btn btn-primary">Simpan Perubahan</button>
                                                                     </div>
                                                                 </form>
                                                             </div>

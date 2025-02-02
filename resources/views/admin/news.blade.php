@@ -5,17 +5,17 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>News</h3>
-                <a href="{{ route('admin.news.create') }}" class="btn btn-primary">Create</a>
+                <h3>Berita</h3>
+                <a href="{{ route('admin.news.create') }}" class="btn btn-primary">Tambah</a>
                 <div class="table-responsive">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Title</th>
-                                <th>Author</th>
+                                <th>Judul</th>
+                                <th>Penulis</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,8 +26,8 @@
                                     <td>{{ $new->author }}</td>
                                     <td>{{ $new->status }}</td>
                                     <td>
-                                        <a href="{{ route('admin.news.edit', $new->id) }}" class="btn btn-warning">Edit</a>
-                                        <a href="{{ route('admin.news.destroy', $new->id) }}" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('admin.news.edit', $new->id) }}" class="btn btn-warning">Ubah</a>
+                                        <a href="{{ route('admin.news.destroy', $new->id) }}" class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach

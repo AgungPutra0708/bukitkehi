@@ -7,8 +7,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h4>Pesanan Ticket</h4>
-                            <button type="button" class="btn btn-primary sendIncomeOnline">Kirim Income Bulanan</button>
+                            <h4>Pesanan Tiket</h4>
+                            <button type="button" class="btn btn-primary sendIncomeOnline">Kirim Penghasilan Bulanan</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -71,19 +71,19 @@
                                                             <button type="button" class="btn btn-warning"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Tertunda
                                                             </button>
                                                         @elseif($order->status == 'accepted')
                                                             <button type="button" class="btn btn-primary"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Disetujui
                                                             </button>
                                                         @elseif($order->status == 'rejected')
                                                             <button type="button" class="btn btn-danger"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Ditolak
                                                             </button>
                                                         @endif
                                                         <div class="modal fade" id="exampleModalLive{{ $order->id }}"
@@ -94,7 +94,7 @@
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLiveLabel">
                                                                             Modal
-                                                                            title
+                                                                            Judul
                                                                         </h5>
                                                                         <button type="button" class="btn-close"
                                                                             data-bs-dismiss="modal"
@@ -113,21 +113,20 @@
                                                                                     class="form-control">
                                                                                     <option value="pending"
                                                                                         {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Pending</option>
+                                                                                        Tertunda</option>
                                                                                     <option value="accepted"
                                                                                         {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Accepted</option>
+                                                                                        Disetujui</option>
                                                                                     <option value="rejected"
                                                                                         {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Rejected</option>
+                                                                                        Ditolak</option>
                                                                                 </select>
                                                                             </div>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save
-                                                                            changes</button>
+                                                                            data-bs-dismiss="modal">Tutup</button>
+                                                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -181,19 +180,19 @@
                                                             <button type="button" class="btn btn-warning"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Tertunda
                                                             </button>
                                                         @elseif($order->status == 'accepted')
                                                             <button type="button" class="btn btn-primary"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Disetujui
                                                             </button>
                                                         @elseif($order->status == 'rejected')
                                                             <button type="button" class="btn btn-danger"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Ditolak
                                                             </button>
                                                         @endif
                                                         <div class="modal fade" id="exampleModalLive{{ $order->id }}"
@@ -204,7 +203,7 @@
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
                                                                             id="exampleModalLiveLabel">Modal
-                                                                            title
+                                                                            Judul
                                                                         </h5>
                                                                         <button type="button" class="btn-close"
                                                                             data-bs-dismiss="modal"
@@ -223,22 +222,21 @@
                                                                                     class="form-control">
                                                                                     <option value="pending"
                                                                                         {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Pending</option>
+                                                                                        Tertunda</option>
                                                                                     <option value="accepted"
                                                                                         {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Accepted</option>
+                                                                                        Disetujui</option>
                                                                                     <option value="rejected"
                                                                                         {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Rejected</option>
+                                                                                        Ditolak</option>
                                                                                 </select>
                                                                             </div>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
+                                                                            data-bs-dismiss="modal">Tutup</button>
                                                                         <button type="submit"
-                                                                            class="btn btn-primary">Save
-                                                                            changes</button>
+                                                                            class="btn btn-primary">Simpan Perubahan</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -292,19 +290,19 @@
                                                             <button type="button" class="btn btn-warning"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Tertunda
                                                             </button>
                                                         @elseif($order->status == 'accepted')
                                                             <button type="button" class="btn btn-primary"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Disetujui
                                                             </button>
                                                         @elseif($order->status == 'rejected')
                                                             <button type="button" class="btn btn-danger"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                {{ $order->status }}
+                                                                Ditolak
                                                             </button>
                                                         @endif
                                                         <div class="modal fade" id="exampleModalLive{{ $order->id }}"
@@ -315,7 +313,7 @@
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
                                                                             id="exampleModalLiveLabel">Modal
-                                                                            title
+                                                                            Judul
                                                                         </h5>
                                                                         <button type="button" class="btn-close"
                                                                             data-bs-dismiss="modal"
@@ -334,22 +332,21 @@
                                                                                     class="form-control">
                                                                                     <option value="pending"
                                                                                         {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Pending</option>
+                                                                                        Tertunda</option>
                                                                                     <option value="accepted"
                                                                                         {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Accepted</option>
+                                                                                        Disetujui</option>
                                                                                     <option value="rejected"
                                                                                         {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Rejected</option>
+                                                                                        Ditolak</option>
                                                                                 </select>
                                                                             </div>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
+                                                                            data-bs-dismiss="modal">Tutup</button>
                                                                         <button type="submit"
-                                                                            class="btn btn-primary">Save
-                                                                            changes</button>
+                                                                            class="btn btn-primary">Simpan Perubahan</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -398,7 +395,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="totalIncome" class="form-label">Total Income</label>
+                                <label for="totalIncome" class="form-label">Total Penghasilan</label>
                                 <input type="text" name="totalIncome" id="totalIncome" class="form-control" readonly
                                     required>
                             </div>

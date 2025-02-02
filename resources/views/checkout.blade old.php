@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Checkout Page </title>
+    <title>Halaman Check-out </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
@@ -119,18 +119,18 @@
                                             required value="{{ Auth::user()->name }}" autocomplete="name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="ticket_date">Tanggal Ticket</label>
+                                        <label for="ticket_date">Tanggal Tiket</label>
                                         <input type="date" class="form-control" id="ticket_date" name="ticket_date"
                                             required autocomplete="off">
                                     </div>
                                     <div class="form-group">
-                                        <label for="quantity">Jumlah Ticket</label>
+                                        <label for="quantity">Jumlah Tiket</label>
                                         <input type="number" class="form-control" id="quantity" name="quantity"
                                             required autocomplete="quantity" min="1">
                                     </div>
                                     <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
                                     <div class="form-group">
-                                        <label for="payment_proof">Upload Bukti Pembayaran</label>
+                                        <label for="payment_proof">Unggah Bukti Pembayaran</label>
                                         <input type="file" class="form-control" id="payment_proof"
                                             name="payment_proof" required accept="image/*">
                                     </div>

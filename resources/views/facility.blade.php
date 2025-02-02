@@ -9,11 +9,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Facility List</h1>
+                    <h1 class="mb-3">Daftar Fasilitas</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Facility Lists</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Daftar Fasilitas</li>
                         </ul>
                     </nav>
                 </div>
@@ -27,8 +27,8 @@
     <section class="trending pb-0 pt-6 mb-3">
         <div class="container">
             <div class="section-title mb-6 w-50 mx-auto text-center">
-                <h4 class="mb-1 theme1">Our Facilities</h4>
-                <h2 class="mb-1">Explore <span class="theme">Our Facilities</span></h2>
+                <h4 class="mb-1 theme1">Fasilitas Kami</h4>
+                <h2 class="mb-1">Jelajahi <span class="theme">Fasilitas Kami</span></h2>
             </div>
             <div class="row align-items-center">
                 @foreach ($facility as $item)

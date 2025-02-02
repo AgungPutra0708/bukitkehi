@@ -57,7 +57,7 @@
                                             name="tidak_diketahui" required>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary">Tambah Statistik</button>
                                     </div>
                                 </form>
                             </div>
@@ -73,7 +73,7 @@
                                 <th>Bulan</th>
                                 <th>Pengunjung Perempuan</th>
                                 <th>Pengunjung Laki-laki</th>
-                                <th>Total Pengunjung</th>
+                                <th>Tidak Diketahui</th>
                                 <th>Total Pengunjung</th>
                                 <th>Aksi</th>
                             </tr>
@@ -115,14 +115,14 @@
                                     <td>{{ $item->jumlah_perempuan + $item->jumlah_lakilaki + $item->tidak_diketahui }}</td>
                                     <td>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
-                                            Edit
+                                            Ubah
                                         </button>
                                         <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-labelledby="editModalLabel"
                                             aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Edit Statistik</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Ubah Statistik</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -167,7 +167,7 @@
                                                                     name="tidak_diketahui" value="{{ $item->tidak_diketahui }}" required>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -175,7 +175,7 @@
                                             </div>
                                         </div>
                                         <a href="{{ route('admin.statistik.destroy', $item->id) }}"
-                                            class="btn btn-danger">Delete</a>
+                                            class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach

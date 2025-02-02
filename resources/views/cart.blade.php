@@ -7,11 +7,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Cart</h1>
+                    <h1 class="mb-3">Keranjang</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Keranjang</li>
                         </ul>
                     </nav>
                 </div>
@@ -24,15 +24,15 @@
     <!-- Cart starts -->
     <section class="cart-main pt-6 pb-60">
         <div class="container">
-            <h2 class="mb-4">Your Shopping Cart</h2>
+            <h2 class="mb-4">Keranjang Belanjamu</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Kuantitas</th>
                         <th>Total</th>
-                        <th>Action</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

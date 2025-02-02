@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Website Wisata Bukit Kehi Pamekasan</title>
+    <title>Situs Wisata Bukit Kehi Pamekasan</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets-landing/images/favicon.png') }}">
     <!-- Bootstrap core CSS -->
@@ -100,24 +100,24 @@
                         <div class="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav" id="responsive-menu">
 
-                                <li class="active"><a href="{{ route('index') }}">Home</a></li>
+                                <li class="active"><a href="{{ route('index') }}">Beranda</a></li>
                                 <li class="submenu dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-haspopup="true" aria-expanded="false">About Us <i class="icon-arrow-down"
+                                        aria-haspopup="true" aria-expanded="false">Tentang Kami <i class="icon-arrow-down"
                                             aria-hidden="true"></i></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ route('landing.sejarah') }}">Sejarah</a></li>
                                         <li><a href="{{ route('landing.statistik') }}">Statistik</a></li>
                                         <li class=""><a href="{{ route('landing.destination') }}">Wahana</a>
                                         </li>
-                                        <li class=""><a href="{{ route('landing.gallery') }}">Gallery</a></li>
-                                        <li class=""><a href="{{ route('landing.facility') }}">Facility</a></li>
+                                        <li class=""><a href="{{ route('landing.gallery') }}">Galeri</a></li>
+                                        <li class=""><a href="{{ route('landing.facility') }}">Fasilitas</a></li>
                                     </ul>
                                 </li>
-                                <li class=""><a href="{{ route('landing.product') }}">Product</a></li>
-                                <li class=""><a href="{{ route('landing.views') }}">Virtual Tour</a></li>
+                                <li class=""><a href="{{ route('landing.product') }}">Produk</a></li>
+                                <li class=""><a href="{{ route('landing.views') }}">Tur Virtual</a></li>
                                 <li class=""><a href="{{ route('landing.objects') }}">Objek Pendukung</a></li>
-                                <li class=""><a href="{{ route('landing.news') }}">News</a></li>
+                                <li class=""><a href="{{ route('landing.news') }}">Berita</a></li>
                                 <li class=""><a href="{{ route('landing.contact') }}">Kontak kami</a></li>
                                 @if (Auth::check())
                                     <li class=""><a href="{{ route('user.order') }}"><i
@@ -132,10 +132,10 @@
                                 </a>
                             @else
                                 <a href="{{ route('login') }}" class="me-3">
-                                    <i class="icon-user"></i> Login/Register
+                                    <i class="icon-user"></i> Masuk/Daftar
                                 </a>
                             @endif
-                            <a href="{{ route('ticket') }}" class="nir-btn white">Pesan Ticket</a>
+                            <a href="{{ route('ticket') }}" class="nir-btn white">Pesan Tiket</a>
                         </div>
 
                         <div id="slicknav-mobile"></div>
@@ -169,26 +169,26 @@
                             <img src="{{ asset('assets-landing/images/logo.png') }}" alt=""
                                 style="width: 100px; height: 100px; ">
                             <p class="mt-3 mb-3 white">
-                                Website Resmi Pemerintah Desa Kertagenah Dajah, Kecamatan Kadur, Kabupaten Pamekasan
+                                Situs Resmi Pemerintah Desa Kertagenah Dajah, Kecamatan Kadur, Kabupaten Pamekasan
                             </p>
                             <ul>
-                                <li class="white"><strong>PO Box:</strong> 085231065084</li>
-                                <li class="white"><strong>Location:</strong> Pamekasan, Jawa Timur, Indonesia</li>
+                                <li class="white"><strong>Telepon:</strong> 085231065084</li>
+                                <li class="white"><strong>Lokasi:</strong> Pamekasan, Jawa Timur, Indonesia</li>
                                 <li class="white"><strong>Email:</strong> pemdeskertagenadajah@gmail.com</li>
-                                <li class="white"><strong>Website:</strong> www.bukitkehi.com</li>
+                                <li class="white"><strong>Situs:</strong> www.bukitkehi.com</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="footer-links">
-                            <h3 class="white">Quick link</h3>
+                            <h3 class="white">Tautan Cepat</h3>
                             <ul>
                                 <li><a href="{{ route('landing.about') }}">Sejarah</a></li>
                                 <li><a href="{{ route('landing.statistik') }}">Statistik</a></li>
                                 <li><a href="{{ route('landing.destination') }}">Wahana</a></li>
-                                <li><a href="{{ route('landing.gallery') }}">Gallery</a></li>
-                                <li><a href="{{ route('landing.product') }}">Product</a></li>
-                                <li><a href="{{ route('landing.news') }}">News</a></li>
+                                <li><a href="{{ route('landing.gallery') }}">Galeri</a></li>
+                                <li><a href="{{ route('landing.product') }}">Produk</a></li>
+                                <li><a href="{{ route('landing.news') }}">Berita</a></li>
                                 <li><a href="{{ route('landing.contact') }}">Kontak kami</a></li>
 
                             </ul>
@@ -208,7 +208,7 @@
                                     <li><a href="#">No. HP: 082331034448</a></li>
                                     <li><a href="#">
                                             Email: pemdeskertagenadajah@gmail.com</a></li>
-                                    <li><a href="#">Website: www.bukitkehi.com</a></li>
+                                    <li><a href="#">Situs: www.bukitkehi.com</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -240,7 +240,7 @@
         <button type="button" class="close">×</button>
         <form>
             <input type="search" value="" placeholder="type keyword(s) here" />
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">Cari</button>
         </form>
     </div>
 
@@ -260,12 +260,12 @@
                             <li class="nav-item" role="presentation">
                                 <button aria-controls="login" aria-selected="false" class="nav-link active"
                                     data-bs-target="#login" data-bs-toggle="tab" id="login-tab" role="tab"
-                                    type="button">Login</button>
+                                    type="button">Masuk</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button aria-controls="register" aria-selected="true" class="nav-link"
                                     data-bs-target="#register" data-bs-toggle="tab" id="register-tab" role="tab"
-                                    type="button">Register</button>
+                                    type="button">Daftar</button>
                             </li>
                         </ul>
                         <!-- tab contents -->
@@ -281,7 +281,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <h4 class="text-center border-b pb-2">Login</h4>
+                                        <h4 class="text-center border-b pb-2">Masuk</h4>
                                         <hr class="log-reg-hr position-relative my-4 overflow-visible">
                                         <form action="{{ route('loginPost') }}" method="post">
                                             @csrf
@@ -304,7 +304,7 @@
                                                     id="password" placeholder="Password">
                                             </div>
                                             <div class="comment-btn mb-2 pb-2 text-center border-b">
-                                                <button type="submit" class="nir-btn w-100">Login</button>
+                                                <button type="submit" class="nir-btn w-100">Masuk</button>
                                             </div>
                                         </form>
                                     </div>
@@ -321,13 +321,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <h4 class="text-center border-b pb-2">Register</h4>
+                                        <h4 class="text-center border-b pb-2">Daftar</h4>
                                         <div class="log-reg-button d-flex align-items-center justify-content-between">
                                             <button type="submit" class="btn btn-fb">
-                                                <i class="fab fa-facebook"></i> Login with Facebook
+                                                <i class="fab fa-facebook"></i> Masuk dengan Facebook
                                             </button>
                                             <button type="submit" class="btn btn-google">
-                                                <i class="fab fa-google"></i> Login with Google
+                                                <i class="fab fa-google"></i> Masuk dengan Google
                                             </button>
                                         </div>
                                         <hr class="log-reg-hr position-relative my-4 overflow-visible">
@@ -356,14 +356,14 @@
                                                     id="exampleCheck1">
                                                 <label class="custom-control-label mb-0 ms-1 lh-1"
                                                     for="exampleCheck1">I
-                                                    have read and accept the Terms and Privacy Policy?</label>
+                                                    Apa anda telah membaca dan menerima syarat dan kebijakan privasi?</label>
                                             </div>
                                             <div class="comment-btn mb-2 pb-2 text-center border-b">
                                                 <input type="submit" class="nir-btn w-100" id="submit1"
                                                     value="Register">
                                             </div>
                                             <p class="text-center">Sudah punya akun? <a href="#"
-                                                    class="theme">Login</a>
+                                                    class="theme">Masuk</a>
                                             </p>
                                         </form>
                                     </div>

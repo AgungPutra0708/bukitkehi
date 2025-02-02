@@ -6,16 +6,16 @@
         <div class="card">
             <div class="card-body">
                 <h3>Aparatur</h3>
-                <a href="{{ route('admin.aparatur.create') }}" class="btn btn-primary">Create</a>
+                <a href="{{ route('admin.aparatur.create') }}" class="btn btn-primary">Tambahkan</a>
                 <div class="table-responsive">
                     <table class="table table-borderless">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Action</th>
+                                <th>Foto</th>
+                                <th>Nama</th>
+                                <th>Posisi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,8 +28,8 @@
                                     <td>{{ $aparatur->name }}</td>
                                     <td>{{ $aparatur->position }}</td>
                                     <td>
-                                        <a href="{{ route('admin.aparatur.edit', $aparatur->id) }}" class="btn btn-primary">Edit</a>
-                                        <a href="{{ route('admin.aparatur.destroy', $aparatur->id) }}" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('admin.aparatur.edit', $aparatur->id) }}" class="btn btn-primary">Ubah</a>
+                                        <a href="{{ route('admin.aparatur.destroy', $aparatur->id) }}" class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach

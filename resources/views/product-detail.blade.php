@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="description mb-2">
-                    <h4>Description</h4>
+                    <h4>Deskripsi</h4>
                     {!! $product->description !!}
                 </div>
                 <div class="description mb-2 text-center">

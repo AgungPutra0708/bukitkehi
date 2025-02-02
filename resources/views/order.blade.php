@@ -8,11 +8,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Order </h1>
+                    <h1 class="mb-3">Memesan</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Order</li>
+                            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Memesan</li>
                         </ul>
                     </nav>
                 </div>
@@ -30,12 +30,12 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Code</th>
-                        <th>Ticket</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
+                        <th>Kode</th>
+                        <th>Tiket</th>
+                        <th>Kuantitas</th>
+                        <th>Harga Total</th>
                         <th>Status</th>
-                        <th>E-Ticket</th>
+                        <th>E-Tiket</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,11 +48,11 @@
                         <td>{{ $order->total_price }}</td>
                         <td>
                             @if($order->status == 'accepted')
-                            <label class="badge bg-success">Accepted</label>
+                            <label class="badge bg-success">Diterima</label>
                             @elseif($order->status == 'rejected')
-                            <label class="badge bg-danger">Rejected</label>
+                            <label class="badge bg-danger">Ditolak</label>
                             @else
-                            <label class="badge bg-warning">Waiting Confirmation</label>
+                            <label class="badge bg-warning">Menunggu Konfirmasi</label>
                             @endif
                         </td>
                         @if($order->status == 'accepted')
@@ -61,7 +61,7 @@
                         </td>
                         @else
                         <td>
-                            <label class="badge bg-warning">Waiting Confirmation</label>
+                            <label class="badge bg-warning">Menunggu Konfirmasi</label>
                         </td>
                         @endif
                     </tr>

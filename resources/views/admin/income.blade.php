@@ -7,7 +7,7 @@
                 <!-- Table Card -->
                 <div class="card">
                     <div class="card-header">
-                        <h4>Income</h4>
+                        <h4>Penghasilan</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -16,7 +16,7 @@
                                     <tr>
                                         <th>Tahun</th>
                                         <th>Bulan</th>
-                                        <th>Amount</th>
+                                        <th>Jumlah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -31,7 +31,7 @@
                 <!-- Dynamic Form Card -->
                 <div class="card">
                     <div class="card-header">
-                        <h4>Input Income</h4>
+                        <h4>Masukan Penghasilan</h4>
                     </div>
                     <div class="card-body">
                         <form id="dynamicIncomeForm">
@@ -54,7 +54,7 @@
                             <table class="table table-bordered" id="dynamicTable">
                                 <thead>
                                     <tr>
-                                        <th style="width: 25%">Type Tiket</th>
+                                        <th style="width: 25%">Tipe Tiket</th>
                                         <th style="width: 25%">Tiket/Fasilitas</th>
                                         <th style="width: 20%">Harga</th>
                                         <th style="width: 5%">Jumlah</th>
@@ -91,17 +91,17 @@
                                             <div class="d-flex align-items-center">
                                                 <button type="button"
                                                     class="btn btn-sm btn-success me-2 addRow text-center">
-                                                    <i class="material-icons">add</i>
+                                                    <i class="material-icons">Tambah</i>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger removeRow text-center">
-                                                    <i class="material-icons">delete</i>
+                                                    <i class="material-icons">Hapus</i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
                 </div>

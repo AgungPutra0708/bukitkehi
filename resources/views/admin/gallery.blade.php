@@ -5,16 +5,16 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>Gallery</h3>
-                <a href="{{ route('admin.gallery.create') }}" class="btn btn-primary">Create</a>
+                <h3>Galeri</h3>
+                <a href="{{ route('admin.gallery.create') }}" class="btn btn-primary">Tambah</a>
                 <div class="table-responsive">
                     <table class="table table-borderless" id="table">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>File</th>
-                                <th>Type</th>
-                                <th>Action</th>
+                                <th>Berkas</th>
+                                <th>Tipe</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,7 +54,7 @@
                                     <td>{{ $gallery->type }}</td>
                                     <td>
                                         <a href="{{ route('admin.gallery.destroy', $gallery->id) }}"
-                                            class="btn btn-danger">Delete</a>
+                                            class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
                             @endforeach
