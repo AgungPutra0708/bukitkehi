@@ -8052,4 +8052,23 @@ ul.sidebar-tags li a:hover {
     border: 0;
 }
 
+.support-object-item {
+    display: flex;
+}
+
+.trend-full {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Pastikan semua card memiliki tinggi yang sama */
+}
+
+.trend-content {
+    flex-grow: 1; /* Memastikan bagian konten mengambil sisa ruang */
+}
+
+.trend-item2 img {
+    max-height: 200px;
+    object-fit: cover;
+}
+
 /*# sourceMappingURL=style.css.map */

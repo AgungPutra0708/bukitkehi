@@ -28,6 +28,7 @@
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <link rel="stylesheet" href="{{ asset('assets-landing/fonts/line-icons.css') }}" type="text/css">
 
@@ -74,11 +75,25 @@
                 </div>
                 <div class="links float-right">
                     <ul>
-                        <li><a href="#" class="white"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="white"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="white"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <li>
+                            <a href="https://m.youtube.com/@wisatabukitkehi482" class="white" target="_blank">
+                                <i class="fab fa-youtube" aria-hidden="true"></i>
+                            </a>
                         </li>
-                        <li><a href="#" class="white"><i class="fab fa-linkedin " aria-hidden="true"></i></a>
+                        <li>
+                            <a href="https://www.tiktok.com/@bukit_kehi" class="white" target="_blank">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/bukit_kehi" class="white" target="_blank">
+                                <i class="fab fa-instagram" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://wa.me/6282331034448" class="white" target="_blank">
+                                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -103,15 +118,16 @@
                                 <li class="active"><a href="{{ route('index') }}">Beranda</a></li>
                                 <li class="submenu dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-haspopup="true" aria-expanded="false">Tentang Kami <i class="icon-arrow-down"
-                                            aria-hidden="true"></i></a>
+                                        aria-haspopup="true" aria-expanded="false">Tentang Kami <i
+                                            class="icon-arrow-down" aria-hidden="true"></i></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ route('landing.sejarah') }}">Sejarah</a></li>
                                         <li><a href="{{ route('landing.statistik') }}">Statistik</a></li>
                                         <li class=""><a href="{{ route('landing.destination') }}">Wahana</a>
                                         </li>
                                         <li class=""><a href="{{ route('landing.gallery') }}">Galeri</a></li>
-                                        <li class=""><a href="{{ route('landing.facility') }}">Fasilitas</a></li>
+                                        <li class=""><a href="{{ route('landing.facility') }}">Fasilitas</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class=""><a href="{{ route('landing.product') }}">Produk</a></li>
@@ -244,9 +260,10 @@
         </form>
     </div>
 
-    <script src="
-                                                                                                                    https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js
-                                                                                                                        ">
+    <script
+        src="
+                                                                                                                                                https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js
+                                                                                                                                                    ">
     </script>
     @yield('script')
     <!-- login registration modal -->
@@ -356,7 +373,8 @@
                                                     id="exampleCheck1">
                                                 <label class="custom-control-label mb-0 ms-1 lh-1"
                                                     for="exampleCheck1">I
-                                                    Apa anda telah membaca dan menerima syarat dan kebijakan privasi?</label>
+                                                    Apa anda telah membaca dan menerima syarat dan kebijakan
+                                                    privasi?</label>
                                             </div>
                                             <div class="comment-btn mb-2 pb-2 text-center border-b">
                                                 <input type="submit" class="nir-btn w-100" id="submit1"

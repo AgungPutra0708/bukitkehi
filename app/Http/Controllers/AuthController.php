@@ -197,7 +197,9 @@ class AuthController extends Controller
     public function ticket()
     {
         $tickets = Ticket::where('status', 'publish')->get();
-        return view('ticket', compact('tickets'));
+        $supportObjects = SupportObject::all(); // Ambil semua data SupportObject
+
+        return view('ticket', compact('tickets', 'supportObjects'));
     }
 
     // Sejarah
