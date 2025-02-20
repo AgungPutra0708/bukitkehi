@@ -55,90 +55,147 @@
         </div>
         <div id="map" style="height: 500px;"></div>
     </div>
+    <!-- Modal untuk Route -->
+    <div class="modal fade" id="routeModal" tabindex="-1" aria-labelledby="routeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="routeModalLabel">Navigasi ke <span id="modalStoreName"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="routeMap" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.0/dist/leaflet-routing-machine.js"></script>
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var defaultLat = -7.07672301030441;
-            var defaultLng = 113.60830950818035;
+    document.addEventListener('DOMContentLoaded', function() {
+        var defaultLat = -7.07672301030441;
+        var defaultLng = 113.60830950818035;
 
-            var map = L.map('map').setView([defaultLat, defaultLng], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 50,
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
+        var map = L.map('map').setView([defaultLat, defaultLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 50,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-            // Tambahkan marker lokasi awal
-            var currentLocationMarker = L.marker([defaultLat, defaultLng]).addTo(map).bindPopup("<b>You are here!</b>").openPopup();
+        var routeMap = L.map('routeMap').setView([defaultLat, defaultLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 50,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(routeMap);
 
-            var currentMarkers = [];
-            var routeControl = null;
-            var destinationMarker = null;
+        // Tambahkan marker lokasi awal
+        var currentLocationMarker = L.marker([defaultLat, defaultLng]).addTo(map).bindPopup("<b>You are here!</b>").openPopup();
+        var currentLocationMarkerRouteMap = L.marker([defaultLat, defaultLng]).addTo(routeMap).bindPopup("<b>You are here!</b>").openPopup();
 
-            // Definisi ikon
-            var icons = {
-                hotel: L.icon({
-                    iconUrl: '{{ asset("assets-landing/images/icons/hotel.png") }}',
-                    iconSize: [40, 40],
-                    iconAnchor: [19, 42],
-                    popupAnchor: [0, -32]
-                }),
-                restaurant: L.icon({
-                    iconUrl: '{{ asset("assets-landing/images/icons/restaurant.png") }}',
-                    iconSize: [40, 40],
-                    iconAnchor: [19, 42],
-                    popupAnchor: [0, -32]
-                }),
-                attraction: L.icon({
-                    iconUrl: '{{ asset("assets-landing/images/icons/other.png") }}',
-                    iconSize: [40, 40],
-                    iconAnchor: [19, 42],
-                    popupAnchor: [0, -32]
-                })
-            };
+        var currentMarkers = [];
+        var routeControl = null;
+        var destinationMarker = null;
+        var routeControlRouteMap = null;
+        var destinationMarkerRouteMap = null;
 
-            var table = $('#storesTable').DataTable({
-                lengthChange: false,
-                searching: false,
-                pageLength: 5,
-                columns: [
-                    { data: null, render: function(data, type, row, meta) { return meta.row + 1; }},
-                    { data: 'image', render: function(data) {
+        // Definisi ikon
+        var icons = {
+            hotel: L.icon({
+                iconUrl: '{{ asset("assets-landing/images/icons/hotel.png") }}',
+                iconSize: [40, 40],
+                iconAnchor: [19, 42],
+                popupAnchor: [0, -32]
+            }),
+            restaurant: L.icon({
+                iconUrl: '{{ asset("assets-landing/images/icons/restaurant.png") }}',
+                iconSize: [40, 40],
+                iconAnchor: [19, 42],
+                popupAnchor: [0, -32]
+            }),
+            attraction: L.icon({
+                iconUrl: '{{ asset("assets-landing/images/icons/other.png") }}',
+                iconSize: [40, 40],
+                iconAnchor: [19, 42],
+                popupAnchor: [0, -32]
+            })
+        };
+
+        var table = $('#storesTable').DataTable({
+            lengthChange: false,
+            searching: false,
+            pageLength: 5,
+            columns: [{
+                    data: null,
+                    render: function(data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    data: 'image',
+                    render: function(data) {
                         return data ? `<img src="/storage/objek/${data}" alt="" class="rounded" style="width: 100%; height: 100px">` : '<i>Tidak Ada Gambar</i>';
-                    }},
-                    { data: 'name' },
-                    { data: 'tipe', render: function(data) {
-                        return { '1': 'Hotel', '2': 'Restaurant', '3': 'Attraction' }[data] || 'Other';
-                    }},
-                    { data: 'distance', render: function(data) {
+                    }
+                },
+                {
+                    data: 'name'
+                },
+                {
+                    data: 'tipe',
+                    render: function(data) {
+                        return {
+                            '1': 'Hotel',
+                            '2': 'Restaurant',
+                            '3': 'Attraction'
+                        } [data] || 'Other';
+                    }
+                },
+                {
+                    data: 'distance',
+                    render: function(data) {
                         return `${parseFloat(data).toFixed(2)} km`;
-                    }},
-                    { data: 'description', render: function(data) {
+                    }
+                },
+                {
+                    data: 'description',
+                    render: function(data) {
                         return data ? (data.length > 50 ? data.substring(0, 50) + '...' : data) : '<i>Tidak Ada Deskripsi</i>';
-                    }},
-                    { data: null, render: function(data) {
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
                         return `
                             <button class="btn btn-primary btn-sm" onclick="getRoute('${defaultLat}', '${defaultLng}', '${data.latitude}', '${data.longitude}', '${data.name}', '${data.tipe}')">Get Route</button>
                             <a href="/objects/${data.id}" class="btn btn-success btn-sm">Detail</a>`;
-                    }}
-                ]
-            });
+                    }
+                }
+            ]
+        });
 
-            function clearRoute() {
-                if (routeControl) {
-                    map.removeControl(routeControl);
-                    routeControl = null;
-                }
-                if (destinationMarker) {
-                    map.removeLayer(destinationMarker);
-                    destinationMarker = null;
-                }
+        function clearRoute() {
+            if (routeControl) {
+                map.removeControl(routeControl);
+                routeControl = null;
             }
+            if (destinationMarker) {
+                map.removeLayer(destinationMarker);
+                destinationMarker = null;
+            }
+            if (routeControlRouteMap) {
+                routeMap.removeControl(routeControlRouteMap);
+                routeControlRouteMap = null;
+            }
+            if (destinationMarkerRouteMap) {
+                routeMap.removeLayer(destinationMarkerRouteMap);
+                destinationMarkerRouteMap = null;
+            }
+        }
 
-            function fetchStores(type = '') {
-                fetch('/api/find-nearest-stores', {
+        function fetchStores(type = '') {
+            fetch('/api/find-nearest-stores', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -158,9 +215,15 @@
 
                     currentMarkers.forEach(marker => map.removeLayer(marker));
                     currentMarkers = data.map(store => {
-                        var icon = icons[{'1': 'hotel', '2': 'restaurant', '3': 'attraction'}[store.tipe] || 'hotel'];
+                        var icon = icons[{
+                            '1': 'hotel',
+                            '2': 'restaurant',
+                            '3': 'attraction'
+                        } [store.tipe] || 'hotel'];
                         var gmapsLink = `https://www.google.com/maps/dir/?api=1&origin=${defaultLat},${defaultLng}&destination=${store.latitude},${store.longitude}`;
-                        return L.marker([store.latitude, store.longitude], { icon: icon })
+                        return L.marker([store.latitude, store.longitude], {
+                                icon: icon
+                            })
                             .addTo(map)
                             .bindPopup(`
                                 <b>${store.name}</b><br>
@@ -172,37 +235,97 @@
                     clearRoute();
                 })
                 .catch(error => console.error('Error fetching stores:', error));
-            }
+        }
 
-            $('#typeFilter').on('change', function() {
-                fetchStores($(this).val());
-            });
+        $('#typeFilter').on('change', function() {
+            fetchStores($(this).val());
+        });
 
-            fetchStores();
+        fetchStores();
 
-            window.getRoute = function(userLat, userLng, storeLat, storeLng, storeName, storeType) {
+        window.getRoute = function(userLat, userLng, storeLat, storeLng, storeName, storeType) {
+            clearRoute();
+
+            $('#routeModal').modal('show');
+            $('#modalStoreName').text(storeName);
+            $('#routeModal').on('shown.bs.modal', function() {
                 clearRoute();
+                // Bersihkan routeMap sebelum menambahkan rute baru
+                // routeMap.eachLayer(function(layer) {
+                //     if (!!layer.toGeoJSON) {
+                //         routeMap.removeLayer(layer);
+                //     }
+                // });
 
-                routeControl = L.Routing.control({
-                    waypoints: [L.latLng(userLat, userLng), L.latLng(storeLat, storeLng)],
+                var icon = icons[{
+                    '1': 'hotel',
+                    '2': 'restaurant',
+                    '3': 'attraction'
+                } [storeType] || 'hotel'];
+
+                var gmapsLink = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${storeLat},${storeLng}`;
+                // $('#googleMapsLink').attr('href', gmapsLink);
+
+                // Tambahkan marker tujuan di routeMap
+                destinationMarkerRouteMap = L.marker([storeLat, storeLng], {
+                        icon: icon
+                    }).addTo(routeMap)
+                    .bindPopup(`
+                        <b>${storeName}</b><br>
+                        Distance: ${(L.latLng(defaultLat, defaultLng).distanceTo(L.latLng(storeLat, storeLng)) / 1000).toFixed(2)} km<br>
+                        <a href="${gmapsLink}" target="_blank" class="btn btn-sm btn-light">Navigasi</a>
+                    `).openPopup();
+
+                // Tambahkan rute ke dalam routeMap di modal
+                routeControlRouteMap = L.Routing.control({
+                    waypoints: [
+                        L.latLng(userLat, userLng),
+                        L.latLng(storeLat, storeLng)
+                    ],
                     routeWhileDragging: true,
-                    createMarker: () => null,
+                    createMarker: function() {
+                        return null;
+                    },
                     fitSelectedRoutes: true,
                     collapsible: true
-                }).addTo(map);
+                }).addTo(routeMap);
 
-                $('.leaflet-routing-container').hide();
+                // **PERBAIKAN: Pastikan peta dalam modal tampil penuh**
+                setTimeout(() => {
+                    routeMap.invalidateSize();
+                    routeMap.fitBounds([
+                        [userLat, userLng],
+                        [storeLat, storeLng]
+                    ]);
+                }, 500);
+            });
 
-                var icon = icons[{'1': 'hotel', '2': 'restaurant', '3': 'attraction'}[storeType] || 'hotel'];
-                var gmapsLink = `https://www.google.com/maps/dir/?api=1&origin=${defaultLat},${defaultLng}&destination=${storeLat},${storeLng}`;
+            // routeControl = L.Routing.control({
+            //     waypoints: [L.latLng(userLat, userLng), L.latLng(storeLat, storeLng)],
+            //     routeWhileDragging: true,
+            //     createMarker: () => null,
+            //     fitSelectedRoutes: true,
+            //     collapsible: true
+            // }).addTo(map);
 
-                destinationMarker = L.marker([storeLat, storeLng], { icon: icon }).addTo(map);
-                destinationMarker.bindPopup(`
-                    <b>${storeName}</b><br>
-                    Distance: ${(L.latLng(defaultLat, defaultLng).distanceTo(L.latLng(storeLat, storeLng)) / 1000).toFixed(2)} km<br>
-                    <a href="${gmapsLink}" target="_blank" class="btn btn-sm btn-light">Navigasi</a>
-                `).openPopup();
-            };
-        });
-    </script>
+            // $('.leaflet-routing-container').hide();
+
+            // var icon = icons[{
+            //     '1': 'hotel',
+            //     '2': 'restaurant',
+            //     '3': 'attraction'
+            // } [storeType] || 'hotel'];
+            // var gmapsLink = `https://www.google.com/maps/dir/?api=1&origin=${defaultLat},${defaultLng}&destination=${storeLat},${storeLng}`;
+
+            // destinationMarker = L.marker([storeLat, storeLng], {
+            //     icon: icon
+            // }).addTo(map);
+            // destinationMarker.bindPopup(`
+            //         <b>${storeName}</b><br>
+            //         Distance: ${(L.latLng(defaultLat, defaultLng).distanceTo(L.latLng(storeLat, storeLng)) / 1000).toFixed(2)} km<br>
+            //         <a href="${gmapsLink}" target="_blank" class="btn btn-sm btn-light">Navigasi</a>
+            //     `).openPopup();
+        };
+    });
+</script>
 @endsection

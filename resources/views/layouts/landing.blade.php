@@ -39,6 +39,12 @@
         #map {
             height: 500px;
         }
+
+        #routeMap {
+            width: 100%;
+            height: 400px !important;
+            display: block;
+        }
     </style>
     <style>
         .leaflet-routing-container {
