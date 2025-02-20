@@ -24,26 +24,37 @@ class UserController extends Controller
         Config::$is3ds = config('midtrans.is_3ds');
     }
 
-    public function cartAdd($id)
+    public function cartAdd(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         $ticket = Ticket::find($id);
         if (!$ticket) {
-            return redirect()->back()->with('error', 'Ticket not found');
+            return response()->json(['error' => 'Ticket not found'], 404);
         }
+
         $user = Auth::user();
-        //    cek apakah sudah ada di cart
         $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->first();
+        $qty = (int) $request->input('quantity', 1);
+
+        if ($qty <= 0) {
+            return response()->json(['error' => 'Invalid quantity'], 400);
+        }
+
         if ($cart) {
-            $cart->quantity += 1;
+            $cart->quantity += $qty;
             $cart->save();
         } else {
             $cart = new Cart();
-            $cart->quantity = 1;
+            $cart->quantity = $qty;
             $cart->user_id = $user->id;
             $cart->ticket_id = $ticket->id;
             $cart->save();
         }
-        return redirect()->back()->with('success', 'Ticket added to cart successfully!');
+
+        return;
     }
 
     public function cartCount()
@@ -208,8 +219,9 @@ class UserController extends Controller
     // Order
     public function order()
     {
+        $cart = Cart::where('user_id', Auth::user()->id)->get();
         $orders = Checkout::where('user_id', Auth::user()->id)->get();
-        return view('order', compact('orders'));
+        return view('order', compact('orders', 'cart'));
     }
 
     public function eTicket($code)

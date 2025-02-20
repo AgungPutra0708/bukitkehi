@@ -66,7 +66,8 @@ Route::get('/ticket/{name}', [AuthController::class, 'ticketShow'])->name('ticke
 
 // User
 Route::group(['middleware' => ['auth.middleware:user']], function () {
-    Route::get('/cart/add/{id}', [UserController::class, 'cartAdd'])->name('cart.add');
+    // Route::get('/cart/add/{id}', [UserController::class, 'cartAdd'])->name('cart.add');
+    Route::post('/cart/add/{id}', [UserController::class, 'cartAdd'])->name('cart.add');
     Route::get('/cart', [UserController::class, 'cart'])->name('cart');
     Route::get('/cart/destroy/{id}', [UserController::class, 'cartDestroy'])->name('cart.destroy');
 

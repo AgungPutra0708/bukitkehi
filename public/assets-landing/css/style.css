@@ -1106,6 +1106,13 @@ button {
     border: none;
 }
 
+.register-login .btn-danger,
+.register-login .btn-success {
+    height: 48px; /* Samakan tinggi dengan tombol lainnya */
+    padding: 10px 20px;
+    color: #fff;
+}
+
 .nir-btn,
 .nir-btn-black {
     position: relative;
@@ -2190,10 +2197,14 @@ header #navbar {
 .main_header_area .header_menu.fixed-top .register-login a {
     color: #777 !important;
 }
-.main_header_area .header_menu.fixed-top .register-login a.nir-btn {
+.main_header_area .header_menu.fixed-top .register-login a.nir-btn,
+.main_header_area .header_menu.fixed-top .register-login a.btn-danger,
+.main_header_area .header_menu.fixed-top .register-login a.btn-success {
     color: #fff !important;
 }
-.main_header_area .header_menu.fixed-top .register-login a.nir-btn:hover {
+.main_header_area .header_menu.fixed-top .register-login a.nir-btn:hover,
+.main_header_area .header_menu.fixed-top .register-login a.btn-danger:hover,
+.main_header_area .header_menu.fixed-top .register-login a.btn-success:hover {
     color: #fff !important;
 }
 
@@ -8054,21 +8065,53 @@ ul.sidebar-tags li a:hover {
 
 .support-object-item {
     display: flex;
+    flex-direction: column;
 }
 
 .trend-full {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Pastikan semua card memiliki tinggi yang sama */
+    height: 100%;
+    max-height: 370px !important;
 }
 
-.trend-content {
-    flex-grow: 1; /* Memastikan bagian konten mengambil sisa ruang */
+.trend-item2 {
+    width: 100%;
+    height: 200px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .trend-item2 img {
-    max-height: 200px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .support-object-item {
+        flex: 0 0 100%; /* Agar satu item per baris di layar kecil */
+    }
+}
+
+@media (max-width: 576px) {
+    .trend-item2 {
+        height: 150px; /* Mengurangi tinggi gambar di layar kecil */
+    }
+
+    .trend-content h3 {
+        font-size: 16px;
+    }
+
+    .trend-content h6 {
+        font-size: 14px;
+    }
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -82,35 +82,35 @@
                     </li>
                     @if (Auth::user()->level == 'admin')
                         <li class="@yield('active_dashboard')">
-                            <a href="" class="active"><i
-                                    class="material-icons-two-tone">dashboard</i>Admin Panel</a>
+                            <a href="" class="active">
+                                <i class="material-icons-two-tone">dashboard</i>Admin Panel</a>
                         </li>
                         <li class="@yield('active_aparatur')">
                             <a href="{{ route('admin.aparatur') }}" class="active"><i
-                                    class="material-icons-two-tone">Orang</i>Aparatur</a>
+                                    class="material-icons-two-tone">people</i>Aparatur</a>
                         </li>
                         <li class="@yield('active_destination')">
                             <a href="{{ route('admin.destination') }}" class="active"><i
-                                    class="material-icons-two-tone">Lokasi</i>Wahana</a>
+                                    class="material-icons-two-tone">location_on</i>Wahana</a>
                         </li>
 
                         <li class="@yield('active_gallery')">
                             <a href="{{ route('admin.gallery') }}" class="active"><i
-                                    class="material-icons-two-tone">Pustaka Foto</i>Galeri</a>
+                                    class="material-icons-two-tone">photo_library</i>Galeri</a>
                         </li>
                         <li class="@yield('active_news')">
                             <a href="{{ route('admin.news') }}" class="active"><i
-                                    class="material-icons-two-tone">Pustaka Buku</i>Berita & Artikel</a>
+                                    class="material-icons-two-tone">library_books</i>Berita & Artikel</a>
                         </li>
 
                         <li class="@yield('active_facility')">
                             <a href="{{ route('admin.facility') }}" class="active"><i
-                                    class="material-icons-two-tone">inventaris 2</i>Fasilitas</a>
+                                    class="material-icons-two-tone">inventory_2</i>Fasilitas</a>
                         </li>
 
                         <li class="@yield('active_objects')">
                             <a href="{{ route('admin.objects') }}" class="active"><i
-                                    class="material-icons-two-tone">inventaris 2</i>Objek Pendukung</a>
+                                    class="material-icons-two-tone">inventory_2</i>Objek Pendukung</a>
                         </li>
 
                         <li class="sidebar-title">
@@ -118,7 +118,7 @@
                         </li>
                         <li class="@yield('active_product')">
                             <a href="{{ route('admin.product') }}" class="active"><i
-                                    class="material-icons-two-tone">inventaris 2</i>Produk</a>
+                                    class="material-icons-two-tone">inventory_2</i>Produk</a>
                         </li>
                         <li class="sidebar-title">
                             Statistik
@@ -129,19 +129,19 @@
                         </li>
                         <li class="@yield('active_income')">
                             <a href="{{ route('admin.income') }}" class="active"><i
-                                    class="material-icons-two-tone">Uang</i>Pendapatan Masuk</a>
+                                    class="material-icons-two-tone">money</i>Pendapatan Masuk</a>
                         </li>
                         <li class="sidebar-title">
                             Tiket
                         </li>
                         <li class="@yield('active_ticket')">
                             <a href="{{ route('admin.ticket') }}" class="active"><i
-                                    class="material-icons-two-tone">inventaris 2</i>Tiket</a>
+                                    class="material-icons-two-tone">inventory_2</i>Tiket</a>
                         </li>
                         {{-- Pesanan Ticket --}}
                         <li class="@yield('active_order')">
                             <a href="{{ route('admin.order') }}" class="active"><i
-                                    class="material-icons-two-tone">inventaris 2</i>Pesanan Tiket</a>
+                                    class="material-icons-two-tone">inventory_2</i>Pesanan Tiket</a>
                         </li>
                         {{-- <li class="@yield('active_order')">
                             <a href="{{ route('admin.payment.information') }}" class="active"><i
@@ -155,7 +155,7 @@
                     </li>
                     <li class="@yiend('active')">
                         <a href="{{ route('logout') }}" class="active"><i
-                                class="material-icons-two-tone">Keluar</i>Keluar</a>
+                                class="material-icons-two-tone">logout</i>Keluar</a>
                     </li>
                 </ul>
             </div>
@@ -165,7 +165,7 @@
                 <form>
                     <input class="form-control" type="text" placeholder="Type here..." aria-label="Search">
                 </form>
-                <a href="#" class="toggle-search"><i class="material-icons">Tutup</i></a>
+                <a href="#" class="toggle-search"><i class="material-icons">close</i></a>
             </div>
             <div class="app-header">
                 <nav class="navbar navbar-light navbar-expand-lg">
@@ -174,14 +174,14 @@
                             <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link hide-sidebar-toggle-button" href="#"><i
-                                            class="material-icons">Halaman Pertama</i></a>
+                                            class="material-icons">first_page</i></a>
                                 </li>
                                 <li class="nav-item dropdown hidden-on-mobile">
                                     <a class="nav-link dropdown-toggle" href="#" id="addDropdownLink"
                                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="material-icons">Tambah</i>
+                                        <i class="material-icons">plus</i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="addDropdownLink">
+                                    {{-- <ul class="dropdown-menu" aria-labelledby="addDropdownLink">
                                         @if (Auth::user()->level == 'admin')
                                             <li><a class="dropdown-item" href="#">Akun Baru Duta Belia</a>
                                             </li>
@@ -192,7 +192,7 @@
                                             <li><a class="dropdown-item" href="#">Laporan Baru</a></li>
                                         @endif
 
-                                    </ul>
+                                    </ul> --}}
                                 </li>
 
                             </ul>
@@ -221,7 +221,7 @@
                         @if (session('success'))
                             <div class="alert alert-custom" role="alert">
                                 <div class="custom-alert-icon icon-primary"><i
-                                        class="material-icons-outlined">Selesai</i>
+                                        class="material-icons-outlined">done</i>
                                 </div>
                                 <div class="alert-content">
                                     <span class="alert-title">{{ session('success') }}</span>
@@ -231,7 +231,7 @@
                         @if (session('error'))
                             <div class="alert alert-custom" role="alert">
                                 <div class="custom-alert-icon icon-warning"><i
-                                        class="material-icons-outlined">Kesalahan</i>
+                                        class="material-icons-outlined">error</i>
                                 </div>
                                 <div class="alert-content">
                                     <span class="alert-title">{{ session('error') }}</span>
@@ -241,7 +241,7 @@
                         @if ($errors->any())
                             <div class="alert alert-custom" role="alert">
                                 <div class="custom-alert-icon icon-warning"><i
-                                        class="material-icons-outlined">error</i>
+                                        class="material-icons-outlined">wrong</i>
                                 </div>
                                 <div class="alert-content">
                                     @foreach ($errors->all() as $error)

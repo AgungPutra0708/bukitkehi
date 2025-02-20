@@ -14,9 +14,14 @@
                             @csrf
                             <div class="form-group">
                                 <label for="">Foto Objek</label>
-                                <img src="{{ isset($objectData) ? asset('storage/objek/' . $objectData->image) : '' }}"
-                                    alt="" style="object-fit: cover; max-width: 150px; height: 100px;">
-                                <input type="file" class="form-control" name="image" required accept="image/*">
+                                @if(isset($objectData) && $objectData->images->count() > 0)
+                                    <div class="mb-3">
+                                        @foreach($objectData->images as $image)
+                                            <img src="{{ asset('storage/objek/' . $image->image) }}" alt="" style="object-fit: cover; max-width: 150px; height: 100px; margin-right: 10px;">
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <input type="file" class="form-control" name="images[]" multiple accept="image/*">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Nama*</label>

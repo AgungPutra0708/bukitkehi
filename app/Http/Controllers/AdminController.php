@@ -13,6 +13,7 @@ use App\Models\Facility;
 use App\Models\Statistik;
 use App\Models\Destination;
 use App\Models\IncomeDetail;
+use App\Models\SupportObjectImage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentInformation;
@@ -456,21 +457,15 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:1,2,3', // Validasi sesuai opsi dropdown
+            'type' => 'required|in:1,2,3',
             'longitude' => 'required',
             'latitude' => 'required',
             'address' => 'required',
             'description' => 'nullable',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $supportObject = new SupportObject();
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('objek', $imageName, 'public');
-            $supportObject->image = $imageName;
-        }
         $supportObject->name = $request->name;
         $supportObject->tipe = $request->type;
         $supportObject->longitude = $request->longitude;
@@ -480,9 +475,21 @@ class AdminController extends Controller
         $supportObject->user_id = auth()->id();
         $supportObject->save();
 
+        // Simpan multiple images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('objek', $imageName, 'public');
+
+                SupportObjectImage::create([
+                    'object_id' => $supportObject->id,
+                    'image' => $imageName
+                ]);
+            }
+        }
+
         return redirect()->route('admin.objects')->with('success', 'Objek Pendukung berhasil ditambahkan');
     }
-
     // edit
     public function objectSupportEdit($id)
     {
@@ -494,23 +501,17 @@ class AdminController extends Controller
         $request->validate([
             'id' => 'required',
             'name' => 'required|string|max:255',
-            'type' => 'required|in:1,2,3', // Validasi sesuai opsi dropdown
+            'type' => 'required|in:1,2,3',
             'longitude' => 'required',
             'latitude' => 'required',
             'address' => 'required',
             'description' => 'nullable',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $supportObject = SupportObject::find($request->id);
         if (!$supportObject) {
             return redirect()->route('admin.objects')->with('error', 'Objek Pendukung tidak ditemukan');
-        }
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('objek', $imageName, 'public');
-            $supportObject->image = $imageName;
         }
 
         $supportObject->name = $request->name;
@@ -522,15 +523,37 @@ class AdminController extends Controller
         $supportObject->user_id = auth()->id();
         $supportObject->save();
 
+        // Simpan multiple images baru (jika ada)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('objek', $imageName, 'public');
+
+                SupportObjectImage::create([
+                    'object_id' => $supportObject->id,
+                    'image' => $imageName
+                ]);
+            }
+        }
+
         return redirect()->route('admin.objects')->with('success', 'Objek Pendukung berhasil diperbarui');
     }
     public function objectSupportDestroy($id)
     {
-        $aparatur = Aparatur::find($id);
-        $photo = $aparatur->image;
-        Storage::delete('public/aparatur/' . $photo);
-        $aparatur->delete();
-        return redirect()->route('admin.aparatur')->with('success', 'Aparatur deleted successfully');
+        $supportObject = SupportObject::find($id);
+        if (!$supportObject) {
+            return redirect()->route('admin.objects')->with('error', 'Objek tidak ditemukan');
+        }
+
+        // Hapus semua gambar terkait di database dan storage
+        foreach ($supportObject->images as $image) {
+            Storage::delete('public/objek/' . $image->image);
+            $image->delete();
+        }
+
+        $supportObject->delete();
+
+        return redirect()->route('admin.objects')->with('success', 'Objek Pendukung berhasil dihapus');
     }
 
     // Aparatur

@@ -159,25 +159,26 @@ class AuthController extends Controller
     {
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
-        $radius = $request->input('radius', 20); // Default radius in km
-        $type = $request->input('type', ''); // Filter by type
+        $radius = $request->input('radius', 20); // Default radius dalam km
+        $type = $request->input('type', ''); // Filter berdasarkan tipe
 
         $query = "
-        SELECT id, name, latitude, longitude, tipe, image, description,
-            (6371 * ACOS(
-                COS(RADIANS(?)) 
-                * COS(RADIANS(latitude)) 
-                * COS(RADIANS(longitude) - RADIANS(?)) 
-                + SIN(RADIANS(?)) 
-                * SIN(RADIANS(latitude))
-            )) AS distance
-        FROM objek_pendukung
-    ";
+            SELECT o.id, o.name, o.latitude, o.longitude, o.tipe, o.description,
+                (SELECT image FROM support_object_images WHERE object_id = o.id LIMIT 1) AS image,
+                (6371 * ACOS(
+                    COS(RADIANS(?)) 
+                    * COS(RADIANS(o.latitude)) 
+                    * COS(RADIANS(o.longitude) - RADIANS(?)) 
+                    + SIN(RADIANS(?)) 
+                    * SIN(RADIANS(o.latitude))
+                )) AS distance
+            FROM objek_pendukung o
+        ";
 
         $params = [$userLat, $userLng, $userLat];
 
         if (!empty($type)) {
-            $query .= " WHERE tipe = ?";
+            $query .= " WHERE o.tipe = ?";
             $params[] = $type;
         }
 

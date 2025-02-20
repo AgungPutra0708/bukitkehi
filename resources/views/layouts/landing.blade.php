@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Situs Wisata Bukit Kehi Pamekasan</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets-landing/images/favicon.png') }}">
@@ -135,23 +135,26 @@
                                 <li class=""><a href="{{ route('landing.objects') }}">Objek Pendukung</a></li>
                                 <li class=""><a href="{{ route('landing.news') }}">Berita</a></li>
                                 <li class=""><a href="{{ route('landing.contact') }}">Kontak kami</a></li>
-                                @if (Auth::check())
-                                    <li class=""><a href="{{ route('user.order') }}"><i
-                                                class="fa-solid fa-cart-shopping"></i> Pesanan Saya</a></li>
-                                @endif
                             </ul>
                         </div><!-- /.navbar-collapse -->
                         <div class="register-login d-flex align-items-center">
                             @if (Auth::check())
-                                <a href="{{ route('logout') }}" class="me-3">
-                                    <i class="icon-user"></i> {{ Str::limit(Auth::user()->name, 12) }}
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="me-3">
-                                    <i class="icon-user"></i> Masuk/Daftar
-                                </a>
+                            <a href="{{ route('user.order') }}" class="nir-btn white me-2">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
                             @endif
-                            <a href="{{ route('ticket') }}" class="nir-btn white">Pesan Tiket</a>
+                            @if (!Auth::check())
+                            <a href="{{ route('login') }}" class="me-2">
+                                <i class="icon-user"></i> Masuk/Daftar
+                            </a>
+                            @endif
+                            <a href="{{ route('ticket') }}" class="nir-btn white me-2">Pesan Tiket</a>
+                            @if (Auth::check())
+                            <a href="{{ route('logout') }}" class="nir-btn white">
+                                {{-- <i class="icon-user"></i> {{ Str::limit(Auth::user()->name, 12) }} --}}
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            </a>
+                            @endif
                         </div>
 
                         <div id="slicknav-mobile"></div>
@@ -163,14 +166,14 @@
     </header>
     <!-- header ends -->
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
     @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
     @endif
     @yield('content')
     <!-- footer starts -->
@@ -260,11 +263,8 @@
         </form>
     </div>
 
-    <script
-        src="
-                                                                                                                                                https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js
-                                                                                                                                                    ">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('script')
     <!-- login registration modal -->
     <div class="modal fade log-reg" id="exampleModal" tabindex="-1" aria-hidden="true">
@@ -304,13 +304,13 @@
                                             @csrf
                                             <!-- Menampilkan error jika ada -->
                                             @if ($errors->any())
-                                                <div class="alert alert-danger">
-                                                    <ul>
-                                                        @foreach ($errors->all() as $error)
-                                                            <li>{{ $error }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                             @endif
                                             <div class="form-group mb-2">
                                                 <input type="text" name="email" class="form-control"

@@ -13,7 +13,7 @@
                                 <div class="entry-meta mb-2">
                                     <h5 class="entry-category mb-0 white">Wisata Bukit Kehi, Pamekasan Jawa Timur</h5>
                                 </div>
-                                <h1 class="mb-2"><a href="tour-single.html" class="white">Temukan Destinasi Wisata Terbaik di Bukit Kehi Pamekasan</a>
+                                <h1 class="mb-2"><a href="tour-single.html" class="white">Temukan Wahana Wisata Terbaik di Bukit Kehi Pamekasan</a>
                                 </h1>
                                 <p class="white mb-4">"Temukan Petualangan Baru Bersama Kami"</p>
                                 <a href="{{ route('landing.destination') }}" class="nir-btn">Temukan Lebih Banyak</a>
@@ -178,7 +178,7 @@
                                         <div class="counter-item border-end pe-4">
                                             <div class="counter-content">
                                                 <h2 class="value mb-0 theme">{{ $destinations->count() }}</h2>
-                                                <span class="m-0">Destinasi Wisata</span>
+                                                <span class="m-0">Wahana Wisata</span>
                                             </div>
                                         </div>
                                     </div>
@@ -214,8 +214,8 @@
     <section class="trending pb-3 pt-0">
         <div class="container">
             <div class="section-title mb-6 w-50 mx-auto text-center">
-                <h4 class="mb-1 theme1">Destinasi Unggulan</h4>
-                <h2 class="mb-1">Jelajahi <span class="theme">Destinasi Unggulan</span></h2>
+                <h4 class="mb-1 theme1">Wahana Unggulan</h4>
+                <h2 class="mb-1">Jelajahi <span class="theme">Wahana Unggulan</span></h2>
                 <p>Temukan destinasi wisata terbaik di Bukit Kehi Pamekasan</p>
             </div>
             <div class="row align-items-center">

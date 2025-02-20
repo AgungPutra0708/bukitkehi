@@ -52,11 +52,23 @@
                                     <div class="col-lg-3 col-md-3">
                                         <div class="trend-content text-md-end text-center">
                                             <div class="trend-price my-2">
-                                                {{-- <span class="mb-0">Dari</span> --}}
                                                 <h3 class="mb-0">Rp. {{ number_format($ticket->price, 0, ',', '.') }}</h3>
-                                                {{-- <small>Per Dewasa</small> --}}
                                             </div>
-                                            <a href="{{ route('checkout', $ticket->id) }}" class="nir-btn">Check-out</a>
+                                            <div class="d-flex align-items-center justify-content-end mb-2 me-1">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    onclick="decreaseQty({{ $ticket->id }})">-</button>
+                                                <input type="text" id="qty-{{ $ticket->id }}"
+                                                    class="form-control text-center mx-2" value="1"
+                                                    style="width: 60px;">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    onclick="increaseQty({{ $ticket->id }})">+</button>
+                                            </div>
+                                            <div class="d-flex justify-content-end">
+                                                {{-- <a href="{{ route('checkout', $ticket->id) }}" class="nir-btn me-2">Beli</a> --}}
+                                                <button class="nir-btn btn-secondary"
+                                                    onclick="addToCart({{ $ticket->id }})"><i
+                                                        class="fa-solid fa-cart-shopping"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -66,6 +78,9 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Rekomendasi Objek Pendukung</h2>
+                </div>
                 <div class="col-lg-12 text-center">
                     <div class="d-flex flex-wrap justify-content-center m-n1">
                         <button type="button" class="btn btn-outline-dark m-1" data-filter="*">All</button>
@@ -79,16 +94,16 @@
             </div>
             <div class="row pt-2">
                 @foreach ($supportObjects as $object)
-                    <div class="col-lg-4 col-md-6 support-object-item" data-type="{{ $object->tipe }}">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-1 support-object-item" data-type="{{ $object->tipe }}">
                         <a href="{{ route('landing.objects.detail', $object->id) }}" class="text-decoration-none">
-                            <div
-                                class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4 d-flex flex-column h-100">
+                            <div class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4 d-flex flex-column h-100"
+                                style="max-height: 370px!important;">
 
                                 <!-- Gambar atau No Image -->
                                 <div class="trend-item2 rounded d-flex align-items-center justify-content-center"
                                     style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 10px; flex-shrink: 0;">
 
-                                    @if ($object->image && file_exists(public_path('storage/objek/' . $object->image)))
+                                    @if ($object->image)
                                         <img src="{{ asset('storage/objek/' . $object->image) }}"
                                             class="img-fluid w-100 rounded" alt="{{ $object->name }}"
                                             style="max-height: 200px; object-fit: cover;">
@@ -113,4 +128,61 @@
         </div>
     </section>
     <!-- top Destination ends -->
+
+    <script>
+        function increaseQty(id) {
+            let qtyInput = document.getElementById('qty-' + id);
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        }
+
+        function decreaseQty(id) {
+            let qtyInput = document.getElementById('qty-' + id);
+            if (qtyInput.value > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        }
+
+        function addToCart(id) {
+            let qty = document.getElementById('qty-' + id).value;
+
+            if (qty <= 0 || isNaN(qty)) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Jumlah tidak valid',
+                    text: 'Masukkan jumlah tiket yang benar!',
+                });
+                return;
+            }
+
+            $.ajax({
+                url: '/cart/add/' + id,
+                type: 'POST',
+                data: {
+                    quantity: qty,
+                    _token: $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF Token
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Tiket telah ditambahkan ke keranjang.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Harap Login!',
+                        text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
+                        confirmButtonText: 'Login'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '{{ route('login') }}';
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 @endsection
