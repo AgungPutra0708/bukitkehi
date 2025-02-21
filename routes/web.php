@@ -190,10 +190,15 @@ Route::group(['middleware' => ['auth.middleware:admin']], function () {
     Route::get('/admin/tiket-terusan/data', [AdminController::class, 'getTiketTerusan'])->name('admin.tiket-terusan.data');
     Route::get('/admin/tiket-satuan/data', [AdminController::class, 'getTiketSatuan'])->name('admin.tiket-satuan.data');
     Route::get('/admin/fasilitas/data', [AdminController::class, 'getFasilitas'])->name('admin.fasilitas.data');
-    // Route::get('/admin/income/create', [AdminController::class, 'incomeCreate'])->name('admin.income.create');
-    // Route::get('/admin/income/export-excel', [AdminController::class, 'exportTiketToExcel'])->name('admin.income.export-excel');
-    // Route::post('/admin/income/store', [AdminController::class, 'incomeStore'])->name('admin.income.store');
-    // Route::get('/admin/income/edit/{id}', [AdminController::class, 'incomeEdit'])->name('admin.income.edit');
-    // Route::post('/admin/income/update/', [AdminController::class, 'incomeUpdate'])->name('admin.income.update');
-    // Route::get('/admin/income/destroy/{id}', [AdminController::class, 'incomeDestroy'])->name('admin.income.destroy');
+    
+    // Outcome
+    Route::get('/admin/outcome', [AdminController::class, 'outcome'])->name('admin.outcome');
+    Route::get('/admin/outcome/data', [AdminController::class, 'outcomeData'])->name('admin.outcome.data');
+    Route::post('/admin/outcome/store', [AdminController::class, 'outcomeStore'])->name('admin.outcome.store');
+    Route::get('/admin/outcome/{id}', [AdminController::class, 'outcomeShow']);
+    Route::post('/admin/outcome/update', [AdminController::class, 'outcomeUpdate'])->name('admin.outcome.update');
+    Route::delete('/admin/outcome/{id}', [AdminController::class, 'outcomeDestroy']);
+    Route::get('/admin/tiket-terusan/data', [AdminController::class, 'getTiketTerusan'])->name('admin.tiket-terusan.data');
+    Route::get('/admin/tiket-satuan/data', [AdminController::class, 'getTiketSatuan'])->name('admin.tiket-satuan.data');
+    Route::get('/admin/fasilitas/data', [AdminController::class, 'getFasilitas'])->name('admin.fasilitas.data');
 });

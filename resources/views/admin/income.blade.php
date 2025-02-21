@@ -65,7 +65,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail">
+                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail[]">
                                             <select name="type[]" class="form-control type" required>
                                                 <option value="">Pilih Tipe</option>
                                                 <option value="0">Tiket Terusan</option>
@@ -91,10 +91,10 @@
                                             <div class="d-flex align-items-center">
                                                 <button type="button"
                                                     class="btn btn-sm btn-success me-2 addRow text-center">
-                                                    <i class="material-icons">Tambah</i>
+                                                    <i class="material-icons">add</i>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger removeRow text-center">
-                                                    <i class="material-icons">Hapus</i>
+                                                    <i class="material-icons">delete</i>
                                                 </button>
                                             </div>
                                         </td>
@@ -158,7 +158,7 @@
                             var newRow = `
                 <tr>
                     <td>
-                        <input type="hidden" class="form-control" id="id_detail" name="id_detail" value="${detail.id}">
+                        <input type="hidden" class="form-control" id="id_detail" name="id_detail[]" value="${detail.id}">
                         <select name="type[]" class="form-control type" required data-ticket="${detail.type == 2 ? detail.facilities_id : detail.ticket_id}">
                             <option value="0" ${detail.type == 0 ? 'selected' : ''}>Tiket Terusan</option>
                             <option value="1" ${detail.type == 1 ? 'selected' : ''}>Tiket Satuan</option>
@@ -318,6 +318,36 @@
                         loadTableData();
                         $('#dynamicIncomeForm')[0].reset(); // Reset the form
                         $('#dynamicTable tbody').empty(); // Clear the table rows
+                        let newRow = `
+                        <tr>
+                            <td>
+                                <select name="type[]" class="form-control type" required>
+                                    <option value="">Pilih Tipe</option>
+                                    <option value="0">Tiket Terusan</option>
+                                    <option value="1">Tiket Satuan</option>
+                                    <option value="2">Fasilitas</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="related_data[]" class="form-control related_data" required>
+                                    <option value="">Pilih Data</option>
+                                </select>
+                            </td>
+                            <td><input type="text" name="harga_satuan[]" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control harga_satuan" required></td>
+                            <td><input type="text" name="jumlah_terjual[]" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control jumlah_terjual" required></td>
+                            <td><input type="text" name="total[]" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control total" readonly></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <button type="button" class="btn btn-sm btn-success me-2 addRow text-center">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger removeRow text-center">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`;
+                        $('#dynamicTable tbody').append(newRow);
                     },
                     error: function(xhr) {
                         alert('An error occurred: ' + xhr.responseText);

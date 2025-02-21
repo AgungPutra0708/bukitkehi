@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Ticket;
 use App\Models\Product;
 use App\Models\Checkout;
+use App\Models\Clicked;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentInformation;
@@ -54,6 +55,11 @@ class UserController extends Controller
             $cart->ticket_id = $ticket->id;
             $cart->save();
         }
+
+        $clicked = new Clicked();
+        $clicked->user_id = $user->id;
+        $clicked->ticket_id = $ticket->id;
+        $clicked->save();
 
         return;
     }

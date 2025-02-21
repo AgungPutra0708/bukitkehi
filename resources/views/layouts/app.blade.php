@@ -129,7 +129,11 @@
                         </li>
                         <li class="@yield('active_income')">
                             <a href="{{ route('admin.income') }}" class="active"><i
-                                    class="material-icons-two-tone">money</i>Pendapatan Masuk</a>
+                                    class="material-icons-two-tone">money</i>Pemasukan</a>
+                        </li>
+                        <li class="@yield('active_outcome')">
+                            <a href="{{ route('admin.outcome') }}" class="active"><i
+                                    class="material-icons-two-tone">money</i>Pengeluaran</a>
                         </li>
                         <li class="sidebar-title">
                             Tiket

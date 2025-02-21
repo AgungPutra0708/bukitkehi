@@ -13,6 +13,8 @@ use App\Models\Facility;
 use App\Models\Statistik;
 use App\Models\Destination;
 use App\Models\IncomeDetail;
+use App\Models\Outcome;
+use App\Models\OutcomeDetail;
 use App\Models\SupportObjectImage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -1023,6 +1025,105 @@ class AdminController extends Controller
     {
         $data = Facility::select('id', 'name')->get();
         return response()->json($data);
+    }
+
+    public function outcome()
+    {
+        return view('admin.outcome');
+    }
+
+    public function outcomeData()
+    {
+        $outcomes = Outcome::all();
+        $data = $outcomes->map(function ($outcome) {
+            return [
+                'id' => $outcome->id,
+                'tahun' => $outcome->tahun,
+                'bulan' => date('F', mktime(0, 0, 0, $outcome->bulan, 10)),
+                'total_amount' => number_format($outcome->total_amount, 0, ',', '.'),
+            ];
+        });
+        return response()->json($data);
+    }
+
+    public function outcomeStore(Request $request)
+    {
+        $request->validate([
+            'bulan'          => 'required|numeric',
+            'tahun'          => 'required|numeric',
+            'total_sum'      => 'required',
+            'name'           => 'array|required',
+            'amount'         => 'array|required',
+        ]);
+
+        // Create the Income record only once
+        $outcome = Outcome::create([
+            'bulan' => $request->bulan,
+            'tahun' => $request->tahun,
+            'total_amount' => $request->total_sum,
+        ]);
+
+        // Loop through the outcome details and create them
+        foreach ($request->name as $index => $name) {
+            OutcomeDetail::create([
+                'outcome_id'     => $outcome->id,
+                'name'           => $request->name[$index],
+                'amount'         => $request->amount[$index],
+            ]);
+        }
+
+        return response()->json(['message' => 'Pengeluaran Berhasil Disimpan']);
+    }
+
+    public function outcomeShow($id)
+    {
+        $outcome = Outcome::with('outcomeDetail')->find($id);
+        return response()->json($outcome);
+    }
+
+    public function outcomeUpdate(Request $request)
+    {
+        $request->validate([
+            'bulan'          => 'required|numeric',
+            'tahun'          => 'required|numeric',
+            'total_sum'      => 'required',
+            'name'           => 'array|required',
+            'amount'         => 'array|required',
+        ]);
+
+        $outcome = Outcome::find($request->id);
+        $outcome->update([
+            'bulan' => $request->bulan,
+            'tahun' => $request->tahun,
+            'total_amount' => $request->total_sum,
+        ]);
+
+        // Loop through the outcome details and create them
+        foreach ($request->name as $index => $name) {
+            if (isset($request->id_detail[$index])) {
+                $outcomeDetail = OutcomeDetail::find($request->id_detail[$index]);
+                $outcomeDetail->update([
+                    'name'          => $request->name[$index],
+                    'amount'        => $request->amount[$index],
+                ]);
+            } else {
+                OutcomeDetail::create([
+                    'outcome_id'     => $outcome->id,
+                    'name'          => $request->name[$index],
+                    'amount'        => $request->amount[$index],
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Pengeluaran Berhasil Diupdate']);
+    }
+
+    public function outcomeDestroy($id)
+    {
+        $outcome = Outcome::find($id);
+        $outcome->delete();
+
+        return response()->json(['message' => 'Pengeluaran Berhasil Dihapus']);
     }
 
     public function exportTiketToExcel()
