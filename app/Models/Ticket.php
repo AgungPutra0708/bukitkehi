@@ -29,8 +29,21 @@ class Ticket extends Model
         return $this->hasMany(Rating::class);
     }
 
+    // Menghitung rating rata-rata per tiket
     public function averageRating()
     {
-        return $this->ratings()->avg('rating') ?? 0;
+        return $this->hasMany(Rating::class)->avg('rating') ?? 0;
+    }
+
+    // Menghitung jumlah klik tiket
+    public function totalClicks()
+    {
+        return $this->hasMany(Clicked::class)->count();
+    }
+
+    // Menghitung jumlah checkout tiket
+    public function totalCheckout()
+    {
+        return $this->hasMany(Cart::class)->sum('quantity');
     }
 }

@@ -14,6 +14,7 @@ use App\Models\Statistik;
 use App\Models\Destination;
 use App\Models\Facility;
 use App\Models\SupportObject;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -197,10 +198,68 @@ class AuthController extends Controller
 
     public function ticket()
     {
-        $tickets = Ticket::where('status', 'publish')->get();
-        $supportObjects = SupportObject::all(); // Ambil semua data SupportObject
+        $ticketS = Ticket::all();
 
-        return view('ticket', compact('tickets', 'supportObjects'));
+        // Simpan data rating, klik, dan checkout tiap tiket
+        $ticketData = [];
+
+        foreach ($ticketS as $ticket) {
+            $ticketData[$ticket->id] = [
+                'rating' => $ticket->averageRating(),
+                'clicks' => $ticket->totalClicks(),
+                'checkout' => $ticket->totalCheckout(),
+            ];
+        }
+
+        // Hitung Cosine Similarity antar tiket
+        $similarityMatrix = [];
+
+        foreach ($ticketData as $ticketA => $dataA) {
+            foreach ($ticketData as $ticketB => $dataB) {
+                if ($ticketA !== $ticketB) {
+                    // Perhitungan cosine similarity
+                    $dotProduct = ($dataA['rating'] * $dataB['rating']) +
+                                ($dataA['clicks'] * $dataB['clicks']) +
+                                ($dataA['checkout'] * $dataB['checkout']);
+
+                    $magnitudeA = sqrt(pow($dataA['rating'], 2) + pow($dataA['clicks'], 2) + pow($dataA['checkout'], 2));
+                    $magnitudeB = sqrt(pow($dataB['rating'], 2) + pow($dataB['clicks'], 2) + pow($dataB['checkout'], 2));
+
+                    $similarityMatrix[$ticketA][$ticketB] = ($magnitudeA * $magnitudeB) ? ($dotProduct / ($magnitudeA * $magnitudeB)) : 0;
+                }
+            }
+        }
+        // Ambil semua tiket yang sudah pernah dibeli oleh siapa pun
+        $purchasedTickets = Cart::pluck('ticket_id')->toArray();
+
+        // Buat daftar rekomendasi tiket
+        $recommendations = [];
+
+        foreach ($ticketData as $ticketId => $data) {
+            if (in_array($ticketId, $purchasedTickets)) { // Hanya tiket yang belum pernah dibeli siapa pun
+                $score = 0;
+                foreach ($purchasedTickets as $purchasedTicket) {
+                    if (isset($similarityMatrix[$purchasedTicket][$ticketId])) {
+                        $score += $similarityMatrix[$purchasedTicket][$ticketId];
+                    }
+                }
+                if ($score > 0) {
+                    $recommendations[$ticketId] = $score;
+                }
+            }
+        }
+
+        // Urutkan berdasarkan skor tertinggi
+        arsort($recommendations);
+
+        // Ambil 5 tiket rekomendasi teratas
+        $recommendedTickets = Ticket::whereIn('id', array_keys(array_slice($recommendations, 0, 5, true)))->get();
+
+        // Ambil semua tiket yang tersedia
+        $tickets = Ticket::where('status', 'publish')->get();
+        $supportObjects = SupportObject::all();
+
+        return view('ticket', compact('tickets', 'supportObjects', 'recommendedTickets'));
     }
 
     // Sejarah
