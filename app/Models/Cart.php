@@ -12,6 +12,7 @@ class Cart extends Model
         'user_id',
         'ticket_id',
         'quantity',
+        'checkout_id',
     ];
     public function user()
     {
@@ -21,5 +22,15 @@ class Cart extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    public function checkout()
+    {
+        return $this->belongsTo(Checkout::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasOne(Rating::class, 'cart_id');
     }
 }

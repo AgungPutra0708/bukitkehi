@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,7 @@ Route::get('/ticket/{name}', [AuthController::class, 'ticketShow'])->name('ticke
 Route::group(['middleware' => ['auth.middleware:user']], function () {
     // Route::get('/cart/add/{id}', [UserController::class, 'cartAdd'])->name('cart.add');
     Route::post('/cart/add/{id}', [UserController::class, 'cartAdd'])->name('cart.add');
+    Route::post('/cart/update/{id}', [UserController::class, 'cartUpdate'])->name('cart.update');
     Route::get('/cart', [UserController::class, 'cart'])->name('cart');
     Route::get('/cart/destroy/{id}', [UserController::class, 'cartDestroy'])->name('cart.destroy');
 
@@ -86,6 +88,8 @@ Route::group(['middleware' => ['auth.middleware:user']], function () {
     // Order
     Route::get('/order', [UserController::class, 'order'])->name('user.order');
     Route::get('/order/{code}', [UserController::class, 'eTicket'])->name('user.e-ticket');
+
+    Route::post('/rating/store', [RatingController::class, 'store'])->name('rating.store')->middleware('auth');
 });
 
 Route::group(['middleware' => ['auth.middleware:admin']], function () {

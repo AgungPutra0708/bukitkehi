@@ -24,4 +24,13 @@ class Ticket extends Model
     {
         return $this->hasMany(Checkout::class);
     }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->ratings()->avg('rating') ?? 0;
+    }
 }

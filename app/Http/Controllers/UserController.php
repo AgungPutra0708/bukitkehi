@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentInformation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -57,6 +58,33 @@ class UserController extends Controller
         return;
     }
 
+    public function cartUpdate(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $ticket = Ticket::find($id);
+        if (!$ticket) {
+            return response()->json(['error' => 'Ticket not found'], 404);
+        }
+
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->first();
+        $qty = (int) $request->input('quantity', 1);
+
+        if ($qty <= 0) {
+            return response()->json(['error' => 'Invalid quantity'], 400);
+        }
+
+        if ($cart) {
+            $cart->quantity = $qty;
+            $cart->save();
+        }
+
+        return;
+    }
+
     public function cartCount()
     {
         return count((array) session('cart'));
@@ -83,9 +111,9 @@ class UserController extends Controller
     // Checkout
     public function checkout($id)
     {
-        $ticket = Ticket::find($id);
         $paymentInfo = PaymentInformation::all();
-        return view('checkout', compact('ticket', 'paymentInfo'));
+        $order = Cart::where('user_id', Crypt::decrypt($id))->get();
+        return view('checkout', compact('order', 'paymentInfo'));
     }
 
     // public function checkoutProcess(Request $request)
@@ -124,25 +152,44 @@ class UserController extends Controller
 
     public function createCharge(Request $request)
     {
-        $amount = $request->amount;
         $user = Auth::user();
 
-        // Buat data checkout terlebih dahulu dengan status pending
-        $order = new Checkout();
-        $order->code = 'CHK-' . time() . '-' . Str::random(10);
-        $order->user_id = $user->id;
-        $order->ticket_id = $request->ticket_id;
-        $order->quantity = $request->quantity;
-        $order->status = 'pending';
-        $order->ticket_date = $request->ticket_date;
-        $order->total_price = $amount;
-        $order->save();
+        // Ambil semua item di Cart berdasarkan user_id
+        $cartItems = Cart::where('user_id', $user->id)->get();
 
-        // Parameter dasar transaksi Midtrans
+        if ($cartItems->isEmpty()) {
+            return response()->json(['error' => 'Keranjang kosong'], 400);
+        }
+
+        // Hitung total quantity dan total price dari Cart
+        $totalQuantity = $cartItems->sum('quantity');
+        $totalPrice = $cartItems->sum(fn($item) => $item->ticket->price * $item->quantity);
+
+        // Tambah biaya admin untuk pembayaran online
+        $adminFee = ($totalPrice * 0.02) + 5000;
+        $finalAmount = $totalPrice + $adminFee;
+
+        // Simpan ke tabel Checkout
+        $checkout = new Checkout();
+        $checkout->code = 'CHK-' . time() . '-' . Str::random(10);
+        $checkout->user_id = $user->id;
+        $checkout->quantity = $totalQuantity;
+        $checkout->status = 'pending';
+        $checkout->ticket_date = now();
+        $checkout->total_price = $finalAmount;
+        $checkout->save();
+
+        // Update semua Cart agar memiliki checkout_id
+        foreach ($cartItems as $item) {
+            $item->checkout_id = $checkout->id;
+            $item->save();
+        }
+
+        // Parameter transaksi Midtrans
         $params = [
             'transaction_details' => [
-                'order_id' => $order->code, // Gunakan kode order dari database
-                'gross_amount' => $amount,
+                'order_id' => $checkout->code,
+                'gross_amount' => $finalAmount,
             ],
             'customer_details' => [
                 'first_name' => $request->first_name,
@@ -153,13 +200,13 @@ class UserController extends Controller
         ];
 
         try {
-            // Dapatkan Snap token dari Midtrans
+            // Dapatkan Snap Token dari Midtrans
             $snapToken = Snap::getSnapToken($params);
 
             return response()->json([
                 'snapToken' => $snapToken,
-                'order_id' => $order->code,
-                'gross_amount' => $amount
+                'order_id' => $checkout->code,
+                'gross_amount' => $finalAmount
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -168,30 +215,34 @@ class UserController extends Controller
 
     public function processCOD(Request $request)
     {
-        // Hapus atau ganti dd("masuk") dengan log untuk debug
-        // Log::info("Masuk ke processCOD"); // Alternatif menggunakan log
-
-        $request->validate([
-            'ticket_id' => 'required|exists:tickets,id',
-            'quantity' => 'required|integer|min:1',
-            'ticket_date' => 'required|date',
-        ]);
-
-        $ticket = Ticket::find($request->ticket_id);
-        if (!$ticket) {
-            return redirect()->back()->with('error', 'Ticket not found');
-        }
         $user = Auth::user();
 
-        $order = new Checkout();
-        $order->code = 'CHK-' . time() . '-' . Str::random(10);
-        $order->user_id = $user->id;
-        $order->ticket_id = $ticket->id;
-        $order->quantity = $request->quantity;
-        $order->status = 'pending'; // Status pending untuk COD
-        $order->ticket_date = $request->ticket_date;
-        $order->total_price = $request->total_price;
-        $order->save();
+        // Ambil semua item di Cart berdasarkan user_id
+        $cartItems = Cart::where('user_id', $user->id)->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json(['error' => 'Keranjang kosong'], 400);
+        }
+
+        // Hitung total quantity dan total price dari Cart
+        $totalQuantity = $cartItems->sum('quantity');
+        $totalPrice = $cartItems->sum(fn($item) => $item->ticket->price * $item->quantity);
+
+        // Simpan ke tabel Checkout dengan metode COD
+        $checkout = new Checkout();
+        $checkout->code = 'CHK-' . time() . '-' . Str::random(10);
+        $checkout->user_id = $user->id;
+        $checkout->quantity = $totalQuantity;
+        $checkout->status = 'pending'; // Pending sebelum dikonfirmasi
+        $checkout->ticket_date = now();
+        $checkout->total_price = $totalPrice;
+        $checkout->save();
+
+        // Update semua Cart agar memiliki checkout_id
+        foreach ($cartItems as $item) {
+            $item->checkout_id = $checkout->id;
+            $item->save();
+        }
 
         return response()->json(['success' => true, 'message' => 'Pesanan COD berhasil diproses']);
     }
@@ -219,18 +270,25 @@ class UserController extends Controller
     // Order
     public function order()
     {
-        $cart = Cart::where('user_id', Auth::user()->id)->get();
-        $orders = Checkout::where('user_id', Auth::user()->id)->get();
-        return view('order', compact('orders', 'cart'));
+        $cart = Cart::where('user_id', Auth::user()->id)->where('checkout_id', NULL)->get();
+        $orders = Checkout::where('user_id', Auth::user()->id)->with('carts.ticket')->get();
+        $user = Auth::user()->id;
+        // var_dump($orders);
+        // exit;
+        return view('order', compact('orders', 'cart', 'user'));
     }
 
     public function eTicket($code)
     {
-        $order = Checkout::where('code', $code)->first();
-        // Ganti BarcodeGeneratorPNG dengan QRCodeGenerator
-        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG(); // Pastikan menggunakan generator yang sesuai untuk QR Code
-        $qrcode = base64_encode($generator->getBarcode($code, $generator::TYPE_CODE_128)); // Ubah ke QR Code
-        $order->qrcode = $qrcode; // Simpan QR Code ke dalam order
-        return view('e-ticket', compact('order', 'qrcode')); // Ganti 'barcode' dengan 'qrcode'
+        $order = Checkout::where('code', $code)
+            ->where('user_id', Auth::user()->id)
+            ->with('carts.ticket', 'carts.rating', 'user') // Tambahkan relasi rating
+            ->firstOrFail();
+
+        // Buat QR Code
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+        $qrcode = base64_encode($generator->getBarcode($code, $generator::TYPE_CODE_128));
+
+        return view('e-ticket', compact('order', 'qrcode'));
     }
 }

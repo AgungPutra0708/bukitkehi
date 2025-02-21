@@ -32,4 +32,8 @@ class Checkout extends Model
     {
         return Carbon::parse($this->attributes['ticket_date'])->format($format);
     }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

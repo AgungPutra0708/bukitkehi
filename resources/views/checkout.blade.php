@@ -99,8 +99,6 @@
     <section class="trending pt-4 pb-0 bg-lgrey mb-4 mt-4">
         <div class="container">
             <div class="card">
-                <img class="card-img-top img-fluid" src="{{ asset('storage/ticket/' . $ticket->photo) }}"
-                    alt="{{ $ticket->name }}" style="height: 400px; object-fit: cover;">
                 <div class="card-body">
                     <h3 class="mb-4">Detail Tiket</h3>
                     <div class="table-responsive">
@@ -117,33 +115,27 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($order as $item)
                                 <tr>
                                     <td data-label="Photo">
-                                        <img src="{{ asset('storage/ticket/' . $ticket->photo) }}"
-                                            alt="{{ $ticket->name }}" class="img-fluid"
+                                        <img src="{{ asset('storage/ticket/' . $item->ticket->photo) }}"
+                                            alt="{{ $item->ticket->name }}" class="img-fluid"
                                             style="max-width: 100px; height: auto;">
                                     </td>
-                                    <td data-label="Nama">{{ $ticket->name }}</td>
-                                    <td data-label="Harga">Rp. {{ number_format($ticket->price, 0, ',', '.') }}</td>
+                                    <td data-label="Nama">{{ $item->ticket->name }}</td>
+                                    <td data-label="Harga">Rp. {{ number_format($item->ticket->price, 0, ',', '.') }}</td>
                                     <td data-label="Jumlah">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                            <button class="btn btn-secondary me-2" onclick="updateQuantity(-1)">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" id="qty" value="1" min="1"
-                                                class="form-control w-50 text-center">
-                                            <button class="btn btn-secondary ms-2" onclick="updateQuantity(1)">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
+                                        <input type="number" id="qty" value="{{ $item->quantity ?? '1' }}" min="1"
+                                            class="form-control w-50 text-center">
                                     </td>
                                     <td data-label="Total Harga"><span id="total">Rp.
-                                            {{ number_format($ticket->price, 0, ',', '.') }}</span></td>
+                                            {{ number_format($item->ticket->price * $item->quantity, 0, ',', '.') }}</span></td>
                                     <td data-label="Biaya Admin"><span id="fee">Rp.
-                                            {{ number_format($ticket->price * 0.02 + 5000, 0, ',', '.') }}</span></td>
+                                            {{ number_format($item->ticket->price * $item->quantity * 0.02 + 5000, 0, ',', '.') }}</span></td>
                                     <td data-label="Total Pembayaran"><span id="finalTotal">Rp.
-                                            {{ number_format($ticket->price * 1.02 + 5000, 0, ',', '.') }}</span></td>
+                                            {{ number_format($item->ticket->price * $item->quantity * 1.02 + 5000, 0, ',', '.') }}</span></td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -173,91 +165,94 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         document.getElementById('payButton').addEventListener('click', function() {
-            let qty = document.getElementById('qty').value;
-            let price = {{ $ticket->price }};
-            let totalAmount = price * qty; // Tanpa biaya admin pada awalnya
-            let fee = 0; // Biaya admin dimulai dengan 0
-            let finalAmount = totalAmount + fee; // Final total tanpa biaya admin
+            let totalAmount = 0;
+            let fee = 0;
+            let finalAmount = 0;
 
-            // Tentukan apakah metode pembayaran menggunakan COD atau Online
+            // Ambil semua elemen quantity dan harga tiket
+            document.querySelectorAll('tbody tr').forEach(row => {
+                let qty = parseInt(row.querySelector('input[type="number"]').value);
+                let price = parseInt(row.querySelector('[data-label="Harga"]').innerText.replace(/\D/g, ''));
+                totalAmount += price * qty; // Total harga seluruh tiket
+            });
+
+            // Ambil metode pembayaran
             let paymentMethod = document.getElementById('paymentMethod').value;
 
             if (paymentMethod === 'online') {
-                // Hitung biaya admin hanya untuk pembayaran online (biaya 2% + Rp 5000)
-                fee = totalAmount * 0.02 + 5000;
-                finalAmount = totalAmount + fee;
+                fee = totalAmount * 0.02 + 5000; // Biaya admin hanya untuk online
             }
 
-            // Melanjutkan proses sesuai metode pembayaran
+            finalAmount = totalAmount + fee; // Total pembayaran akhir
+
             if (paymentMethod === 'online') {
                 // Proses pembayaran online dengan Midtrans
                 fetch('/charge', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            amount: finalAmount,
-                            first_name: '{{ auth()->user()->first_name }}',
-                            last_name: '{{ auth()->user()->last_name }}',
-                            email: '{{ auth()->user()->email }}',
-                            phone: '{{ auth()->user()->phone }}',
-                            ticket_id: {{ $ticket->id }},
-                            quantity: qty,
-                            ticket_date: '{{ now()->format('Y-m-d') }}',
-                            total_price: finalAmount
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        amount: finalAmount,
+                        first_name: '{{ auth()->user()->first_name }}',
+                        last_name: '{{ auth()->user()->last_name }}',
+                        email: '{{ auth()->user()->email }}',
+                        phone: '{{ auth()->user()->phone }}',
+                        order_details: @json($order->map(fn($item) => [
+                            'ticket_id' => $item->ticket->id,
+                            'quantity' => $item->quantity,
+                            'price' => $item->ticket->price
+                        ])),
+                        total_price: finalAmount
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.snapToken) {
-                            snap.pay(data.snapToken, {
-                                onSuccess: function(result) {
-                                    handlePayment(result, data
-                                        .order_id); // Panggil fungsi saat pembayaran sukses
-                                },
-                                onPending: function(result) {
-                                    alert('Pembayaran pending!');
-                                },
-                                onError: function(result) {
-                                    alert('Pembayaran gagal!');
-                                }
-                            });
-                        } else {
-                            alert('Gagal mendapatkan Snap Token');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snapToken) {
+                        snap.pay(data.snapToken, {
+                            onSuccess: function(result) {
+                                handlePayment(result, data.order_id);
+                            },
+                            onPending: function(result) {
+                                alert('Pembayaran pending!');
+                            },
+                            onError: function(result) {
+                                alert('Pembayaran gagal!');
+                            }
+                        });
+                    } else {
+                        alert('Gagal mendapatkan Snap Token');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             } else {
-                // Proses pembayaran COD (simpan ke database sebagai pending)
+                // Proses pembayaran COD (simpan ke database)
                 fetch('/process-cod', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            ticket_id: {{ $ticket->id }},
-                            quantity: qty,
-                            ticket_date: '{{ now()->format('Y-m-d') }}',
-                            total_price: finalAmount
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        order_details: @json($order->map(fn($item) => [
+                            'ticket_id' => $item->ticket->id,
+                            'quantity' => $item->quantity,
+                            'price' => $item->ticket->price
+                        ])),
+                        total_price: finalAmount
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Pesanan berhasil dibuat, silakan bayar di tempat');
-                            window.location.href = '/order';
-                        } else {
-                            alert('Gagal memproses pesanan COD');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pesanan berhasil dibuat, silakan bayar di tempat');
+                        window.location.href = '/order';
+                    } else {
+                        alert('Gagal memproses pesanan COD');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             }
         });
 
@@ -286,44 +281,6 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }
-    </script>
-    <script>
-        function updateQuantity(change) {
-            var qtyInput = document.getElementById('qty');
-            var totalPrice = document.getElementById('total');
-            var feeDisplay = document.getElementById('fee');
-            var finalTotalDisplay = document.getElementById('finalTotal');
-            var paymentMethod = document.getElementById('paymentMethod').value;
-            var currentQty = parseInt(qtyInput.value);
-
-            // Update quantity with the change
-            var newQty = currentQty + change;
-
-            // Ensure quantity does not go below 1
-            if (newQty >= 1) {
-                qtyInput.value = newQty;
-
-                // Calculate the total price
-                var price = {{ $ticket->price }};
-                var newTotal = price * newQty;
-
-                // Initialize fee for COD (no fee)
-                var fee = 0;
-
-                // Calculate fee only for online payment
-                if (paymentMethod === 'online') {
-                    fee = newTotal * 0.02 + 5000;
-                }
-
-                // Calculate final total (total price + fee)
-                var finalTotal = newTotal + fee;
-
-                // Update the displayed values
-                totalPrice.innerText = 'Rp. ' + newTotal.toLocaleString('id-ID');
-                feeDisplay.innerText = 'Rp. ' + fee.toLocaleString('id-ID');
-                finalTotalDisplay.innerText = 'Rp. ' + finalTotal.toLocaleString('id-ID');
-            }
         }
     </script>
 </body>
