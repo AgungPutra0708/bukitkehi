@@ -703,10 +703,10 @@ class AdminController extends Controller
     // Order
     public function order()
     {
-        $orders_request = Checkout::where('status', 'request')->get();
-        $orders_success = Checkout::where('status', 'accepted')->get();
-        $orders_pending = Checkout::where('status', 'pending')->get();
-        $orders_rejected = Checkout::where('status', 'rejected')->get();
+        $orders_request = Checkout::where('status', 'request')->with('carts.ticket')->get();
+        $orders_success = Checkout::where('status', 'accepted')->with('carts.ticket')->get();
+        $orders_pending = Checkout::where('status', 'pending')->with('carts.ticket')->get();
+        $orders_rejected = Checkout::where('status', 'rejected')->with('carts.ticket')->get();
         return view('admin.order', compact('orders_request', 'orders_success', 'orders_pending', 'orders_rejected'));
     }
     public function orderUpdate(Request $request)
@@ -716,60 +716,77 @@ class AdminController extends Controller
         $order->save();
         return redirect()->route('admin.order')->with('success', 'Order updated successfully');
     }
+    
     public function storeTotal(Request $request)
     {
         $request->validate([
             'year' => 'required',
             'month' => 'required',
         ]);
-
-        // Filter Checkout dengan status 'accepted' berdasarkan bulan dan tahun pada ticket_date
-        $total = Checkout::select('ticket_id', DB::raw('SUM(total_price) as total_price_sum'), DB::raw('SUM(quantity) as total_quantity'))
-            ->with('ticket')
+    
+        // Ambil data Checkout yang sudah diterima
+        $checkouts = Checkout::with('carts.ticket')
             ->where('status', 'accepted')
             ->whereYear('ticket_date', $request->year)
             ->whereMonth('ticket_date', $request->month)
-            ->groupBy('ticket_id')
             ->get();
-
-        $income = Income::where('bulan', $request->month)->where('tahun', $request->year)->first();
-
-        if ($income) {
-            $income->amount = $total->sum('total_price_sum') + $income->amount;
-            $income->save();
-        } else {
-            $income = new Income();
-            $income->bulan = $request->month;
-            $income->tahun = $request->year;
-            $income->amount = $total->sum('total_price_sum');
-            $income->save();
-        }
-
-        foreach ($total as $t) {
-            $incomeDetail = IncomeDetail::where('income_id', $income->id)->where('ticket_id', $t->ticket_id)->where('metode', 'online')->first();
-            if ($incomeDetail) {
-                $incomeDetail->jumlah = $t->total_quantity == $incomeDetail->jumlah ? $t->total_quantity : $t->total_quantity + $incomeDetail->jumlah;
-                $incomeDetail->amount = $t->total_price_sum == $incomeDetail->amount ? $t->total_price_sum : $t->total_price_sum + $incomeDetail->amount;
-                $incomeDetail->save();
-            } else {
-                $incomeDetail = new IncomeDetail();
-                $incomeDetail->income_id = $income->id;
-                $incomeDetail->ticket_id = $t->ticket_id;
-                $incomeDetail->facilities_id = null;
-                $incomeDetail->type = $t->ticket->type;
-                $incomeDetail->metode = 'online';
-                $incomeDetail->harga_satuan = $t->ticket->price;
-                $incomeDetail->jumlah = $t->total_quantity;
-                $incomeDetail->amount = $t->total_price_sum;
-                $incomeDetail->save();
+    
+        // Menyiapkan total income
+        $total_amount = 0;
+    
+        foreach ($checkouts as $checkout) {
+            foreach ($checkout->carts as $cart) {
+                if (!$cart->ticket) continue; // Skip jika tidak ada ticket
+                
+                $ticket_id = $cart->ticket_id;
+                $total_price = $cart->ticket->price * $cart->quantity;
+                $total_quantity = $cart->quantity;
+                $ticket_type = $cart->ticket->type;
+                $ticket_price = $cart->ticket->price;
+    
+                // Tambahkan ke total amount
+                $total_amount += $total_price;
+    
+                // Cek apakah Income sudah ada
+                $income = Income::firstOrCreate([
+                    'bulan' => $request->month,
+                    'tahun' => $request->year
+                ], ['amount' => 0]);
+    
+                // Cek apakah IncomeDetail untuk tiket ini sudah ada
+                $incomeDetail = IncomeDetail::where('income_id', $income->id)
+                    ->where('ticket_id', $ticket_id)
+                    ->where('metode', 'online')
+                    ->first();
+    
+                if ($incomeDetail) {
+                    $incomeDetail->jumlah += $total_quantity;
+                    $incomeDetail->amount += $total_price;
+                    $incomeDetail->save();
+                } else {
+                    IncomeDetail::create([
+                        'income_id' => $income->id,
+                        'ticket_id' => $ticket_id,
+                        'facilities_id' => null,
+                        'type' => $ticket_type,
+                        'metode' => 'online',
+                        'harga_satuan' => $ticket_price,
+                        'jumlah' => $total_quantity,
+                        'amount' => $total_price,
+                    ]);
+                }
             }
-
-            // Update Income total amount
+        }
+    
+        // Update total amount dalam Income
+        if (isset($income)) {
             $income->amount = IncomeDetail::where('income_id', $income->id)->sum('amount');
             $income->save();
         }
+    
         return redirect()->route('admin.order')->with('success', 'Total created successfully');
     }
+
     public function getTotalAccepted(Request $request)
     {
         $year = $request->year;

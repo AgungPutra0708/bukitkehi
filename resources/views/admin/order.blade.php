@@ -44,97 +44,97 @@
                                                 <th>Total</th>
                                                 <th>Bukti Pembayaran</th>
                                                 <th>Status</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orders_pending as $order)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $order->user->name }}</td>
-                                                    <td>{{ $order->user->email }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price) }}</td>
-                                                    <td>{{ $order->quantity }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price * $order->quantity) }}
-                                                    </td>
+                                                @foreach ($order->carts as $cart)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $order->user->name }}</td>
+                                                        <td>{{ $order->user->email }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price) }}</td>
+                                                        <td>{{ $cart->quantity }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price * $cart->quantity) }}
+                                                        </td>
 
-                                                    <td>
-                                                        <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                            target="_blank">
-                                                            <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                                alt=""
-                                                                style="object-fit: cover; max-width: 150px; height: 100px;">
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        @if ($order->status == 'pending')
-                                                            <button type="button" class="btn btn-warning"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Tertunda
-                                                            </button>
-                                                        @elseif($order->status == 'accepted')
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Disetujui
-                                                            </button>
-                                                        @elseif($order->status == 'rejected')
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Ditolak
-                                                            </button>
-                                                        @endif
-                                                        <div class="modal fade" id="exampleModalLive{{ $order->id }}"
-                                                            tabindex="-1" aria-labelledby="exampleModalLiveLabel"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLiveLabel">
-                                                                            Modal
-                                                                            Judul
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="{{ route('admin.order.update') }}"
-                                                                            method="POST">
-                                                                            @csrf
+                                                        <td>
+                                                            <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                target="_blank">
+                                                                <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                    alt=""
+                                                                    style="object-fit: cover; max-width: 150px; height: 100px;">
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            @if ($order->status == 'pending')
+                                                                <button type="button" class="btn btn-warning"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Tertunda
+                                                                </button>
+                                                            @elseif($order->status == 'accepted')
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Disetujui
+                                                                </button>
+                                                            @elseif($order->status == 'rejected')
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Ditolak
+                                                                </button>
+                                                            @endif
+                                                            <div class="modal fade" id="exampleModalLive{{ $order->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLiveLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLiveLabel">
+                                                                                Modal
+                                                                                Judul
+                                                                            </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('admin.order.update') }}"
+                                                                                method="POST">
+                                                                                @csrf
 
-                                                                            <div class="form-group">
-                                                                                <label for="status">Status</label>
-                                                                                <input type="hidden" name="id"
-                                                                                    value="{{ $order->id }}">
-                                                                                <select name="status" id="status"
-                                                                                    class="form-control">
-                                                                                    <option value="pending"
-                                                                                        {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Tertunda</option>
-                                                                                    <option value="accepted"
-                                                                                        {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Disetujui</option>
-                                                                                    <option value="rejected"
-                                                                                        {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Ditolak</option>
-                                                                                </select>
-                                                                            </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Tutup</button>
-                                                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                                                        </form>
+                                                                                <div class="form-group">
+                                                                                    <label for="status">Status</label>
+                                                                                    <input type="hidden" name="id"
+                                                                                        value="{{ $order->id }}">
+                                                                                    <select name="status" id="status"
+                                                                                        class="form-control">
+                                                                                        <option value="pending"
+                                                                                            {{ $order->status == 'pending' ? 'selected' : '' }}>
+                                                                                            Tertunda</option>
+                                                                                        <option value="accepted"
+                                                                                            {{ $order->status == 'accepted' ? 'selected' : '' }}>
+                                                                                            Disetujui</option>
+                                                                                        <option value="rejected"
+                                                                                            {{ $order->status == 'rejected' ? 'selected' : '' }}>
+                                                                                            Ditolak</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Tutup</button>
+                                                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -153,98 +153,98 @@
                                                 <th>Total</th>
                                                 <th>Bukti Pembayaran</th>
                                                 <th>Status</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orders_success as $order)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $order->user->name }}</td>
-                                                    <td>{{ $order->user->email }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price) }}</td>
-                                                    <td>{{ $order->quantity }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price * $order->quantity) }}
-                                                    </td>
+                                                @foreach ($order->carts as $cart)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $order->user->name }}</td>
+                                                        <td>{{ $order->user->email }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price) }}</td>
+                                                        <td>{{ $cart->quantity }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price * $cart->quantity) }}
+                                                        </td>
 
-                                                    <td>
-                                                        <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                            target="_blank">
-                                                            <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                                alt=""
-                                                                style="object-fit: cover; max-width: 150px; height: 100px;">
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        @if ($order->status == 'pending')
-                                                            <button type="button" class="btn btn-warning"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Tertunda
-                                                            </button>
-                                                        @elseif($order->status == 'accepted')
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Disetujui
-                                                            </button>
-                                                        @elseif($order->status == 'rejected')
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Ditolak
-                                                            </button>
-                                                        @endif
-                                                        <div class="modal fade" id="exampleModalLive{{ $order->id }}"
-                                                            tabindex="-1" aria-labelledby="exampleModalLiveLabel"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLiveLabel">Modal
-                                                                            Judul
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="{{ route('admin.order.update') }}"
-                                                                            method="POST">
-                                                                            @csrf
+                                                        <td>
+                                                            <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                target="_blank">
+                                                                <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                    alt=""
+                                                                    style="object-fit: cover; max-width: 150px; height: 100px;">
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            @if ($order->status == 'pending')
+                                                                <button type="button" class="btn btn-warning"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Tertunda
+                                                                </button>
+                                                            @elseif($order->status == 'accepted')
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Disetujui
+                                                                </button>
+                                                            @elseif($order->status == 'rejected')
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Ditolak
+                                                                </button>
+                                                            @endif
+                                                            <div class="modal fade" id="exampleModalLive{{ $order->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLiveLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLiveLabel">Modal
+                                                                                Judul
+                                                                            </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('admin.order.update') }}"
+                                                                                method="POST">
+                                                                                @csrf
 
-                                                                            <div class="form-group">
-                                                                                <label for="status">Status</label>
-                                                                                <input type="hidden" name="id"
-                                                                                    value="{{ $order->id }}">
-                                                                                <select name="status" id="status"
-                                                                                    class="form-control">
-                                                                                    <option value="pending"
-                                                                                        {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Tertunda</option>
-                                                                                    <option value="accepted"
-                                                                                        {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Disetujui</option>
-                                                                                    <option value="rejected"
-                                                                                        {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Ditolak</option>
-                                                                                </select>
-                                                                            </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Tutup</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Simpan Perubahan</button>
-                                                                        </form>
+                                                                                <div class="form-group">
+                                                                                    <label for="status">Status</label>
+                                                                                    <input type="hidden" name="id"
+                                                                                        value="{{ $order->id }}">
+                                                                                    <select name="status" id="status"
+                                                                                        class="form-control">
+                                                                                        <option value="pending"
+                                                                                            {{ $order->status == 'pending' ? 'selected' : '' }}>
+                                                                                            Tertunda</option>
+                                                                                        <option value="accepted"
+                                                                                            {{ $order->status == 'accepted' ? 'selected' : '' }}>
+                                                                                            Disetujui</option>
+                                                                                        <option value="rejected"
+                                                                                            {{ $order->status == 'rejected' ? 'selected' : '' }}>
+                                                                                            Ditolak</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Tutup</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Simpan Perubahan</button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -263,98 +263,98 @@
                                                 <th>Total</th>
                                                 <th>Bukti Pembayaran</th>
                                                 <th>Status</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orders_rejected as $order)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $order->user->name }}</td>
-                                                    <td>{{ $order->user->email }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price) }}</td>
-                                                    <td>{{ $order->quantity }}</td>
-                                                    <td>Rp. {{ number_format($order->ticket->price * $order->quantity) }}
-                                                    </td>
+                                                @foreach ($order->carts as $cart)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $order->user->name }}</td>
+                                                        <td>{{ $order->user->email }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price) }}</td>
+                                                        <td>{{ $cart->quantity }}</td>
+                                                        <td>Rp. {{ number_format($cart->ticket->price * $cart->quantity) }}
+                                                        </td>
 
-                                                    <td>
-                                                        <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                            target="_blank">
-                                                            <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
-                                                                alt=""
-                                                                style="object-fit: cover; max-width: 150px; height: 100px;">
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        @if ($order->status == 'pending')
-                                                            <button type="button" class="btn btn-warning"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Tertunda
-                                                            </button>
-                                                        @elseif($order->status == 'accepted')
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Disetujui
-                                                            </button>
-                                                        @elseif($order->status == 'rejected')
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModalLive{{ $order->id }}">
-                                                                Ditolak
-                                                            </button>
-                                                        @endif
-                                                        <div class="modal fade" id="exampleModalLive{{ $order->id }}"
-                                                            tabindex="-1" aria-labelledby="exampleModalLiveLabel"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLiveLabel">Modal
-                                                                            Judul
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="{{ route('admin.order.update') }}"
-                                                                            method="POST">
-                                                                            @csrf
+                                                        <td>
+                                                            <a href="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                target="_blank">
+                                                                <img src="{{ asset('storage/payment_proof/' . $order->payment_proof) }}"
+                                                                    alt=""
+                                                                    style="object-fit: cover; max-width: 150px; height: 100px;">
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            @if ($order->status == 'pending')
+                                                                <button type="button" class="btn btn-warning"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Tertunda
+                                                                </button>
+                                                            @elseif($order->status == 'accepted')
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Disetujui
+                                                                </button>
+                                                            @elseif($order->status == 'rejected')
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModalLive{{ $order->id }}">
+                                                                    Ditolak
+                                                                </button>
+                                                            @endif
+                                                            <div class="modal fade" id="exampleModalLive{{ $order->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLiveLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLiveLabel">Modal
+                                                                                Judul
+                                                                            </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('admin.order.update') }}"
+                                                                                method="POST">
+                                                                                @csrf
 
-                                                                            <div class="form-group">
-                                                                                <label for="status">Status</label>
-                                                                                <input type="hidden" name="id"
-                                                                                    value="{{ $order->id }}">
-                                                                                <select name="status" id="status"
-                                                                                    class="form-control">
-                                                                                    <option value="pending"
-                                                                                        {{ $order->status == 'pending' ? 'selected' : '' }}>
-                                                                                        Tertunda</option>
-                                                                                    <option value="accepted"
-                                                                                        {{ $order->status == 'accepted' ? 'selected' : '' }}>
-                                                                                        Disetujui</option>
-                                                                                    <option value="rejected"
-                                                                                        {{ $order->status == 'rejected' ? 'selected' : '' }}>
-                                                                                        Ditolak</option>
-                                                                                </select>
-                                                                            </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Tutup</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Simpan Perubahan</button>
-                                                                        </form>
+                                                                                <div class="form-group">
+                                                                                    <label for="status">Status</label>
+                                                                                    <input type="hidden" name="id"
+                                                                                        value="{{ $order->id }}">
+                                                                                    <select name="status" id="status"
+                                                                                        class="form-control">
+                                                                                        <option value="pending"
+                                                                                            {{ $order->status == 'pending' ? 'selected' : '' }}>
+                                                                                            Tertunda</option>
+                                                                                        <option value="accepted"
+                                                                                            {{ $order->status == 'accepted' ? 'selected' : '' }}>
+                                                                                            Disetujui</option>
+                                                                                        <option value="rejected"
+                                                                                            {{ $order->status == 'rejected' ? 'selected' : '' }}>
+                                                                                            Ditolak</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Tutup</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Simpan Perubahan</button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
                                         </tbody>
                                     </table>
