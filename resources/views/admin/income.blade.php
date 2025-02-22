@@ -200,6 +200,30 @@
                 });
             });
 
+            $(document).on("click", ".deleteRow", function() {
+                let id = $(this).data("id"); // Ambil ID dari tombol delete
+                let url = `/admin/income/${id}`; // URL endpoint untuk delete
+                let btn = $(this); // Simpan tombol yang diklik
+
+                if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr(
+                                "content") // Pastikan CSRF token dikirim
+                        },
+                        success: function(response) {
+                            alert(response.message); // Tampilkan pesan sukses
+                            btn.closest("tr").remove(); // Hapus baris dari tabel
+                        },
+                        error: function(xhr) {
+                            alert("Terjadi kesalahan saat menghapus data.");
+                        }
+                    });
+                }
+            });
+
             // Add new row
             $(document).on('click', '.addRow', function() {
                 let newRow = `

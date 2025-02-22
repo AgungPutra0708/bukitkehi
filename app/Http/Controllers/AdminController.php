@@ -1051,10 +1051,27 @@ class AdminController extends Controller
 
     public function incomeDestroy($id)
     {
-        $income = Income::find($id);
-        $income->delete();
+        try {
+            DB::beginTransaction(); // Mulai transaksi database
 
-        return response()->json(['message' => 'Pendapatan berhasil dihapus']);
+            $income = Income::find($id);
+            if (!$income) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            // Hapus data OutcomeDetail yang terkait
+            IncomeDetail::where('income_id', $id)->delete();
+
+            // Hapus data Outcome
+            $income->delete();
+
+            DB::commit(); // Simpan perubahan jika semua berhasil
+
+            return response()->json(['message' => 'Pendapatan Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Batalkan perubahan jika ada error
+            return response()->json(['message' => 'Gagal menghapus data', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function getTiketTerusan()
