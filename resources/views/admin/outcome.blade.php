@@ -39,7 +39,8 @@
                             <div class="form-group mb-3">
                                 <label for="tahun">Tahun</label>
                                 <input type="number" class="form-control" id="tahun" name="tahun" required>
-                                <input type="hidden" class="form-control" id="id" name="id">
+                                <input type="hidden" class="form-control" id="id" name="id" value=""
+                                    autocomplete="off">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="bulan">Bulan</label>
@@ -62,7 +63,8 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail[]">
+                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail[]"
+                                                value="" autocomplete="off">
                                             <input type="text" name="name[]" class="form-control name" required>
                                         </td>
                                         <td>
@@ -141,7 +143,7 @@
                             var newRow = `
                             <tr>
                                 <td>
-                                    <input type="hidden" class="form-control" id="id_detail" name="id_detail[]" value="${detail.id}">
+                                    <input type="hidden" class="form-control" id="id_detail" name="id_detail[]" value="${detail.id}" autocomplete="off">
                                     <input type="text" name="name[]" value="${detail.name}" class="form-control name" required>
                                 </td>
                                 <td>
@@ -164,10 +166,36 @@
 
                             // Trigger type change to populate related_data dropdown
                             var lastRow = $('#dynamicTable tbody tr').last();
-                            lastRow.find('.type').trigger('change', [detail.related_data]);
+                            lastRow.find('.type').trigger('change', [detail
+                                .related_data
+                            ]);
                         });
                     }
                 });
+            });
+
+            $(document).on("click", ".deleteRow", function() {
+                let id = $(this).data("id"); // Ambil ID dari tombol delete
+                let url = `/admin/outcome/${id}`; // URL endpoint untuk delete
+                let btn = $(this); // Simpan tombol yang diklik
+
+                if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr(
+                                "content") // Pastikan CSRF token dikirim
+                        },
+                        success: function(response) {
+                            alert(response.message); // Tampilkan pesan sukses
+                            btn.closest("tr").remove(); // Hapus baris dari tabel
+                        },
+                        error: function(xhr) {
+                            alert("Terjadi kesalahan saat menghapus data.");
+                        }
+                    });
+                }
             });
 
             // Add new row

@@ -39,7 +39,8 @@
                             <div class="form-group mb-3">
                                 <label for="tahun">Tahun</label>
                                 <input type="number" class="form-control" id="tahun" name="tahun" required>
-                                <input type="hidden" class="form-control" id="id" name="id">
+                                <input type="hidden" class="form-control" id="id" name="id" value=""
+                                    autocomplete="off">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="bulan">Bulan</label>
@@ -65,7 +66,8 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail[]">
+                                            <input type="hidden" class="form-control" id="id_detail" name="id_detail[]"
+                                                value="" autocomplete="off">
                                             <select name="type[]" class="form-control type" required>
                                                 <option value="">Pilih Tipe</option>
                                                 <option value="0">Tiket Terusan</option>
@@ -158,7 +160,7 @@
                             var newRow = `
                 <tr>
                     <td>
-                        <input type="hidden" class="form-control" id="id_detail" name="id_detail[]" value="${detail.id}">
+                        <input type="hidden" class="form-control" id="id_detail" name="id_detail[]" value="${detail.id}" autocomplete="off">
                         <select name="type[]" class="form-control type" required data-ticket="${detail.type == 2 ? detail.facilities_id : detail.ticket_id}">
                             <option value="0" ${detail.type == 0 ? 'selected' : ''}>Tiket Terusan</option>
                             <option value="1" ${detail.type == 1 ? 'selected' : ''}>Tiket Satuan</option>

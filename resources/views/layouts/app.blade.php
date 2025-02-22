@@ -9,6 +9,7 @@
     <meta name="keywords" content="admin,dashboard">
     <meta name="author" content="stacks">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
@@ -142,15 +143,16 @@
                             <a href="{{ route('admin.ticket') }}" class="active"><i
                                     class="material-icons-two-tone">inventory_2</i>Tiket</a>
                         </li>
-                        {{-- Pesanan Ticket --}}
+
                         <li class="@yield('active_order')">
                             <a href="{{ route('admin.order') }}" class="active"><i
                                     class="material-icons-two-tone">inventory_2</i>Pesanan Tiket</a>
                         </li>
-                        {{-- <li class="@yield('active_order')">
-                            <a href="{{ route('admin.payment.information') }}" class="active"><i
-                                    class="material-icons-two-tone">credit_card</i>Payment Information</a>
-                        </li> --}}
+
+                        <li class="@yield('active_riwayat')">
+                            <a href="{{ route('admin.riwayat') }}" class="active"><i
+                                    class="material-icons-two-tone">star</i>Riwayat Rating & Klik</a>
+                        </li>
                     @endif
 
 

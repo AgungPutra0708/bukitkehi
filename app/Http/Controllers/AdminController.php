@@ -16,6 +16,8 @@ use App\Models\IncomeDetail;
 use App\Models\Outcome;
 use App\Models\OutcomeDetail;
 use App\Models\SupportObjectImage;
+use App\Models\Clicked;
+use App\Models\Rating;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentInformation;
@@ -716,49 +718,49 @@ class AdminController extends Controller
         $order->save();
         return redirect()->route('admin.order')->with('success', 'Order updated successfully');
     }
-    
+
     public function storeTotal(Request $request)
     {
         $request->validate([
             'year' => 'required',
             'month' => 'required',
         ]);
-    
+
         // Ambil data Checkout yang sudah diterima
         $checkouts = Checkout::with('carts.ticket')
             ->where('status', 'accepted')
             ->whereYear('ticket_date', $request->year)
             ->whereMonth('ticket_date', $request->month)
             ->get();
-    
+
         // Menyiapkan total income
         $total_amount = 0;
-    
+
         foreach ($checkouts as $checkout) {
             foreach ($checkout->carts as $cart) {
                 if (!$cart->ticket) continue; // Skip jika tidak ada ticket
-                
+
                 $ticket_id = $cart->ticket_id;
                 $total_price = $cart->ticket->price * $cart->quantity;
                 $total_quantity = $cart->quantity;
                 $ticket_type = $cart->ticket->type;
                 $ticket_price = $cart->ticket->price;
-    
+
                 // Tambahkan ke total amount
                 $total_amount += $total_price;
-    
+
                 // Cek apakah Income sudah ada
                 $income = Income::firstOrCreate([
                     'bulan' => $request->month,
                     'tahun' => $request->year
                 ], ['amount' => 0]);
-    
+
                 // Cek apakah IncomeDetail untuk tiket ini sudah ada
                 $incomeDetail = IncomeDetail::where('income_id', $income->id)
                     ->where('ticket_id', $ticket_id)
                     ->where('metode', 'online')
                     ->first();
-    
+
                 if ($incomeDetail) {
                     $incomeDetail->jumlah += $total_quantity;
                     $incomeDetail->amount += $total_price;
@@ -777,13 +779,13 @@ class AdminController extends Controller
                 }
             }
         }
-    
+
         // Update total amount dalam Income
         if (isset($income)) {
             $income->amount = IncomeDetail::where('income_id', $income->id)->sum('amount');
             $income->save();
         }
-    
+
         return redirect()->route('admin.order')->with('success', 'Total created successfully');
     }
 
@@ -847,6 +849,13 @@ class AdminController extends Controller
         $paymentInfo = PaymentInformation::find($id);
         $paymentInfo->delete();
         return redirect()->route('admin.payment.information')->with('success', 'Payment Information deleted successfully');
+    }
+    // Riwayat Rating dan Klik
+    public function riwayat()
+    {
+        $clicked = Clicked::latest()->take(5)->get(); // Ambil 5 data terakhir
+        $rating = Rating::latest()->take(5)->get(); // Ambil 5 data terakhir
+        return view('admin.riwayat', compact('clicked', 'rating'));
     }
 
     // Statistik
@@ -941,28 +950,50 @@ class AdminController extends Controller
             'jumlah_terjual' => 'array|required',
         ]);
 
-        // Create the Income record only once
-        $income = Income::create([
-            'bulan' => $request->bulan,
-            'tahun' => $request->tahun,
-            'amount' => $request->total_sum,
-        ]);
+        $checkIncome = Income::where('bulan', $request->bulan)->where('tahun', $request->tahun)->first();
 
-        // Loop through the income details and create them
-        foreach ($request->type as $index => $type) {
-            IncomeDetail::create([
-                'income_id'     => $income->id,
-                'type'          => $type,
-                'metode'          => 'manual',
-                'ticket_id'     => $type == 2 ? null : $request->related_data[$index],
-                'facilities_id' => $type == 2 ? $request->related_data[$index] : null,
-                'harga_satuan'  => $request->harga_satuan[$index],
-                'jumlah'        => $request->jumlah_terjual[$index],
-                'amount'        => $request->harga_satuan[$index] * $request->jumlah_terjual[$index],
+        if ($checkIncome) {
+            $checkIncome->update([
+                'amount' => floatval($checkIncome->amount) + floatval($request->total_sum),
             ]);
-        }
 
-        return response()->json(['message' => 'Income stored successfully']);
+            // Loop through the outcome details and create them
+            // Loop through the income details and create them
+            foreach ($request->type as $index => $type) {
+                IncomeDetail::create([
+                    'income_id'     => $checkIncome->id,
+                    'type'          => $type,
+                    'metode'          => 'manual',
+                    'ticket_id'     => $type == 2 ? null : $request->related_data[$index],
+                    'facilities_id' => $type == 2 ? $request->related_data[$index] : null,
+                    'harga_satuan'  => $request->harga_satuan[$index],
+                    'jumlah'        => $request->jumlah_terjual[$index],
+                    'amount'        => $request->harga_satuan[$index] * $request->jumlah_terjual[$index],
+                ]);
+            }
+        } else {
+            // Create the Income record only once
+            $income = Income::create([
+                'bulan' => $request->bulan,
+                'tahun' => $request->tahun,
+                'amount' => $request->total_sum,
+            ]);
+
+            // Loop through the income details and create them
+            foreach ($request->type as $index => $type) {
+                IncomeDetail::create([
+                    'income_id'     => $income->id,
+                    'type'          => $type,
+                    'metode'          => 'manual',
+                    'ticket_id'     => $type == 2 ? null : $request->related_data[$index],
+                    'facilities_id' => $type == 2 ? $request->related_data[$index] : null,
+                    'harga_satuan'  => $request->harga_satuan[$index],
+                    'jumlah'        => $request->jumlah_terjual[$index],
+                    'amount'        => $request->harga_satuan[$index] * $request->jumlah_terjual[$index],
+                ]);
+            }
+        }
+        return response()->json(['message' => 'Pendapatan berhasil disimpan']);
     }
 
     public function incomeShow($id)
@@ -1015,7 +1046,7 @@ class AdminController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Income updated successfully']);
+        return response()->json(['message' => 'Pendapatan berhasil diupdated']);
     }
 
     public function incomeDestroy($id)
@@ -1023,7 +1054,7 @@ class AdminController extends Controller
         $income = Income::find($id);
         $income->delete();
 
-        return response()->json(['message' => 'Income deleted successfully']);
+        return response()->json(['message' => 'Pendapatan berhasil dihapus']);
     }
 
     public function getTiketTerusan()
@@ -1073,20 +1104,37 @@ class AdminController extends Controller
             'amount'         => 'array|required',
         ]);
 
-        // Create the Income record only once
-        $outcome = Outcome::create([
-            'bulan' => $request->bulan,
-            'tahun' => $request->tahun,
-            'total_amount' => $request->total_sum,
-        ]);
+        $checkOutcome = Outcome::where('bulan', $request->bulan)->where('tahun', $request->tahun)->first();
 
-        // Loop through the outcome details and create them
-        foreach ($request->name as $index => $name) {
-            OutcomeDetail::create([
-                'outcome_id'     => $outcome->id,
-                'name'           => $request->name[$index],
-                'amount'         => $request->amount[$index],
+        if ($checkOutcome) {
+            $checkOutcome->update([
+                'total_amount' => floatval($checkOutcome->total_amount) + floatval($request->total_sum),
             ]);
+
+            // Loop through the outcome details and create them
+            foreach ($request->name as $index => $name) {
+                OutcomeDetail::create([
+                    'outcome_id'     => $checkOutcome->id,
+                    'name'           => $request->name[$index],
+                    'amount'         => $request->amount[$index],
+                ]);
+            }
+        } else {
+            // Create the Income record only once
+            $outcome = Outcome::create([
+                'bulan' => $request->bulan,
+                'tahun' => $request->tahun,
+                'total_amount' => $request->total_sum,
+            ]);
+
+            // Loop through the outcome details and create them
+            foreach ($request->name as $index => $name) {
+                OutcomeDetail::create([
+                    'outcome_id'     => $outcome->id,
+                    'name'           => $request->name[$index],
+                    'amount'         => $request->amount[$index],
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Pengeluaran Berhasil Disimpan']);
@@ -1137,10 +1185,27 @@ class AdminController extends Controller
 
     public function outcomeDestroy($id)
     {
-        $outcome = Outcome::find($id);
-        $outcome->delete();
+        try {
+            DB::beginTransaction(); // Mulai transaksi database
 
-        return response()->json(['message' => 'Pengeluaran Berhasil Dihapus']);
+            $outcome = Outcome::find($id);
+            if (!$outcome) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            // Hapus data OutcomeDetail yang terkait
+            OutcomeDetail::where('outcome_id', $id)->delete();
+
+            // Hapus data Outcome
+            $outcome->delete();
+
+            DB::commit(); // Simpan perubahan jika semua berhasil
+
+            return response()->json(['message' => 'Pengeluaran Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Batalkan perubahan jika ada error
+            return response()->json(['message' => 'Gagal menghapus data', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function exportTiketToExcel()
