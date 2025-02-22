@@ -1,55 +1,57 @@
 @extends('layouts.landing')
 
 @section('style')
-<style>
-    .recommendation-card {
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        text-align: left;
-        gap: 15px; /* Jarak antara gambar dan teks */
-    }
+    <style>
+        .recommendation-card {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: left;
+            gap: 15px;
+            /* Jarak antara gambar dan teks */
+        }
 
-    .recommendation-card img {
-        width: 100px; /* Ukuran gambar lebih kecil */
-        height: 100px;
-        object-fit: cover;
-        border-radius: 8px;
-        flex-shrink: 0; /* Mencegah gambar mengecil */
-    }
+        .recommendation-card img {
+            width: 100px;
+            /* Ukuran gambar lebih kecil */
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            /* Mencegah gambar mengecil */
+        }
 
-    .recommendation-content {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+        .recommendation-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-    .recommendation-content h5 {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
+        .recommendation-content h5 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-    .recommendation-content p {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 5px;
-    }
+        .recommendation-content p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
 
-    .recommendation-btn {
-        text-align: right;
-    }
+        .recommendation-btn {
+            text-align: right;
+        }
 
-    .recommendation-btn .nir-btn {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-
-</style>
+        .recommendation-btn .nir-btn {
+            font-size: 14px;
+            padding: 6px 12px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -78,7 +80,7 @@
     <section class="trending pt-6 pb-6 bg-lgrey">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="{{ $recommendedTickets->count() > 0 ? 'col-lg-8' : 'col-lg-12' }}">
                     <div class="destination-list">
                         @foreach ($tickets as $ticket)
                             <div class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4">
@@ -128,7 +130,7 @@
                         @endforeach
                     </div>
                 </div>
-                @if($recommendedTickets->count() > 0)
+                @if ($recommendedTickets->count() > 0)
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="col-lg-12 text-center">
@@ -140,14 +142,16 @@
                                 <div class="col-lg-12 mb-3">
                                     <div class="recommendation-card">
                                         <!-- Gambar di kiri -->
-                                        <img src="{{ asset('storage/ticket/' . $ticket->photo) }}" alt="{{ $ticket->name }}">
+                                        <img src="{{ asset('storage/ticket/' . $ticket->photo) }}"
+                                            alt="{{ $ticket->name }}">
 
                                         <!-- Konten di kanan -->
                                         <div class="recommendation-content">
                                             <h5>{{ $ticket->name }}</h5>
                                             <p>{{ number_format($ticket->price, 0, ',', '.') }} IDR</p>
                                             <div class="recommendation-btn">
-                                                <a href="{{ route('ticket.show', $ticket->id) }}" class="nir-btn btn-sm">Lihat Detail</a>
+                                                <a href="{{ route('ticket.show', $ticket->id) }}"
+                                                    class="nir-btn btn-sm">Lihat Detail</a>
                                             </div>
                                         </div>
                                     </div>

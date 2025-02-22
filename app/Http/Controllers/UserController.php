@@ -38,7 +38,7 @@ class UserController extends Controller
         }
 
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->first();
+        $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->where('checkout_id', null)->first();
         $qty = (int) $request->input('quantity', 1);
 
         if ($qty <= 0) {
@@ -118,7 +118,7 @@ class UserController extends Controller
     public function checkout($id)
     {
         $paymentInfo = PaymentInformation::all();
-        $order = Cart::where('user_id', Crypt::decrypt($id))->get();
+        $order = Cart::where('user_id', Crypt::decrypt($id))->where('checkout_id', null)->get();
         return view('checkout', compact('order', 'paymentInfo'));
     }
 
@@ -224,7 +224,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         // Ambil semua item di Cart berdasarkan user_id
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        $cartItems = Cart::where('user_id', $user->id)->where('checkout_id', null)->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['error' => 'Keranjang kosong'], 400);
