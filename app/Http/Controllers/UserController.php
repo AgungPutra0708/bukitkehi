@@ -161,7 +161,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         // Ambil semua item di Cart berdasarkan user_id
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        $cartItems = Cart::where('user_id', $user->id)->where('checkout_id', null)->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['error' => 'Keranjang kosong'], 400);
@@ -271,6 +271,32 @@ class UserController extends Controller
         $order->save();
 
         return response()->json(['success' => true, 'message' => 'Pembayaran berhasil diproses']);
+    }
+
+    public function cancelPayment(Request $request)
+    {
+        $user = Auth::user();
+        $orderId = $request->input('order_id');
+
+        // Cek apakah checkout dengan order_id ada
+        $checkout = Checkout::where('code', $orderId)->first();
+
+        // Ambil semua item di Cart berdasarkan user_id
+
+        if (!$checkout) {
+            return response()->json(['error' => 'Checkout tidak ditemukan'], 404);
+        }
+
+        $cartItems = Cart::where('user_id', $user->id)->where('checkout_id', $checkout->id)->get();
+        // Update semua Cart agar memiliki checkout_id
+        foreach ($cartItems as $item) {
+            $item->checkout_id = null;
+            $item->save();
+        }
+
+        $checkout->delete();
+
+        return response()->json(['message' => 'Pembayaran dibatalkan. Status checkout diperbarui.']);
     }
 
     // Order

@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth.middleware:user']], function () {
 
     Route::post('/charge', [UserController::class, 'createCharge']);
     Route::post('/midtrans/notification', [UserController::class, 'handleNotification']);
+    Route::post('/checkout/cancel', [UserController::class, 'cancelPayment']);
 
     Route::post('/process-cod', [UserController::class, 'processCOD']);
     Route::post('/handle-payment-success', [UserController::class, 'handlePaymentSuccess']);
@@ -174,7 +175,7 @@ Route::group(['middleware' => ['auth.middleware:admin']], function () {
     Route::get('/admin/payment-information/destroy/{id}', [AdminController::class, 'paymentInformationDestroy'])->name('admin.payment.information.destroy');
     // Riwayat Rating dan Klik
     Route::get('/admin/riwayat', [AdminController::class, 'riwayat'])->name('admin.riwayat');
-    
+
     // Statistik
     Route::get('/admin/statistik', [AdminController::class, 'statistik'])->name('admin.statistik');
     Route::post('/admin/statistik/store', [AdminController::class, 'statistikStore'])->name('admin.statistik.store');
@@ -192,7 +193,7 @@ Route::group(['middleware' => ['auth.middleware:admin']], function () {
     Route::get('/admin/tiket-terusan/data', [AdminController::class, 'getTiketTerusan'])->name('admin.tiket-terusan.data');
     Route::get('/admin/tiket-satuan/data', [AdminController::class, 'getTiketSatuan'])->name('admin.tiket-satuan.data');
     Route::get('/admin/fasilitas/data', [AdminController::class, 'getFasilitas'])->name('admin.fasilitas.data');
-    
+
     // Outcome
     Route::get('/admin/outcome', [AdminController::class, 'outcome'])->name('admin.outcome');
     Route::get('/admin/outcome/data', [AdminController::class, 'outcomeData'])->name('admin.outcome.data');

@@ -187,8 +187,12 @@
                                 <div class="trend-item2 rounded d-flex align-items-center justify-content-center"
                                     style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 10px; flex-shrink: 0;">
 
-                                    @if ($object->image)
-                                        <img src="{{ asset('storage/objek/' . $object->image) }}"
+                                    @php
+                                        $image = $object->images->first();
+                                    @endphp
+
+                                    @if ($image)
+                                        <img src="{{ asset('storage/objek/' . $image->image) }}"
                                             class="img-fluid w-100 rounded" alt="{{ $object->name }}"
                                             style="max-height: 200px; object-fit: cover;">
                                     @else

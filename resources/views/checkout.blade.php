@@ -149,6 +149,7 @@
                         </div>
                         <div class="col-md-6 text-end mt-3 mt-md-0">
                             <button class="btn btn-primary" id="payButton">Bayar</button>
+                            <a class="btn btn-danger" href="{{ route('user.order') }}">Batal</a>
                         </div>
                     </div>
                 </div>
@@ -219,6 +220,10 @@
                             },
                             onError: function(result) {
                                 alert('Pembayaran gagal!');
+                            },
+                            onClose: function() {
+                                // Jika pengguna menutup modal tanpa membayar, update status ke 'batal'
+                                updateCheckoutStatus(data.order_id, 'rejected');
                             }
                         });
                     } else {
@@ -281,6 +286,23 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        // Fungsi untuk mengubah status checkout menjadi batal
+        function updateCheckoutStatus(orderId, status) {
+            fetch('/checkout/cancel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ order_id: orderId, status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Pembayaran close!');
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
