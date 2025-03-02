@@ -186,13 +186,8 @@
                                 <!-- Gambar atau No Image -->
                                 <div class="trend-item2 rounded d-flex align-items-center justify-content-center"
                                     style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 10px; flex-shrink: 0;">
-
-                                    @php
-                                        $image = $object->images->first();
-                                    @endphp
-
-                                    @if ($image)
-                                        <img src="{{ asset('storage/objek/' . $image->image) }}"
+                                    @if (!empty($object->image))
+                                        <img src="{{ asset('storage/objek/' . $object->image) }}"
                                             class="img-fluid w-100 rounded" alt="{{ $object->name }}"
                                             style="max-height: 200px; object-fit: cover;">
                                     @else
@@ -242,35 +237,50 @@
                 return;
             }
 
-            $.ajax({
-                url: '/cart/add/' + id,
-                type: 'POST',
-                data: {
-                    quantity: qty,
-                    _token: $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF Token
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Tiket telah ditambahkan ke keranjang.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Harap Login!',
-                        text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
-                        confirmButtonText: 'Login'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '{{ route('login') }}';
-                        }
-                    });
-                }
-            });
+            @if (!Auth::check())
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Harap Login!',
+                    text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
+                    confirmButtonText: 'Login'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '{{ route('login') }}';
+                    }
+                });
+            @endif
+
+            @if (Auth::check())
+                $.ajax({
+                    url: '/cart/add/' + id,
+                    type: 'POST',
+                    data: {
+                        quantity: qty,
+                        _token: $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF Token
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Tiket telah ditambahkan ke keranjang.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Harap Login!',
+                            text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
+                            confirmButtonText: 'Login'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('login') }}';
+                            }
+                        });
+                    }
+                });
+            @endif
         }
     </script>
 @endsection

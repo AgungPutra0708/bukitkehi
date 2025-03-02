@@ -77,8 +77,8 @@
                             <i class="fa fa-check px-4 py-3 bg-white rounded title fs-5"></i>
                             @if ($order->status == 'accepted')
                             <div class="title-content ms-md-3">
-                                <h3 class="mb-1 white">{{ $order->ticket->name }}</h3>
-                                <p class="mb-0 white">Terima kasih. Pesanan pemesanan Anda dikonfirmasi sekarang.</p>
+                                {{-- <h3 class="mb-1 white">{{ $order->ticket->name }}</h3> --}}
+                                <p class="mb-0 white">Terima kasih. Sudah melakukan pemesanan.</p>
                             </div>
                             @else
                             <h3 class="mb-1 white">Pesanan pemesanan Anda adalah {{ $order->status }}.</h3>
@@ -90,7 +90,7 @@
                                     <th>Nomor Pemesanan</th>
                                     <th>Tanggal</th>
                                     <th>Total</th>
-                                    <th>Metode Pembayaran</th>
+                                    {{-- <th>Metode Pembayaran</th> --}}
                                     <th>Status</th>
                                 </thead>
                                 <tbody>
@@ -98,7 +98,7 @@
                                         <td class="theme2">{{ $order->code }}</td>
                                         <td class="theme2">{{ $order->ticket_date }}</td>
                                         <td class="theme2">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                                        <td class="theme2">Transfer Bank </td>
+                                        {{-- <td class="theme2">Transfer Bank </td> --}}
                                         <td class="theme2">
                                             @if ($order->status == 'accepted')
                                             <span class="badge bg-success">{{ $order->status }}</span>

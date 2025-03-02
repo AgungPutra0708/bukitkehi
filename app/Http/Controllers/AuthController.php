@@ -219,8 +219,8 @@ class AuthController extends Controller
                 if ($ticketA !== $ticketB) {
                     // Perhitungan cosine similarity
                     $dotProduct = ($dataA['rating'] * $dataB['rating']) +
-                                ($dataA['clicks'] * $dataB['clicks']) +
-                                ($dataA['checkout'] * $dataB['checkout']);
+                        ($dataA['clicks'] * $dataB['clicks']) +
+                        ($dataA['checkout'] * $dataB['checkout']);
 
                     $magnitudeA = sqrt(pow($dataA['rating'], 2) + pow($dataA['clicks'], 2) + pow($dataA['checkout'], 2));
                     $magnitudeB = sqrt(pow($dataB['rating'], 2) + pow($dataB['clicks'], 2) + pow($dataB['checkout'], 2));
@@ -257,7 +257,31 @@ class AuthController extends Controller
 
         // Ambil semua tiket yang tersedia
         $tickets = Ticket::where('status', 'publish')->get();
-        $supportObjects = SupportObject::all();
+
+        // Algoritma untuk mencari objek pendukung terdekat
+        $userLat = '-7.07672301030441';
+        $userLng = '113.60830950818035';
+        $radius = '20'; // Default radius dalam km
+
+        $query = "
+            SELECT o.id, o.name, o.latitude, o.longitude, o.tipe, o.description, o.address,
+                (SELECT image FROM support_object_images WHERE object_id = o.id LIMIT 1) AS image,
+                (6371 * ACOS(
+                    COS(RADIANS(?)) 
+                    * COS(RADIANS(o.latitude)) 
+                    * COS(RADIANS(o.longitude) - RADIANS(?)) 
+                    + SIN(RADIANS(?)) 
+                    * SIN(RADIANS(o.latitude))
+                )) AS distance
+            FROM objek_pendukung o
+        ";
+
+        $params = [$userLat, $userLng, $userLat];
+
+        $query .= " HAVING distance < ? ORDER BY distance ASC";
+        $params[] = $radius;
+
+        $supportObjects = DB::select($query, $params);
 
         return view('ticket', compact('tickets', 'supportObjects', 'recommendedTickets'));
     }
