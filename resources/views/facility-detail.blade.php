@@ -45,6 +45,25 @@
                             </div>
 
                             <div class="description mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 col-6 text-start">
+                                        <h3 class="mb-0">Rp. {{ number_format($facility->price, 0, ',', '.') }}</h3>
+                                    </div>
+                                    <div class="col-md-6 col-6 d-flex align-items-center justify-content-end">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="decreaseQty({{ $facility->id }})">-</button>
+                                        <input type="text" id="qty-{{ $facility->id }}" class="form-control text-center mx-2" value="1" style="width: 60px;">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="increaseQty({{ $facility->id }})">+</button>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col d-flex align-items-center justify-content-end">
+                                        <button class="nir-btn btn-secondary" onclick="addToCart({{ $facility->id }})">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="description mb-2">
                                 <h4>Deskripsi</h4>
                                 <p>{!! $facility->description !!}</p>
                             </div>
@@ -74,4 +93,77 @@
         </div>
     </section>
     <!-- top Facility ends -->
+
+    <script>
+        function increaseQty(id) {
+            let qtyInput = document.getElementById('qty-' + id);
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        }
+
+        function decreaseQty(id) {
+            let qtyInput = document.getElementById('qty-' + id);
+            if (qtyInput.value > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        }
+
+        function addToCart(id) {
+            let qty = document.getElementById('qty-' + id).value;
+
+            if (qty <= 0 || isNaN(qty)) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Jumlah tidak valid',
+                    text: 'Masukkan jumlah tiket yang benar!',
+                });
+                return;
+            }
+
+            @if (!Auth::check())
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Harap Login!',
+                    text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
+                    confirmButtonText: 'Login'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '{{ route('login') }}';
+                    }
+                });
+            @endif
+
+            @if (Auth::check())
+                $.ajax({
+                    url: '/cart/add/' + id,
+                    type: 'POST',
+                    data: {
+                        quantity: qty,
+                        type: 'facility',
+                        _token: $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF Token
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Ditambahkan ke keranjang.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Harap Login!',
+                            text: 'Silakan login terlebih dahulu untuk menambahkan tiket ke keranjang.',
+                            confirmButtonText: 'Login'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('login') }}';
+                            }
+                        });
+                    }
+                });
+            @endif
+        }
+    </script>
 @endsection

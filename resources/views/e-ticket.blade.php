@@ -154,26 +154,53 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($order->carts as $cart)
-                                    <tr>
-                                        <td>{{ $cart->ticket->name }}</td>
-                                        <td class="text-center">{{ $cart->quantity }}x</td>
-                                        <td class="text-end">Rp. {{ number_format($cart->ticket->price, 0, ',', '.') }}</td>
-                                        <td class="text-end">Rp. {{ number_format($cart->ticket->price * $cart->quantity, 0, ',', '.') }}</td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center mt-5">
-                                                <div class="text-center mb-5">
-                                                    <div class="rating" data-ticket-id="{{ $cart->ticket->id }}" data-cart-id="{{ $cart->id }}">
-                                                        @php $userRating = $cart->rating ? $cart->rating->rating : null; @endphp
-                                                        @for ($i = 5; $i >= 1; $i--)
-                                                        <input type="radio" name="rating_{{ $cart->id }}" value="{{ $i }}" id="{{ $i }}_{{ $cart->id }}"
-                                                            {{ $userRating == $i ? 'checked' : '' }}>
-                                                        <label for="{{ $i }}_{{ $cart->id }}">☆</label>
-                                                        @endfor
+                                        @if ($cart->ticket)
+                                            <tr>
+                                                <td>{{ $cart->ticket ? $cart->ticket->name : "" }}</td>
+                                                <td class="text-center">{{ $cart->quantity }}x</td>
+                                                <td class="text-end">Rp. {{ number_format($cart->ticket ? $cart->ticket->price : 0, 0, ',', '.') }}</td>
+                                                <td class="text-end">Rp. {{ number_format(($cart->ticket ? $cart->ticket->price : 0) * $cart->quantity, 0, ',', '.') }}</td>
+                                                <td class="text-center">
+                                                    <div class="d-flex justify-content-center mt-5">
+                                                        <div class="text-center mb-5">
+                                                            <div class="rating" data-ticket-id="{{ $cart->ticket ? $cart->ticket->id : "" }}" data-cart-id="{{ $cart->id }}">
+                                                                @php $userRating = $cart->rating ? $cart->rating->rating : null; @endphp
+                                                                @for ($i = 5; $i >= 1; $i--)
+                                                                <input type="radio" name="rating_{{ $cart->id }}" value="{{ $i }}" id="{{ $i }}_{{ $cart->id }}"
+                                                                    {{ $userRating == $i ? 'checked' : '' }}>
+                                                                <label for="{{ $i }}_{{ $cart->id }}">☆</label>
+                                                                @endfor
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </td>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="booking-border mb-4">
+                            <h4 class="border-b pb-2 mb-2">Fasilitas yang Dipesan</h4>
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nama Fasilitas</th>
+                                        <th>Jumlah</th>
+                                        <th>Harga</th>
+                                        <th>Total</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($order->carts as $cart)
+                                        @if ($cart->facility)
+                                            <tr>
+                                                <td>{{ $cart->facility ? $cart->facility->name : "" }}</td>
+                                                <td class="text-center">{{ $cart->quantity }}x</td>
+                                                <td class="text-end">Rp. {{ number_format($cart->facility ? $cart->facility->price : 0, 0, ',', '.') }}</td>
+                                                <td class="text-end">Rp. {{ number_format(($cart->facility ? $cart->facility->price : 0) * $cart->quantity, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>

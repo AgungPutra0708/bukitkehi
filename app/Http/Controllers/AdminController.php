@@ -559,6 +559,22 @@ class AdminController extends Controller
 
         return redirect()->route('admin.objects')->with('success', 'Objek Pendukung berhasil dihapus');
     }
+    public function deleteImage($id)
+    {
+        $image = SupportObjectImage::find($id);
+
+        if (!$image) {
+            return response()->json(['message' => 'Gambar tidak ditemukan!'], 404);
+        }
+
+        // Hapus file dari storage
+        Storage::delete('public/objek/' . $image->image);
+
+        // Hapus record dari database
+        $image->delete();
+
+        return response()->json(['message' => 'Gambar berhasil dihapus!']);
+    }
 
     // Aparatur
     public function aparatur()

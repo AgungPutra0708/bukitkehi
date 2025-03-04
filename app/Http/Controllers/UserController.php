@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use App\Models\Product;
 use App\Models\Checkout;
 use App\Models\Clicked;
+use App\Models\Facility;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentInformation;
@@ -32,13 +33,24 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $ticket = Ticket::find($id);
-        if (!$ticket) {
-            return response()->json(['error' => 'Ticket not found'], 404);
+        if ($request->type == 'ticket') {
+            $ticket = Ticket::find($id);
+            if (!$ticket) {
+                return response()->json(['error' => 'Ticket not found'], 404);
+            }
+        } else {
+            $facility = Facility::find($id);
+            if (!$facility) {
+                return response()->json(['error' => 'Facility not found'], 404);
+            }
         }
 
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->where('checkout_id', null)->first();
+        if ($request->type == 'ticket') {
+            $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->where('checkout_id', null)->first();
+        } else {
+            $cart = Cart::where('user_id', $user->id)->where('facilities_id', $facility->id)->where('checkout_id', null)->first();
+        }
         $qty = (int) $request->input('quantity', 1);
 
         if ($qty <= 0) {
@@ -52,14 +64,17 @@ class UserController extends Controller
             $cart = new Cart();
             $cart->quantity = $qty;
             $cart->user_id = $user->id;
-            $cart->ticket_id = $ticket->id;
+            $cart->ticket_id = $ticket->id ?? null;
+            $cart->facilities_id = $facility->id ?? null;
             $cart->save();
         }
 
-        $clicked = new Clicked();
-        $clicked->user_id = $user->id;
-        $clicked->ticket_id = $ticket->id;
-        $clicked->save();
+        if ($request->type == 'ticket') {
+            $clicked = new Clicked();
+            $clicked->user_id = $user->id;
+            $clicked->ticket_id = $ticket->id;
+            $clicked->save();
+        }
 
         return;
     }
@@ -70,13 +85,24 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $ticket = Ticket::find($id);
-        if (!$ticket) {
-            return response()->json(['error' => 'Ticket not found'], 404);
+        if ($request->type == 'ticket') {
+            $ticket = Ticket::find($id);
+            if (!$ticket) {
+                return response()->json(['error' => 'Ticket not found'], 404);
+            }
+        } else {
+            $facility = Facility::find($id);
+            if (!$facility) {
+                return response()->json(['error' => 'Facility not found'], 404);
+            }
         }
 
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->first();
+        if ($request->type == 'ticket') {
+            $cart = Cart::where('user_id', $user->id)->where('ticket_id', $ticket->id)->where('checkout_id', null)->first();
+        } else {
+            $cart = Cart::where('user_id', $user->id)->where('facilities_id', $facility->id)->where('checkout_id', null)->first();
+        }
         $qty = (int) $request->input('quantity', 1);
 
         if ($qty <= 0) {
@@ -110,58 +136,45 @@ class UserController extends Controller
     public function cartDestroy($id)
     {
         $cart = Cart::find($id);
+
+        if (!$cart) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Item tidak ditemukan.'
+            ], 404);
+        }
+
         $cart->delete();
-        return redirect()->back()->with('success', 'Ticket removed from cart successfully!');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item berhasil dihapus dari keranjang.'
+        ]);
     }
 
     // Checkout
     public function checkout($id)
     {
         $paymentInfo = PaymentInformation::all();
-        $order = Cart::where('user_id', Crypt::decrypt($id))->where('checkout_id', null)->get();
+
+        // Ambil data dari Cart, bisa tiket atau fasilitas
+        $order = Cart::where('user_id', Crypt::decrypt($id))
+            ->where('checkout_id', null)
+            ->with(['ticket', 'facility']) // Load relasi ticket & facility
+            ->get();
+
         return view('checkout', compact('order', 'paymentInfo'));
     }
-
-    // public function checkoutProcess(Request $request)
-    // {
-    //     $request->validate([
-    //         'ticket_date' => 'required',
-    //         'quantity' => 'required',
-    //         'payment_proof' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
-    //     ]);
-    //     $ticket = Ticket::find($request->ticket_id);
-    //     if (!$ticket) {
-    //         return redirect()->back()->with('error', 'Ticket not found');
-    //     }
-    //     if ($request->payment_proof) {
-    //         $payment_proof = $request->file('payment_proof');
-    //         $payment_proof_name = time() . '.' . $payment_proof->getClientOriginalExtension();
-    //         // Use storage instead of public path
-    //         $payment_proof->storeAs('payment_proof', $payment_proof_name, 'public');
-    //     }
-    //     $total_price = $ticket->price * $request->quantity;
-    //     $randomString = Str::random(10);
-    //     $code = 'CHK-' . time() . '-' . $randomString;
-    //     $user = Auth::user();
-    //     $order = new Checkout();
-    //     $order->code = $code;
-    //     $order->user_id = $user->id;
-    //     $order->ticket_id = $request->ticket_id;
-    //     $order->quantity = $request->quantity;
-    //     $order->status = 'pending';
-    //     $order->ticket_date = $request->ticket_date;
-    //     $order->total_price = $total_price;
-    //     $order->payment_proof = $payment_proof_name;
-    //     $order->save();
-    //     return redirect()->route('user.order')->with('success', 'Checkout successfully!');
-    // }
 
     public function createCharge(Request $request)
     {
         $user = Auth::user();
 
         // Ambil semua item di Cart berdasarkan user_id
-        $cartItems = Cart::where('user_id', $user->id)->where('checkout_id', null)->get();
+        $cartItems = Cart::where('user_id', $user->id)
+            ->where('checkout_id', null)
+            ->with(['ticket', 'facility']) // Load relasi
+            ->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['error' => 'Keranjang kosong'], 400);
@@ -169,9 +182,11 @@ class UserController extends Controller
 
         // Hitung total quantity dan total price dari Cart
         $totalQuantity = $cartItems->sum('quantity');
-        $totalPrice = $cartItems->sum(fn($item) => $item->ticket->price * $item->quantity);
+        $totalPrice = $cartItems->sum(function ($item) {
+            return ($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity;
+        });
 
-        // Tambah biaya admin untuk pembayaran online
+        // Tambah biaya admin
         $adminFee = ($totalPrice * 0.02) + 5000;
         $finalAmount = $totalPrice + $adminFee;
 
@@ -224,7 +239,10 @@ class UserController extends Controller
         $user = Auth::user();
 
         // Ambil semua item di Cart berdasarkan user_id
-        $cartItems = Cart::where('user_id', $user->id)->where('checkout_id', null)->get();
+        $cartItems = Cart::where('user_id', $user->id)
+            ->where('checkout_id', null)
+            ->with(['ticket', 'facility'])
+            ->get();
 
         if ($cartItems->isEmpty()) {
             return response()->json(['error' => 'Keranjang kosong'], 400);
@@ -232,7 +250,9 @@ class UserController extends Controller
 
         // Hitung total quantity dan total price dari Cart
         $totalQuantity = $cartItems->sum('quantity');
-        $totalPrice = $cartItems->sum(fn($item) => $item->ticket->price * $item->quantity);
+        $totalPrice = $cartItems->sum(function ($item) {
+            return ($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity;
+        });
 
         // Simpan ke tabel Checkout dengan metode COD
         $checkout = new Checkout();
@@ -303,7 +323,7 @@ class UserController extends Controller
     public function order()
     {
         $cart = Cart::where('user_id', Auth::user()->id)->where('checkout_id', NULL)->get();
-        $orders = Checkout::where('user_id', Auth::user()->id)->with('carts.ticket')->get();
+        $orders = Checkout::where('user_id', Auth::user()->id)->with('carts.ticket', 'carts.facility')->get();
         $user = Auth::user()->id;
         // var_dump($orders);
         // exit;
@@ -314,7 +334,7 @@ class UserController extends Controller
     {
         $order = Checkout::where('code', $code)
             ->where('user_id', Auth::user()->id)
-            ->with('carts.ticket', 'carts.rating', 'user') // Tambahkan relasi rating
+            ->with('carts.ticket', 'carts.rating', 'user', 'carts.facility') // Tambahkan relasi rating
             ->firstOrFail();
 
         // Buat QR Code

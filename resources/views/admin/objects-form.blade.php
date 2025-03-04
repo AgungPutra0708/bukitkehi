@@ -17,7 +17,15 @@
                                 @if(isset($objectData) && $objectData->images->count() > 0)
                                     <div class="mb-3">
                                         @foreach($objectData->images as $image)
-                                            <img src="{{ asset('storage/objek/' . $image->image) }}" alt="" style="object-fit: cover; max-width: 150px; height: 100px; margin-right: 10px;">
+                                            <div class="d-inline-block text-center mr-1">
+                                                <img src="{{ asset('storage/objek/' . $image->image) }}" alt="" 
+                                                    style="object-fit: cover; max-width: 150px; height: 100px; display: block; margin: 0 auto;">
+                                                
+                                                <button type="button" class="btn btn-sm btn-danger mt-2" 
+                                                    onclick="deleteImage({{ $image->id }})">
+                                                    Hapus
+                                                </button>
+                                            </div>                                        
                                         @endforeach
                                     </div>
                                 @endif
@@ -71,4 +79,37 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteImage(imageId) {
+            Swal.fire({
+                title: "Hapus Gambar?",
+                text: "Apakah Anda yakin ingin menghapus gambar ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/objects/delete-image/' + imageId,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire("Dihapus!", response.message, "success").then(() => {
+                                location.reload(); // Reload halaman setelah hapus
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus gambar.", "error");
+                        }
+                    });
+                }
+            });
+        }
+    </script>    
 @endsection

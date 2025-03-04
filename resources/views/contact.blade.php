@@ -39,30 +39,30 @@
                                             </div>
                                             <div class="info-content">
                                                 <h3>Lokasi Kantor</h3>
-                                                <p class="m-0">Alamat : Jl. Raya Pakong Desa Kertagena Dajah Kec.Kadur Kab.Pamekasan, Desa Kertagenah Dajah, Kecamatan Kadur, Kabupaten Pamekasan, Provinsi Jawa Timur, Indonesia, 69355.</p>
+                                                <p class="m-0" style="font-size: 12px;">Jl. Raya Pakong Desa Kertagena Dajah, Kec.Kadur, Kab.Pamekasan, Prov. Jawa Timur, Indonesia, 69355.</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-6 mb-4">
-                                        <div class="info-item bg-lgrey px-4 py-5 border-all text-center rounded">
+                                        <div class="info-item bg-lgrey px-4 py-5 border-all text-center rounded h-100">
                                             <div class="info-icon mb-2">
                                                 <i class="fa fa-phone theme"></i>
                                             </div>
                                             <div class="info-content">
                                                 <h3>Nomor Telepon</h3>
-                                                <p class="m-0">Whatsapp : 085231065084</p>
+                                                <p class="m-0" style="font-size: 12px;">085231065084</p>
                                                
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12 mb-4">
-                                        <div class="info-item bg-lgrey px-4 py-5 border-all text-center rounded">
+                                        <div class="info-item bg-lgrey px-4 py-5 border-all text-center rounded h-100">
                                             <div class="info-icon mb-2">
                                                 <i class="fa fa-envelope theme"></i>
                                             </div>
-                                            <div class="info-content ps-4">
+                                            <div class="info-content">
                                                 <h3>Alamat Email</h3>
-                                                <p class="m-0">pemdeskertagenadajah@gmail.com</p>
+                                                <p class="m-0" style="font-size: 12px;">pemdeskertagenadajah@gmail.com</p>
                                              
                                             </div>
                                         </div>

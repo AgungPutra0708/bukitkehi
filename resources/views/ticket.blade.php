@@ -80,7 +80,7 @@
     <section class="trending pt-6 pb-6 bg-lgrey">
         <div class="container">
             <div class="row">
-                <div class="{{ $recommendedTickets->count() > 0 ? 'col-lg-8' : 'col-lg-12' }}">
+                <div class="col-lg-8">
                     <div class="destination-list">
                         @foreach ($tickets as $ticket)
                             <div class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4">
@@ -94,7 +94,13 @@
                                     </div>
                                     <div class="col-lg-5 col-md-6">
                                         <div class="trend-content position-relative text-md-start text-center">
-                                            <small>Paket Tiket </small>
+                                            <small>
+                                                @if ($ticket->type == 0)
+                                                    Tiket Terusan
+                                                @else
+                                                    Tiket Satuan
+                                                @endif
+                                            </small>
                                             <h3 class="mb-1"><a
                                                     href="{{ route('ticket.show', $ticket->id) }}">{{ $ticket->name }}</a>
                                             </h3>
@@ -130,8 +136,8 @@
                         @endforeach
                     </div>
                 </div>
-                @if ($recommendedTickets->count() > 0)
-                    <div class="col-lg-4">
+                <div class="col-lg-4">
+                    @if ($recommendedTickets->count() > 0)
                         <div class="row">
                             <div class="col-lg-12 text-center">
                                 <h4 class="mb-3">Rekomendasi Tiket Untuk Anda</h4>
@@ -158,8 +164,17 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                @endif
+                    @endif
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a href="https://wa.me/6285231065084?text=Nama%20%3A%0AAcara%20%3A%0AJumlah%20orang%20%3A%0ATanggal%20%3A%0AFasilitas%20yang%20di%20butuhkan%20%3A" 
+                               target="_blank" 
+                               class="btn btn-success btn-lg">
+                                <i class="fab fa-whatsapp"></i> Reservasi via WhatsApp
+                            </a>
+                        </div>
+                    </div>                    
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -181,9 +196,8 @@
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-1 support-object-item" data-type="{{ $object->tipe }}">
                         <a href="{{ route('landing.objects.detail', $object->id) }}" class="text-decoration-none">
                             <div class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4 d-flex flex-column h-100"
-                                style="max-height: 370px!important;">
-
-                                <!-- Gambar atau No Image -->
+                                style="max-height: 400px!important;">
+            
                                 <div class="trend-item2 rounded d-flex align-items-center justify-content-center"
                                     style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 10px; flex-shrink: 0;">
                                     @if (!empty($object->image))
@@ -196,18 +210,17 @@
                                         </div>
                                     @endif
                                 </div>
-
-                                <!-- Konten Card -->
+            
                                 <div class="trend-content position-relative text-md-start text-center mt-3 flex-grow-1">
                                     <h3 class="mb-1">{{ $object->name }}</h3>
                                     <h6 class="theme mb-0"><i class="icon-location-pin"></i> {{ $object->address }}</h6>
                                 </div>
-
+            
                             </div>
                         </a>
                     </div>
                 @endforeach
-            </div>
+            </div>       
         </div>
     </section>
     <!-- top Destination ends -->
@@ -256,13 +269,14 @@
                     type: 'POST',
                     data: {
                         quantity: qty,
+                        type: 'ticket',
                         _token: $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF Token
                     },
                     success: function(response) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil!',
-                            text: 'Tiket telah ditambahkan ke keranjang.',
+                            text: 'Ditambahkan ke keranjang.',
                             showConfirmButton: false,
                             timer: 1500
                         });

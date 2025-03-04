@@ -21,7 +21,12 @@ class Cart extends Model
 
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Ticket::class, 'ticket_id', 'id');
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'facilities_id', 'id');
     }
 
     public function checkout()

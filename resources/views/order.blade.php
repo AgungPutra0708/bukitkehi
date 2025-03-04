@@ -33,52 +33,57 @@
                         <div class="trend-full bg-white rounded box-shadow overflow-hidden p-2 mb-2">
                             <div class="row">
                                 <div class="col-lg-4 col-md-3">
-                                    <a href="{{ route('ticket.show', $item->ticket->id) }}">
+                                    <a href="{{ $item->ticket ? route('ticket.show', $item->ticket->id) : '#' }}">
                                         <div class="trend-item2 rounded">
-                                            <img src="{{ asset('storage/ticket/' . $item->ticket->photo) }}" class="img"
-                                                alt="">
+                                            <img src="{{ asset('storage/' . ($item->ticket ? 'ticket/' . $item->ticket->photo : 'facility/' . $item->facility->image)) }}" 
+                                                class="img" alt="">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-5 col-md-6">
                                     <div class="trend-content position-relative text-md-start text-center">
                                         <small>
-                                            @if ($item->ticket->type == '0')
-                                                Tiket Terusan
+                                            @if ($item->ticket)
+                                                @if ($item->ticket->type == '0')
+                                                    Tiket Terusan
+                                                @else
+                                                    Tiket Satuan
+                                                @endif
                                             @else
-                                                Tiket Satuan
+                                                Fasilitas
                                             @endif
                                         </small>
-                                        <h3 class="mb-1">{{ $item->ticket->name }}</h3>
+                                        <h3 class="mb-1">{{ $item->ticket ? $item->ticket->name : $item->facility->name }}</h3>
                                         <h6 class="theme mb-0"><i class="icon-location-pin"></i> Pamekasan, Jawa Timur</h6>
-                                        <p class="mt-4 mb-0">{!! Str::limit($item->ticket->description, 20) !!}</p>
+                                        <p class="mt-4 mb-0">
+                                            {!! Str::limit($item->ticket ? $item->ticket->description : $item->facility->description, 20) !!}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
                                     <div class="d-flex align-items-center justify-content-end my-2">
-                                        <h3 class="mb-0" id="total-price-{{ $item->ticket->id }}">
-                                            Rp. {{ number_format($item->ticket->price * $item->quantity, 0, ',', '.') }}
+                                        <h3 class="mb-0" id="total-price-{{ $item->id }}">
+                                            Rp. {{ number_format(($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-end mb-2 me-1">
-                                        <button class="btn btn-sm btn-outline-primary"
-                                            onclick="decreaseQty({{ $item->ticket->id }})">-</button>
-                                        <input type="text" id="qty-{{ $item->ticket->id }}"
-                                            class="form-control text-center mx-2" value="{{ $item->quantity ?? '1' }}"
-                                            style="width: 60px;" readonly>
-                                        <button class="btn btn-sm btn-outline-primary"
-                                            onclick="increaseQty({{ $item->ticket->id }})">+</button>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="decreaseQty({{ $item->id }})">-</button>
+                                        <input type="text" id="qty-{{ $item->id }}" class="form-control text-center mx-2"
+                                            value="{{ $item->quantity ?? '1' }}" style="width: 60px;" readonly>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="increaseQty({{ $item->id }})">+</button>
                                     </div>
-                                    <input type="hidden" id="price-{{ $item->ticket->id }}"
-                                        value="{{ $item->ticket->price }}">
+                                    <input type="hidden" id="price-{{ $item->id }}" 
+                                        value="{{ $item->ticket ? $item->ticket->price : $item->facility->price }}">
                                 </div>
                             </div>
                         </div>
                     @endforeach
-                    <div class="d-flex justify-content-end">
-                        <a href="{{ route('checkout', Crypt::encrypt($user)) }}" class="nir-btn">Check-out</a>
-                    </div>
-                </div>
+                    @if (!$cart->isEmpty())
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('checkout', Crypt::encrypt($user)) }}" class="nir-btn">Check-out</a>
+                        </div>
+                    @endif
+                </div>                
             </div>
         </div>
         <div class="row">
@@ -131,8 +136,13 @@
                                         <strong>Detail Tiket:</strong>
                                         <ul>
                                             @foreach ($order->carts as $cart)
-                                                <li>{{ $cart->ticket->name }} - {{ $cart->quantity }} x Rp.
-                                                    {{ number_format($cart->ticket->price, 0, ',', '.') }}</li>
+                                                @if ($cart->ticket)
+                                                    <li>{{ $cart->ticket->name }} - {{ $cart->quantity }} x Rp.
+                                                        {{ number_format($cart->ticket->price, 0, ',', '.') }}</li>
+                                                @else
+                                                    <li>{{ $cart->facility->name }} - {{ $cart->quantity }} x Rp.
+                                                        {{ number_format($cart->facility->price, 0, ',', '.') }}</li>
+                                                @endif
                                             @endforeach
                                         </ul>
                                     </td>
@@ -183,6 +193,7 @@
 
         function decreaseQty(id) {
             let qtyInput = document.getElementById('qty-' + id);
+
             if (parseInt(qtyInput.value) > 1) {
                 qtyInput.value = parseInt(qtyInput.value) - 1;
                 updateTotalPrice(id);
@@ -199,6 +210,30 @@
                     },
                     error: function(xhr) {
                         console.log('Error:', xhr);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Hapus Item?',
+                    text: 'Jumlah tiket 1, jika dikurangi maka item akan dihapus. Lanjutkan?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/cart/destroy/' + id,
+                            type: 'GET',
+                            success: function(response) {
+                                Swal.fire('Terhapus!', 'Item berhasil dihapus.', 'success')
+                                    .then(() => location.reload());
+                            },
+                            error: function(xhr) {
+                                Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+                                console.log('Error:', xhr);
+                            }
+                        });
                     }
                 });
             }

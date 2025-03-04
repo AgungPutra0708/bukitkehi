@@ -163,20 +163,21 @@ class AuthController extends Controller
         $radius = $request->input('radius', 20); // Default radius dalam km
         $type = $request->input('type', ''); // Filter berdasarkan tipe
 
+        // Konstanta konversi derajat ke radian
+        $DEG_TO_RAD = 0.0174532925;
         $query = "
             SELECT o.id, o.name, o.latitude, o.longitude, o.tipe, o.description,
                 (SELECT image FROM support_object_images WHERE object_id = o.id LIMIT 1) AS image,
-                (6371 * ACOS(
-                    COS(RADIANS(?)) 
-                    * COS(RADIANS(o.latitude)) 
-                    * COS(RADIANS(o.longitude) - RADIANS(?)) 
-                    + SIN(RADIANS(?)) 
-                    * SIN(RADIANS(o.latitude))
-                )) AS distance
+                SQRT(
+                    (((? * $DEG_TO_RAD) - (o.longitude * $DEG_TO_RAD)) * COS((? * $DEG_TO_RAD) + (o.latitude * $DEG_TO_RAD) / 2)) * 
+                    (((? * $DEG_TO_RAD) - (o.longitude * $DEG_TO_RAD)) * COS((? * $DEG_TO_RAD) + (o.latitude * $DEG_TO_RAD) / 2)) +
+                    ((? * $DEG_TO_RAD) - (o.latitude * $DEG_TO_RAD)) * 
+                    ((? * $DEG_TO_RAD) - (o.latitude * $DEG_TO_RAD))
+                ) * 6371 AS distance
             FROM objek_pendukung o
         ";
 
-        $params = [$userLat, $userLng, $userLat];
+        $params = [$userLng, $userLat, $userLng, $userLat, $userLat, $userLat];
 
         if (!empty($type)) {
             $query .= " WHERE o.tipe = ?";
@@ -281,7 +282,19 @@ class AuthController extends Controller
         $query .= " HAVING distance < ? ORDER BY distance ASC";
         $params[] = $radius;
 
-        $supportObjects = DB::select($query, $params);
+        $supportObjects = DB::table('objek_pendukung')
+            ->selectRaw("id, name, latitude, longitude, tipe, description, address,
+        (SELECT image FROM support_object_images WHERE object_id = objek_pendukung.id LIMIT 1) AS image,
+        (6371 * ACOS(
+            COS(RADIANS(?)) 
+            * COS(RADIANS(latitude)) 
+            * COS(RADIANS(longitude) - RADIANS(?)) 
+            + SIN(RADIANS(?)) 
+            * SIN(RADIANS(latitude))
+        )) AS distance", [$userLat, $userLng, $userLat])
+            ->having('distance', '<', $radius)
+            ->orderBy('distance', 'ASC')
+            ->paginate(9); // Menambahkan pagination
 
         return view('ticket', compact('tickets', 'supportObjects', 'recommendedTickets'));
     }

@@ -303,16 +303,19 @@
                     @foreach ($aparatur as $item)
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="team-list rounded">
-                                <div class="team-image">
-                                    <img src="{{ asset('storage/aparatur/' . $item->image) }}" alt="team"
-                                        style="width: 100%; height: 300px; object-fit: cover;">
+                                <div class="team-image" style="width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="{{ asset('storage/aparatur/' . $item->image) }}" alt="team" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                                 <div class="team-content text-center p-3 bg-theme">
-                                    <h4 class="mb-0 white">{{ $item->name }}</h4>
-                                    <p class="mb-0 white">{{ $item->position }}</p>
+                                    <h4 class="mb-0 white" style="font-size: 1.2rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        {{ $item->name }}
+                                    </h4>
+                                    <p class="mb-0 white" style="font-size: 1rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        {{ $item->position }}
+                                    </p>
                                 </div>
                             </div>
-                        </div>
+                        </div>                    
                     @endforeach
                 </div>
             </div>

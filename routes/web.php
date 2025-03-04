@@ -141,7 +141,7 @@ Route::group(['middleware' => ['auth.middleware:admin']], function () {
     Route::get('/admin/objects/edit/{id}', [AdminController::class, 'objectSupportEdit'])->name('admin.objects.edit');
     Route::post('/admin/objects/update/', [AdminController::class, 'objectSupportUpdate'])->name('admin.objects.update');
     Route::get('/admin/objects/destroy/{id}', [AdminController::class, 'objectSupportDestroy'])->name('admin.objects.destroy');
-
+    Route::delete('/admin/objects/delete-image/{id}', [AdminController::class, 'deleteImage'])->name('admin.objects.delete-image');
     // Aparatur
     Route::get('/admin/aparatur', [AdminController::class, 'aparatur'])->name('admin.aparatur');
     Route::get('/admin/aparatur/create', [AdminController::class, 'aparaturCreate'])->name('admin.aparatur.create');

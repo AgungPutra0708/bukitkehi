@@ -118,22 +118,43 @@
                                 @foreach ($order as $item)
                                 <tr>
                                     <td data-label="Photo">
-                                        <img src="{{ asset('storage/ticket/' . $item->ticket->photo) }}"
-                                            alt="{{ $item->ticket->name }}" class="img-fluid"
-                                            style="max-width: 100px; height: auto;">
+                                        @if ($item->ticket)
+                                            <img src="{{ asset('storage/ticket/' . $item->ticket->photo) }}"
+                                                alt="{{ $item->ticket->name }}" class="img-fluid"
+                                                style="max-width: 100px; height: auto;">
+                                        @elseif ($item->facility)
+                                            <img src="{{ asset('storage/facility/' . $item->facility->image) }}"
+                                                alt="{{ $item->facility->name }}" class="img-fluid"
+                                                style="max-width: 100px; height: auto;">
+                                        @else
+                                            <span class="text-muted">Tidak ada foto</span>
+                                        @endif
+                                    </td>                                    
+                                    <td data-label="Nama">
+                                        {{ $item->ticket ? $item->ticket->name : $item->facility->name }}
                                     </td>
-                                    <td data-label="Nama">{{ $item->ticket->name }}</td>
-                                    <td data-label="Harga">Rp. {{ number_format($item->ticket->price, 0, ',', '.') }}</td>
+                                    <td data-label="Harga">
+                                        Rp. {{ number_format($item->ticket ? $item->ticket->price : $item->facility->price, 0, ',', '.') }}
+                                    </td>
                                     <td data-label="Jumlah">
                                         <input type="number" id="qty" value="{{ $item->quantity ?? '1' }}" min="1"
                                             class="form-control w-50 text-center">
                                     </td>
-                                    <td data-label="Total Harga"><span id="total">Rp.
-                                            {{ number_format($item->ticket->price * $item->quantity, 0, ',', '.') }}</span></td>
-                                    <td data-label="Biaya Admin"><span id="fee">Rp.
-                                            {{ number_format($item->ticket->price * $item->quantity * 0.02 + 5000, 0, ',', '.') }}</span></td>
-                                    <td data-label="Total Pembayaran"><span id="finalTotal">Rp.
-                                            {{ number_format($item->ticket->price * $item->quantity * 1.02 + 5000, 0, ',', '.') }}</span></td>
+                                    <td data-label="Total Harga">
+                                        <span id="total">
+                                            Rp. {{ number_format(($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity, 0, ',', '.') }}
+                                        </span>
+                                    </td>                                    
+                                    <td data-label="Biaya Admin">
+                                        <span id="fee">
+                                            Rp. {{ number_format(($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity * 0.02 + 5000, 0, ',', '.') }}
+                                        </span>
+                                    </td>
+                                    <td data-label="Total Pembayaran">
+                                        <span id="finalTotal">
+                                            Rp. {{ number_format(($item->ticket ? $item->ticket->price : $item->facility->price) * $item->quantity * 1.02 + 5000, 0, ',', '.') }}
+                                        </span>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -201,9 +222,9 @@
                         email: '{{ auth()->user()->email }}',
                         phone: '{{ auth()->user()->phone }}',
                         order_details: @json($order->map(fn($item) => [
-                            'ticket_id' => $item->ticket->id,
+                            'ticket_id' => $item->ticket ? $item->ticket->id : $item->facility->id,
                             'quantity' => $item->quantity,
-                            'price' => $item->ticket->price
+                            'price' => $item->ticket ? $item->ticket->price : $item->facility->price
                         ])),
                         total_price: finalAmount
                     })
@@ -241,9 +262,9 @@
                     },
                     body: JSON.stringify({
                         order_details: @json($order->map(fn($item) => [
-                            'ticket_id' => $item->ticket->id,
+                            'ticket_id' => $item->ticket ? $item->ticket->id : $item->facility->id,
                             'quantity' => $item->quantity,
-                            'price' => $item->ticket->price
+                            'price' => $item->ticket ? $item->ticket->price : $item->facility->price
                         ])),
                         total_price: finalAmount
                     })
